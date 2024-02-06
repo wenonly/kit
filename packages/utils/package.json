@@ -1,0 +1,20 @@
+{
+  "name": "@wen/utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/umd/index.js",
+  "module": "lib/es/index.js",
+  "types": "lib/umd/index.d.ts",
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin typescript"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.9.6",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.3.3"
+  }
+}
