@@ -5,39 +5,44 @@ import { defineConfig } from "vitepress";
 import type { DefaultTheme } from "vitepress/types/default-theme";
 
 enum DocGroup {
-  ReactComponents = "/react-components",
-  ReactHooks = "/react-hooks",
-  Utils = "/utils",
+  ReactComponents = "react-components",
+  ReactHooks = "react-hooks",
+  Utils = "utils",
 }
 
 interface RewritesConfigItem {
   from: string;
   to: string;
   group?: DocGroup;
+  sidebarName?: string;
 }
 
 const rewrites: RewritesConfigItem[] = [
   {
-    from: "(.*)/packages/react-components/src/components/:componentName/doc.md",
-    to: "/react-components/:componentName.md",
+    from: "packages/react-components/src/components/:componentName/doc.md",
+    to: "react-components/:componentName.md",
     group: DocGroup.ReactComponents,
+    sidebarName: ":componentName",
   },
   {
-    from: "(.*)/packages/react-hooks/src/:hookName.md",
-    to: "/react-hooks/:hookName.md",
+    from: "packages/react-hooks/src/:hookName.md",
+    to: "react-hooks/:hookName.md",
     group: DocGroup.ReactHooks,
+    sidebarName: ":hookName",
   },
   {
-    from: "(.*)/packages/utils/src/doc.md",
-    to: "/utils.md",
+    from: "packages/utils/src/:utilName.md",
+    to: "utils/:utilName.md",
     group: DocGroup.Utils,
-  },
-  {
-    from: "(.*)/packages/utils/src/:utilName.md",
-    to: "/utils/:utilName.md",
-    group: DocGroup.Utils,
+    sidebarName: ":utilName",
   },
 ];
+
+const allMdFilePaths = findMarkdownFiles(join(__dirname, "../../packages"));
+
+const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
+const reactHooksSidebars = getSideBar(DocGroup.ReactHooks);
+const utilsSidebars = getSideBar(DocGroup.Utils);
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -48,25 +53,22 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
-      { text: "React组件", link: "/react-components/XgPlayer" },
-      { text: "React Hooks", link: "/react-hooks/useRefData" },
-      { text: "工具函数", link: "/utils" },
+      { text: "React组件", link: reactComponentsSidebars[0]?.link ?? "/" },
+      { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
+      { text: "工具函数", link: utilsSidebars[0]?.link ?? "/" },
     ],
 
     sidebar: {
-      "/react-components/": [
-        {
-          text: "Examples",
-          items: [
-            { text: "Markdown Examples", link: "/markdown-examples" },
-            { text: "Runtime API Examples", link: "/api-examples" },
-          ],
-        },
-      ],
+      "/react-components": reactComponentsSidebars,
+      "/react-hooks": reactHooksSidebars,
+      "/utils": utilsSidebars,
     },
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/vuejs/vitepress" },
+      {
+        icon: "github",
+        link: "https://github.com/wenonly/components-and-utils",
+      },
     ],
   },
   rewrites: {
@@ -76,6 +78,7 @@ export default defineConfig({
   },
 });
 
+// 获取目录下所有的md文件
 function findMarkdownFiles(dir, fileList: string[] = []) {
   const files = readdirSync(dir);
 
@@ -92,29 +95,25 @@ function findMarkdownFiles(dir, fileList: string[] = []) {
   return fileList;
 }
 
-const allMdFilePaths = findMarkdownFiles(join(__dirname, "../../packages"));
-
+// 获取sidebar配置
 function getSideBar(group: DocGroup) {
   const configs = rewrites.filter((item) => item.group === group);
   const sidebarList: DefaultTheme.SidebarItem[] = [];
   allMdFilePaths.forEach((filePath) => {
     for (const config of configs) {
-      const fn = match(config.from, { decode: decodeURIComponent });
-      const result = fn(filePath);
-      if (result) {
-        const params = result.params;
+      const fn = match(`(.*)/${config.from}`, { decode: decodeURIComponent });
+      const fromRes = fn(filePath);
+      if (fromRes && config.sidebarName) {
+        const fromParams = fromRes.params;
         const toPath = compile(config.to);
-        const resPath = toPath(params);
+        const toResPath = toPath(fromParams);
         sidebarList.push({
-          text: resPath.match(/.*\/(.*?).md/)?.[1] ?? "index",
-          link: resPath.replace(/\.md$/, ""),
+          text: compile(config.sidebarName)(fromParams),
+          link: toResPath.replace(/\.md$/, ""),
         });
         break;
       }
     }
   });
-  console.log(sidebarList);
   return sidebarList;
 }
-
-getSideBar(DocGroup.ReactComponents);

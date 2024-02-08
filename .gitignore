@@ -2,3 +2,5 @@
 node_modules
 **/lib
 **/dist
+docs/.vitepress/cache
+docs/.vitepress/config.mts.*

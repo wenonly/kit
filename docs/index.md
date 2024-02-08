@@ -6,13 +6,13 @@ hero:
   name: "Components And Utils"
   text: "A doc web with components, utils and hooks"
   tagline: Facilitate my development work
-  actions:
-    - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
+  # actions:
+  #   - theme: brand
+  #     text: React Components
+  #     link: /react-components/
+  #   - theme: alt
+  #     text: API Examples
+  #     link: /api-examples
 
 features:
   - title: components
