@@ -38,7 +38,7 @@ const rewrites: RewritesConfigItem[] = [
   },
 ];
 
-const allMdFilePaths = findMarkdownFiles(join(__dirname, "../../packages"));
+const allMdFilePaths = findMarkdownFiles(join(__dirname, "../packages"));
 
 const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
 const reactHooksSidebars = getSideBar(DocGroup.ReactHooks);
@@ -48,7 +48,7 @@ const utilsSidebars = getSideBar(DocGroup.Utils);
 export default defineConfig({
   title: "Components And Utils",
   description: "A doc web with components, utils and hooks",
-  srcDir: "../",
+  srcDir: "./",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

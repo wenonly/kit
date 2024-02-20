@@ -12,18 +12,15 @@ importers:
         specifier: ^3.4.19
         version: 3.4.19
     devDependencies:
-      vitepress:
-        specifier: 1.0.0-rc.42
-        version: 1.0.0-rc.42(@algolia/client-search@4.22.1)(@types/node@20.11.16)(search-insights@2.13.0)
-
-  docs:
-    devDependencies:
       '@types/node':
         specifier: ^20.11.16
         version: 20.11.16
       path-to-regexp:
         specifier: ^6.2.1
         version: 6.2.1
+      vitepress:
+        specifier: 1.0.0-rc.42
+        version: 1.0.0-rc.42(@algolia/client-search@4.22.1)(@types/node@20.11.16)(search-insights@2.13.0)
 
   packages/react-components:
     dependencies:
