@@ -1,5 +1,5 @@
 <script setup>
-import { XgPlayer } from '@wen/react-components'
+import { XgPlayer } from '@wenonly/react-components'
 </script>
 
 # XgPlayer

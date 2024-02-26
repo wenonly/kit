@@ -1,5 +1,5 @@
 {
-  "name": "@wen/utils",
+  "name": "@wenonly/utils",
   "version": "1.0.0",
   "description": "",
   "main": "lib/umd/index.js",

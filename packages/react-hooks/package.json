@@ -1,5 +1,5 @@
 {
-  "name": "@wen/react-hooks",
+  "name": "@wenonly/react-hooks",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -24,7 +24,7 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@wen/utils": "workspace:^",
+    "@wenonly/utils": "workspace:^",
     "tslib": "^2.6.2"
   }
 }

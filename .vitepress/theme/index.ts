@@ -1,5 +1,5 @@
 // https://vitepress.dev/guide/custom-theme
-import { VueWrapper } from "@wen/react-in-vue";
+import { VueWrapper } from "@wenonly/react-in-vue";
 import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import { h } from "vue";

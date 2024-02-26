@@ -1,5 +1,5 @@
 {
-  "name": "@wen/react-in-vue",
+  "name": "@wenonly/react-in-vue",
   "version": "1.0.0",
   "description": "",
   "main": "lib/umd/index.js",

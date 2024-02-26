@@ -1,4 +1,4 @@
-import { loadJs } from "@wen/utils";
+import { loadJs } from "@wenonly/utils";
 import { useMount } from "ahooks";
 import { useState } from "react";
 import useRefData from "./useRefData";

@@ -1,5 +1,5 @@
 {
-  "name": "@wen/react-components",
+  "name": "@wenonly/react-components",
   "version": "1.0.0",
   "description": "",
   "main": "lib/umd/index.js",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.0",
-    "@wen/react-hooks": "workspace:^",
+    "@wenonly/react-hooks": "workspace:^",
     "ahooks": "^3.7.10",
     "tslib": "^2.6.2",
     "xgplayer": "^3.0.13"
