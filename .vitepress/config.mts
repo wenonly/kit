@@ -19,7 +19,7 @@ interface RewritesConfigItem {
 
 const rewrites: RewritesConfigItem[] = [
   {
-    from: "packages/react-components/src/components/:componentName/doc.md",
+    from: "packages/react-components/src/components/:componentName/README.md",
     to: "react-components/:componentName.md",
     group: DocGroup.ReactComponents,
     sidebarName: ":componentName",

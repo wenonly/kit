@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import type PlayerType from "xgplayer";
 import type { IPlayerOptions } from "xgplayer";
 import Player from "xgplayer";
+import 'xgplayer/dist/index.min.css';
 
 export interface XgPlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   src: string;
