@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "vitepress build && pnpm -r run build",
     "preview": "vitepress preview"
   },
   "keywords": [],

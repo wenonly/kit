@@ -80,6 +80,18 @@ export function prefetchScript(path: string, as: string = 'script') {
   return link;
 }
 
+const preloadMap: Record<string, HTMLLinkElement> = {};
+export function preloadScript(path: string, as = "script") {
+  if (preloadMap[path]) return preloadMap[path];
+  const link = document.createElement("link");
+  link.rel = "prefetch";
+  link.as = as;
+  link.href = path;
+  document.head.appendChild(link);
+  preloadMap[path] = link;
+  return link;
+}
+
 // 将字体文件preload
 const preloadFontMap: Record<string, HTMLLinkElement> = {};
 export function preloadFont(path: string) {
