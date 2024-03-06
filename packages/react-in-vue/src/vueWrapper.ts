@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import ReactDOM from "react-dom/client";
-import { defineComponent, getCurrentInstance, h, onMounted, ref } from "vue";
+import { defineComponent, h, onMounted, ref } from "vue";
 
 // Vue 组件
 export default defineComponent({

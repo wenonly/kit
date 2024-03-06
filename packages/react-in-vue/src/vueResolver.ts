@@ -1,5 +1,5 @@
 import { defineComponent, h } from "vue";
-import { VueWrapper } from ".";
+import { default as VueWrapper } from "./vueWrapper";
 
 const VueResolver = (component: React.ComponentType) => {
   return defineComponent({

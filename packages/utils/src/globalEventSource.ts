@@ -1,11 +1,11 @@
 import { EventSourcePolyfill } from "event-source-polyfill";
-import Eventemitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 interface GlobalEventSourceOptions {
   headersCreater?: () => Record<string, string>;
 }
 
-export class GlobalEventSource extends Eventemitter {
+export class GlobalEventSource extends EventEmitter {
   private path: string;
   private eventSourceInstance: EventSource | undefined;
   private options: GlobalEventSourceOptions = {};

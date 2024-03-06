@@ -9,6 +9,10 @@ const config = defineConfig({
       name: "WenReactComponents",
       dir: "lib/umd",
       format: "umd",
+      globals: {
+        react: "React",
+        vue: "Vue",
+      }
     },
     {
       dir: "lib/es",

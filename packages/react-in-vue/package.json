@@ -2,9 +2,9 @@
   "name": "@wenonly/react-in-vue",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/umd/index.js",
-  "module": "lib/es/index.js",
-  "types": "lib/umd/index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "rollup --config rollup.config.ts --configPlugin typescript"
   },

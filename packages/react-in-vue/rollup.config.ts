@@ -6,12 +6,17 @@ const config = defineConfig({
   output: [
     {
       name: "ReactInVue",
-      dir: "lib/umd",
+      dir: "lib",
       format: "umd",
+      globals: {
+        vue: "Vue",
+        react: "React",
+        "react-dom/client": "ReactDOM", // 注意这里使用引号，因为模块名包含斜杠
+      },
     },
     {
-      dir: "lib/es",
       format: "es",
+      file: "lib/index.mjs"
     },
   ],
   plugins: [
@@ -20,7 +25,7 @@ const config = defineConfig({
       tsconfig: "tsconfig.json", // 指定 tsconfig.json 文件
     }),
   ],
-  external: ["react", "vue", "react-dom"],
+  external: ["react", "vue", "react-dom/client"],
 });
 
 export default config;
