@@ -19,7 +19,7 @@ const config = defineConfig({
     }),
     resolve(),
   ],
-  external: ["react", "ahooks", "@ant-design/pro-components"],
+  external: ["react", "ahooks"],
 });
 
 export default config;

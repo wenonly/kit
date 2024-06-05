@@ -10,26 +10,6 @@ export const downloadBlob = (url: string | Blob, saveName: string) => {
   aLink.click();
 };
 
-// 从树中找到对应的对象
-export function findFromTree<T = any>(
-  data: T[],
-  is: (node: T) => boolean,
-  childrenKey: string = "children"
-): T | undefined {
-  for (const item of data) {
-    if (is(item)) {
-      return item;
-    }
-    if ((item as any)[childrenKey] instanceof Array) {
-      const findChildItem = findFromTree((item as any)[childrenKey] as T[], is);
-      if (findChildItem) {
-        return findChildItem;
-      }
-    }
-  }
-  return undefined;
-}
-
 // 延时
 export function delayMs(time: number) {
   return new Promise((resolve, reject) => {
@@ -40,20 +20,6 @@ export function delayMs(time: number) {
     } catch (error) {
       reject(error);
     }
-  });
-}
-
-// 转换树结构
-export function transformTreeNode<T extends { children?: T[] }, R>(
-  treeData: T[],
-  transform: (n: T) => R & { children?: R[] }
-): R[] {
-  return treeData.map((node) => {
-    const newNode = transform(node);
-    if (node.children) {
-      newNode.children = transformTreeNode(node.children, transform);
-    }
-    return newNode;
   });
 }
 

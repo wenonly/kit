@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@ant-design/pro-components": "^2.6.49",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
@@ -33,7 +32,6 @@
     "uuid": "^9.0.1"
   },
   "peerDependencies": {
-    "@ant-design/pro-components": "^2.6.49",
     "react": "^18.2.0"
   }
 }

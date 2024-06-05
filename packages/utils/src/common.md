@@ -11,38 +11,12 @@ const blob = await sheet2blob(sheet, name);
 downloadBlob(blob, `${name}.xlsx`);
 ```
 
-## findFromTree
-
-从树结构中找到对应的对象
-
-```ts
-if (checkAuditUsed && allowKey) {
-  const node = findFromTree(tree, (item) => item.value === allowKey);
-  if (node) {
-    node.disabled = false;
-  }
-}
-```
-
 ## delayMs
 
 延迟毫秒
 
 ```ts
 await delayMs(500);
-```
-
-## transformTreeNode
-
-对树结构进行转换
-
-```tsx
-<Menu
-  items={transformTreeNode(allowMenus, (item) => ({
-    label: item.title,
-    key: item.key || "",
-  }))}
-/>
 ```
 
 ## getReverseObject

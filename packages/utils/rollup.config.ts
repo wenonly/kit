@@ -1,7 +1,7 @@
+import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
 import { defineConfig } from "rollup";
 import typescript from "rollup-plugin-typescript2";
-import resolve from "@rollup/plugin-node-resolve";
-import commonjs from "@rollup/plugin-commonjs";
 
 const config = defineConfig({
   input: "src/index.ts",
@@ -12,12 +12,11 @@ const config = defineConfig({
       format: "umd",
       globals: {
         react: "React",
-        "@ant-design/pro-components": "ProComponents",
       },
     },
     {
       format: "es",
-      file: "lib/index.mjs"
+      file: "lib/index.mjs",
     },
   ],
   plugins: [
@@ -30,7 +29,7 @@ const config = defineConfig({
     }),
     resolve(),
   ],
-  external: ["react", "@ant-design/pro-components"],
+  external: ["react"],
 });
 
 export default config;
