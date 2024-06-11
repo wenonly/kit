@@ -11,7 +11,7 @@ function asyncWrapper<P extends object>(
   const Fallback = options?.fallback;
   return React.forwardRef((props: React.PropsWithoutRef<P>, ref) => {
     return (
-      <Suspense fallback={Fallback ? <Fallback /> : <></>}>
+      <Suspense fallback={Fallback ? <Fallback /> : <>loading</>}>
         <Component {...props} ref={ref} />
       </Suspense>
     );
