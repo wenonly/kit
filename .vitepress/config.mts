@@ -1,8 +1,7 @@
 import { readdirSync, statSync } from "fs";
 import { extname, join } from "path";
 import { compile, match } from "path-to-regexp";
-import { defineConfig } from "vitepress";
-import type { DefaultTheme } from "vitepress/types/default-theme";
+import { DefaultTheme, defineConfig } from "vitepress";
 
 enum DocGroup {
   ReactComponents = "react-components",
