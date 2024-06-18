@@ -88,6 +88,17 @@ export default defineConfig({
         "@": join(__dirname, "../"),
       },
     },
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // 删除 use client 警告
+          if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+            return;
+          }
+          warn(warning);
+        },
+      },
+    },
   },
 });
 
