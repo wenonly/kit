@@ -10,10 +10,6 @@ export default defineComponent({
     const reactInstance = ref(); // react dom root
     const { component, ...rest } = props; // 接收的 React 组件
 
-    const setReactRef = (ref: any) => {
-      react.value = ref;
-    };
-
     onMounted(() => {
       // 创建 react 实例
       reactInstance.value = ReactDOM.createRoot(react.value);
@@ -25,7 +21,6 @@ export default defineComponent({
           {
             ...rest,
             ...ctx.attrs,
-            ref: setReactRef, // 跟新根节点实例
           },
           null
         )

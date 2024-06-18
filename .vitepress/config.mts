@@ -82,6 +82,13 @@ export default defineConfig({
     "docs/index.md": "index.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
   },
+  vite: {
+    resolve: {
+      alias: {
+        "@": join(__dirname, "../"),
+      },
+    },
+  },
 });
 
 // 获取目录下所有的md文件

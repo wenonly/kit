@@ -14,7 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "@wenonly/react-components": "workspace:^",
+    "@wenonly/react-hooks": "workspace:^",
     "@wenonly/react-in-vue": "workspace:^",
+    "@wenonly/utils": "workspace:^",
+    "antd": "^5.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vue": "^3.4.19"

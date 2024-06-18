@@ -1,6 +1,18 @@
+<script setup>
+import RUseTreeLoad from '@/examples/RUseTreeLoad.tsx'
+</script>
+
 # useTreeLoad
 
 用于树形结构异步加载数据的 Hooks
+
+## 示例
+
+<VueWrapper :component="RUseTreeLoad" />
+
+::: details
+<<< @/examples/RUseTreeLoad.tsx
+:::
 
 ## 参数
 
@@ -16,41 +28,4 @@ interface UseTreeLoadOptions<T extends object> {
     defaultDom: JSX.Element
   ) => JSX.Element; // 加载更多 节点渲染
 }
-```
-
-## 示例
-
-```tsx
-const { treeData, loading, refresh } = useTreeLoad({
-  getRequest: (parent) => {
-    // 如果存在父节点，则应用子节点加载逻辑
-    if (parent) {
-      return ({ page, size }) => {
-        return Promise.resolve({
-          list: [
-            {
-              label: "子" + page,
-              value: "child" + page,
-            },
-          ],
-          isComplete: false,
-        });
-      };
-    }
-    return ({ page, size }) => {
-      return Promise.resolve({
-        list: [
-          {
-            label: "父1",
-            value: "parent1",
-          },
-        ],
-        isComplete: true,
-      });
-    };
-  },
-  transformer: (node) => node,
-});
-
-<Tree treeData={treeData} />;
 ```
