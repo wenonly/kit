@@ -54,6 +54,7 @@ export default defineConfig({
   title: "Components And Utils",
   description: "A doc web with components, utils and hooks",
   srcDir: "./",
+  outDir: "./docs",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
