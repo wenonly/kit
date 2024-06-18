@@ -94,12 +94,21 @@ importers:
 
   packages/react-hooks:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.3.0
+        version: 5.3.0(react-dom@18.2.0)(react@18.2.0)
       '@wenonly/utils':
         specifier: workspace:^
         version: link:../utils
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -110,9 +119,15 @@ importers:
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
         version: 11.1.6(rollup@4.9.6)(tslib@2.6.2)(typescript@5.3.3)
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       '@types/react':
         specifier: ^18.2.54
         version: 18.2.54
+      '@types/uuid':
+        specifier: ^9.0.8
+        version: 9.0.8
       ahooks:
         specifier: ^3.7.10
         version: 3.7.10(react@18.2.0)

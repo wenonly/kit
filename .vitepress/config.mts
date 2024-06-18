@@ -30,6 +30,12 @@ const rewrites: RewritesConfigItem[] = [
     sidebarName: ":hookName",
   },
   {
+    from: "packages/react-hooks/src/:hookName/README.md",
+    to: "react-hooks/:hookName.md",
+    group: DocGroup.ReactHooks,
+    sidebarName: ":hookName",
+  },
+  {
     from: "packages/utils/src/:utilName.md",
     to: "utils/:utilName.md",
     group: DocGroup.Utils,

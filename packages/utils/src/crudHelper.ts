@@ -2,7 +2,7 @@
 
 import { v4 as uuidv4 } from "uuid";
 import { omit } from "lodash-es";
-import { delayMs } from ".";
+import { delayMs } from "./delay";
 
 interface SearchParams extends Record<string, string | number | undefined> {
   page?: number;
