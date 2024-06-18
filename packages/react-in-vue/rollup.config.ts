@@ -1,5 +1,5 @@
+import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
-import typescript from "rollup-plugin-typescript2";
 
 const config = defineConfig({
   input: "src/index.ts",
@@ -16,7 +16,7 @@ const config = defineConfig({
     },
     {
       format: "es",
-      file: "lib/index.mjs"
+      file: "lib/index.mjs",
     },
   ],
   plugins: [

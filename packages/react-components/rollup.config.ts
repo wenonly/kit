@@ -1,9 +1,9 @@
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
 import less from "rollup-plugin-less";
 import postcss from "rollup-plugin-postcss";
-import typescript from "rollup-plugin-typescript2";
 
 const config = defineConfig({
   input: "src/index.ts",
