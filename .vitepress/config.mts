@@ -2,6 +2,7 @@ import { readdirSync, statSync } from "fs";
 import { extname, join } from "path";
 import { compile, match } from "path-to-regexp";
 import { DefaultTheme, defineConfig } from "vitepress";
+import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
 
 enum DocGroup {
   ReactComponents = "react-components",
@@ -98,6 +99,11 @@ export default defineConfig({
           warn(warning);
         },
       },
+    },
+  },
+  markdown: {
+    config: (md) => {
+      md.use(tsParamsPlugin);
     },
   },
 });
