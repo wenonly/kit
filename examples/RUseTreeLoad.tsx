@@ -1,7 +1,6 @@
 import { useTreeLoad } from "@wenonly/react-hooks";
 import { delayMs } from "@wenonly/utils";
 import { Tree } from "antd";
-import React from "react";
 
 const RUseTreeLoad = () => {
   const { treeData, loading, refresh, loadData, loadedKeys } = useTreeLoad({
