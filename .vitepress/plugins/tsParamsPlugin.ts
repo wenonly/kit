@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import type MarkdownIt from "markdown-it";
 import path from "path";
-import { Project } from "ts-morph";
+import { InterfaceDeclaration, Project } from "ts-morph";
 
 function escapeHtml(str: string): string {
   return str
@@ -9,6 +9,71 @@ function escapeHtml(str: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/&(?![\w#]+;)/g, "&amp;");
+}
+
+interface TsParamsItem {
+  key: string;
+  type: string;
+  description?: string;
+}
+
+function interfaceToJson(inter?: InterfaceDeclaration) {
+  const tableData: TsParamsItem[] = [];
+  inter?.forEachChild((node) => {
+    if (node.getKindName() === "PropertySignature") {
+      const prop = node as import("ts-morph").PropertySignature;
+      const name = prop.getName();
+      let type = prop.getType()?.getText() ?? "";
+      while (/import\(.*\)./.test(type)) {
+        type = type.replace(/import\(.*\)./, "");
+      }
+      const commentsRange = prop.getTrailingCommentRanges();
+      if (commentsRange) {
+        const comments = commentsRange.map((range) => range.getText());
+        tableData.push({
+          key: name,
+          type,
+          description: comments.join("\n"),
+        });
+      } else {
+        tableData.push({
+          key: name,
+          type,
+        });
+      }
+    }
+  });
+  return tableData;
+}
+
+function paramsToTableHtml(data: TsParamsItem[]) {
+  const hasDescription = data.some((item) => item.description);
+  return `<table tabindex="0">
+      <thead>
+        <tr>
+          <th>key</th>
+          <th>类型</th>
+          ${hasDescription ? `<th>描述</th>` : ""}
+        </tr>
+      </thead>
+      <tbody>
+        ${data
+          .map((item) => {
+            return `<tr>
+            <td>${escapeHtml(item.key)}</td>
+            <td>${escapeHtml(item.type)}</td>
+          ${
+            hasDescription
+              ? `<td>${escapeHtml(
+                  item.description?.replace(/\/\/ ?/, "") ?? ""
+                )}</td>`
+              : ""
+          }
+          </tr>`;
+          })
+          .join("\n")}
+      </tbody>
+    </table>`;
 }
 
 /**
@@ -49,52 +114,7 @@ export const tsParamsPlugin = (md: MarkdownIt, srcDir: string) => {
     const foundInterface = interfaces?.find(
       (intf) => intf.getName() === paramsName
     );
-    const tableData: { key: string; type: string; description?: string }[] = [];
-    foundInterface?.forEachChild((node) => {
-      if (node.getKindName() === "PropertySignature") {
-        const prop = node as import("ts-morph").PropertySignature;
-        const name = prop.getName();
-        let type = prop.getType().getText();
-        while (/import\(.*\)./.test(type)) {
-          type = type.replace(/import\(.*\)./, "");
-        }
-        const commentsRange = prop.getTrailingCommentRanges();
-        if (commentsRange) {
-          const comments = commentsRange.map((range) => range.getText());
-          tableData.push({
-            key: name,
-            type,
-            description: comments.join("\n"),
-          });
-        } else {
-          tableData.push({
-            key: name,
-            type,
-          });
-        }
-      }
-    });
-    return `<table tabindex="0">
-      <thead>
-        <tr>
-          <th>key</th>
-          <th>类型</th>
-          <th>描述</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${tableData
-          .map((item) => {
-            return `<tr>
-            <td>${escapeHtml(item.key)}</td>
-            <td>${escapeHtml(item.type)}</td>
-            <td>${escapeHtml(
-              item.description?.replace(/\/\/ ?/, "") ?? ""
-            )}</td>
-          </tr>`;
-          })
-          .join("\n")}
-      </tbody>
-    </table>`;
+    const tableData = interfaceToJson(foundInterface);
+    return paramsToTableHtml(tableData);
   };
 };

@@ -23,7 +23,7 @@ const config = defineConfig({
       autoModules: true,
     }),
   ],
-  external: ["react", "antd", "@ant-design/icons"],
+  external: ["react", "antd", "@ant-design/icons", "lottie-web"],
 });
 
 export default config;

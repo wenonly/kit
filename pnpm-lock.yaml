@@ -106,6 +106,9 @@ importers:
       less:
         specifier: ^4.2.0
         version: 4.2.0
+      lottie-web:
+        specifier: ^5.12.2
+        version: 5.12.2
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3081,6 +3084,10 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+
+  /lottie-web@5.12.2:
+    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+    dev: true
 
   /lru-cache@4.1.5:
     resolution: {integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==}

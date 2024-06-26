@@ -13,3 +13,8 @@ import RUseAsyncTasks from '@/examples/RUseAsyncTasks.tsx'
 ::: details 点我查看代码
 <<< @/examples/RUseAsyncTasks.tsx
 :::
+
+## 参数
+
+### UseAsyncTasksOptions
+<<< useAsyncTasks.ts::params:UseAsyncTasksOptions
