@@ -10,12 +10,9 @@ XgPlayer 是一个 React 组件，用于在页面上嵌入一个视频播放器�
 
 [[toc]]
 
-## 属性
-XgPlayer 组件接受以下属性：
+## 参数
 
-1. src (必需): 视频源的 URL。这是一个字符串。
-
-2. options (可选): 一个对象，包含了 xgplayer 的配置选项。这些选项会被传递给 xgplayer 实例。查看 xgplayer 文档以了解所有可用的选项。
+<<< index.tsx::params:XgPlayerProps
 
 ## 使用方法
 ```jsx

@@ -16,3 +16,7 @@ import RCAutoScrollBox from '@/examples/RCAutoScrollBox.tsx'
 ::: details 点我查看代码
 <<< @/examples/RCAutoScrollBox.tsx
 :::
+
+## 参数
+
+<<< index.tsx::params:AutoScrollBoxProps

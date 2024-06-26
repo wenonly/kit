@@ -5,9 +5,9 @@ import React, { useEffect, useMemo, useRef } from "react";
 import styles from "./index.module.less";
 
 interface AutoScrollBoxProps {
-  className?: string;
-  style?: React.CSSProperties;
-  items?: React.ReactNode[];
+  className?: string; // className
+  style?: React.CSSProperties; // style
+  items?: React.ReactNode[]; // 需要滚动显示的列表
   scrollCount?: number; // 滚动展示数量，默认为1，超过一条才会滚动
 }
 

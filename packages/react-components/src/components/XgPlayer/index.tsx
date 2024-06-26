@@ -5,8 +5,8 @@ import Player from "xgplayer";
 import 'xgplayer/dist/index.min.css';
 
 export interface XgPlayerProps extends React.HTMLAttributes<HTMLDivElement> {
-  src: string;
-  options?: Partial<IPlayerOptions>;
+  src: string; // 视频源的 URL
+  options?: Partial<IPlayerOptions>; // 一个对象，包含了 xgplayer 的配置选项。这些选项会被传递给 xgplayer 实例。查看 xgplayer 文档以了解所有可用的选项。
 }
 
 const XgPlayer: React.FunctionComponent<XgPlayerProps> = ({
