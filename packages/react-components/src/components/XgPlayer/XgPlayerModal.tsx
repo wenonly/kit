@@ -3,7 +3,7 @@ import type { ModalProps } from "antd";
 import { Modal } from "antd";
 import React from "react";
 import XgPlayer from ".";
-import styles from "./index.less";
+import styles from "./index.module.less";
 
 interface IProps extends ModalProps {
   src: string;

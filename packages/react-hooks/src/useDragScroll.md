@@ -6,7 +6,7 @@ import RUseDragScroll from '@/examples/RUseDragScroll.tsx'
 
 使可滚动容器可拖拽滚动
 
-# 示例
+## 示例
 <br />
 <VueWrapper :component="RUseDragScroll" />
 

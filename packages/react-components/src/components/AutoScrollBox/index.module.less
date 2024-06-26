@@ -1,0 +1,31 @@
+.autoScroll {
+  position: relative;
+  height: 100%;
+
+  :global {
+    ::-webkit-scrollbar {
+      display: none !important;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      border-radius: 2px;
+      opacity: 0.5;
+    }
+  }
+
+  .wrap {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.scrollItem {
+  position: relative;
+}
+
+.scrollCenterContent {
+  position: relative;
+}
