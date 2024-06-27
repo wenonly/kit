@@ -1,0 +1,33 @@
+.slickText {
+  position: relative;
+  overflow: hidden;
+  :global {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.slickItem {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.slickItemTrans {
+  animation-name: move-up;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes move-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
