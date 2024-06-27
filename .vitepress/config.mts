@@ -42,6 +42,12 @@ const rewrites: RewritesConfigItem[] = [
     group: DocGroup.Utils,
     sidebarName: ":utilName",
   },
+  {
+    from: "packages/jsonp-data/README.md",
+    to: "utils/jsonp-data.md",
+    group: DocGroup.Utils,
+    sidebarName: "jsonp-data",
+  },
 ];
 
 const allMdFilePaths = findMarkdownFiles(join(__dirname, "../packages"));
