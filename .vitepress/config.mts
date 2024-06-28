@@ -7,7 +7,8 @@ import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
 enum DocGroup {
   ReactComponents = "react-components",
   ReactHooks = "react-hooks",
-  Utils = "utils",
+  Utils = "utils", // packages/utils
+  OtherUtils = "other-utils", // 不在packages/utils的一些包
 }
 
 interface RewritesConfigItem {
@@ -45,8 +46,14 @@ const rewrites: RewritesConfigItem[] = [
   {
     from: "packages/jsonp-data/README.md",
     to: "utils/jsonp-data.md",
-    group: DocGroup.Utils,
+    group: DocGroup.OtherUtils,
     sidebarName: "jsonp-data",
+  },
+  {
+    from: "packages/json2ts/README.md",
+    to: "utils/json2ts.md",
+    group: DocGroup.OtherUtils,
+    sidebarName: "json2ts",
   },
 ];
 
@@ -55,6 +62,7 @@ const allMdFilePaths = findMarkdownFiles(join(__dirname, "../packages"));
 const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
 const reactHooksSidebars = getSideBar(DocGroup.ReactHooks);
 const utilsSidebars = getSideBar(DocGroup.Utils);
+const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -74,7 +82,16 @@ export default defineConfig({
     sidebar: {
       "/react-components": reactComponentsSidebars,
       "/react-hooks": reactHooksSidebars,
-      "/utils": utilsSidebars,
+      "/utils": [
+        {
+          text: "工具函数",
+          items: utilsSidebars,
+        },
+        {
+          text: "其他工具",
+          items: otherUtilsSidebars,
+        },
+      ],
     },
 
     socialLinks: [
