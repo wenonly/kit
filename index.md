@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "Components And Utils"
-  text: "A doc web with components, utils and hooks"
-  tagline: Facilitate my development work
+  name: "Tool Kit"
+  text: "工具集合"
+  tagline: 开发记录
   # actions:
   #   - theme: brand
   #     text: React Components
@@ -15,11 +15,11 @@ hero:
   #     link: /api-examples
 
 features:
-  - title: components
+  - title: React 组件
     details: Contain react and vue components
-  - title: utils
-    details: common function tools
-  - title: hooks
-    details: Contain react and vue hooks
+  - title: utils 工具
+    details: Common function tools
+  - title: React hooks 工具
+    details: Contain react hooks
 ---
 
