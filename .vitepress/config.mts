@@ -66,7 +66,7 @@ const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Tool Kit",
+  title: "Kit",
   description: "A doc web with components, utils and hooks",
   srcDir: "./",
   outDir: "./docs",

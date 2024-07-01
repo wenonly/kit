@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "Tool Kit"
-  text: "工具集合"
-  tagline: 开发记录
+  name: "Kit"
+  text: "集合"
+  tagline: 整合blog和一些开发工具
   # actions:
   #   - theme: brand
   #     text: React Components
