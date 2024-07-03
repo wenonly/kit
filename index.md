@@ -16,10 +16,10 @@ hero:
 
 features:
   - title: React 组件
-    details: Contain react and vue components
+    details: 整合开发过程中常用的react组件
   - title: utils 工具
-    details: Common function tools
+    details: 整合开发过程中常用的函数工具
   - title: React hooks 工具
-    details: Contain react hooks
+    details: 整合开发过程中常用的react hooks
 ---
 

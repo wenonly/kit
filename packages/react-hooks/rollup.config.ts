@@ -19,7 +19,7 @@ const config = defineConfig({
     }),
     resolve(),
   ],
-  external: ["react", "ahooks", "@ant-design/icons"],
+  external: ["react", "ahooks", "@ant-design/icons", "axios"],
 });
 
 export default config;
