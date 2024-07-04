@@ -1,0 +1,9 @@
+[submodule "packages/html-viewer"]
+	path = packages/html-viewer
+	url = https://github.com/wenonly/html-viewer.git
+[submodule "packages/json2ts"]
+	path = packages/json2ts
+	url = https://github.com/wenonly/json2ts.git
+[submodule "packages/jsonp-data"]
+	path = packages/jsonp-data
+	url = https://github.com/wenonly/jsonp-data.git
