@@ -1,8 +1,7 @@
 ---
 title: js函数节流和防抖
 date: 2020-1-15 12:20:22
-categories:
-- 前端
+categories: 前端
 tags:
 - js
 ---

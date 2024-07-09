@@ -30,14 +30,14 @@ cover: cover.png # 这是文章封面
 需要给图片路径拼接文章路径`<%- url_for(post.path) %>`，修改主题内以下文件可修复问题：
 
 1. `/themes/hexo-theme-aomori/layout/_partial/post/gallery.ejs`
-```ejs
+```html
 <!-- 修改前 -->
 <img src="<%- url_for(photo) %>" itemprop="image">
 <!-- 修改后 -->
 <img src="<%- url_for(post.path) %><%- url_for(photo) %>" itemprop="image">
 ```
 2. `/themes/hexo-theme-aomori/layout/_partial/article-index.ejs`
-```ejs
+```html
 <!-- 修改前 -->
 <img
     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E"
@@ -58,7 +58,7 @@ cover: cover.png # 这是文章封面
 
 1. 将`favicon`配置在主题内`_config.yml`中。
 2. 修改`/Users/taowen/project/blog/themes/hexo-theme-aomori/layout/_partial/head.ejs`文件，将`config`改为`theme`。
-```ejs
+```html
 <!-- 修改前 -->
 <% if (config.favicon){ %>
 <link rel="icon" href="<%- config.favicon %>">

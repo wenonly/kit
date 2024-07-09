@@ -1,9 +1,7 @@
 ---
-title: 如何在react项目中使用redux?
+title: 如何在react项目中使用redux
 date: 2019-11-13 22:20:22
-categories:
-- 前端
-- react
+categories: 前端
 tags:
 - react
 - redux

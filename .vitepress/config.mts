@@ -1,80 +1,15 @@
-import { readdirSync, statSync } from "fs";
-import { extname, join } from "path";
-import { compile, match } from "path-to-regexp";
-import { DefaultTheme, defineConfig } from "vitepress";
+import { join } from "path";
+import { defineConfig } from "vitepress";
+import { blogsConfig, getBlogsSidebar } from "./configs/blogsConfig";
+import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
 import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
-
-enum DocGroup {
-  ReactComponents = "react-components",
-  ReactHooks = "react-hooks",
-  Utils = "utils", // packages/utils
-  OtherUtils = "other-utils", // 不在packages/utils的一些包
-  Blog = "blog",
-}
-
-interface RewritesConfigItem {
-  from: string;
-  to: string;
-  group?: DocGroup;
-  sidebarName?: string;
-}
-
-const rewrites: RewritesConfigItem[] = [
-  {
-    from: "packages/react-components/src/components/:componentName/README.md",
-    to: "react-components/:componentName.md",
-    group: DocGroup.ReactComponents,
-    sidebarName: ":componentName",
-  },
-  {
-    from: "packages/react-hooks/src/:hookName.md",
-    to: "react-hooks/:hookName.md",
-    group: DocGroup.ReactHooks,
-    sidebarName: ":hookName",
-  },
-  {
-    from: "packages/react-hooks/src/:hookName/README.md",
-    to: "react-hooks/:hookName.md",
-    group: DocGroup.ReactHooks,
-    sidebarName: ":hookName",
-  },
-  {
-    from: "packages/utils/src/:utilName.md",
-    to: "utils/:utilName.md",
-    group: DocGroup.Utils,
-    sidebarName: ":utilName",
-  },
-  {
-    from: "packages/jsonp-data/README.md",
-    to: "utils/jsonp-data.md",
-    group: DocGroup.OtherUtils,
-    sidebarName: "jsonp-data",
-  },
-  {
-    from: "packages/json2ts/README.md",
-    to: "utils/json2ts.md",
-    group: DocGroup.OtherUtils,
-    sidebarName: "json2ts",
-  },
-  {
-    from: "posts/:postName/README.md",
-    to: "posts/:postName.md",
-    group: DocGroup.Blog,
-    sidebarName: ":postName",
-  },
-];
-
-const allMdFilePaths = findMarkdownFiles(
-  join(__dirname, "../"),
-  [],
-  [/node_modules/]
-);
 
 const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
 const reactHooksSidebars = getSideBar(DocGroup.ReactHooks);
 const utilsSidebars = getSideBar(DocGroup.Utils);
 const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
-const blogsSidebars = getSideBar(DocGroup.Blog);
+
+const blogsSidebar = getBlogsSidebar();
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -85,40 +20,67 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: "Home", link: "/" },
-      { text: "博客", link: blogsSidebars[0]?.link ?? "/" },
+      { text: "博客", link: blogsSidebar?.[0]?.link ?? "/" },
       { text: "React组件", link: reactComponentsSidebars[0]?.link ?? "/" },
       { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
       { text: "工具函数", link: utilsSidebars[0]?.link ?? "/" },
     ],
-
     sidebar: {
-      "/posts": blogsSidebars,
+      "/posts": blogsSidebar,
       "/react-components": reactComponentsSidebars,
       "/react-hooks": reactHooksSidebars,
       "/utils": [
         {
           text: "工具函数",
           items: utilsSidebars,
+          collapsed: false,
         },
         {
           text: "其他工具",
           items: otherUtilsSidebars,
+          collapsed: false,
         },
       ],
     },
-
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/wenonly/components-and-utils",
+        link: "https://github.com/wenonly/kit",
       },
     ],
+    lastUpdated: {
+      text: "最后更新于",
+      formatOptions: {
+        dateStyle: "full",
+        timeStyle: "medium",
+      },
+    },
+    search:
+      process.env.NODE_ENV === "production"
+        ? {
+            provider: "local",
+          }
+        : undefined,
+    outline: {
+      label: "页面导航",
+      level: "deep",
+    },
+    docFooter: {
+      prev: "上一页",
+      next: "下一页",
+    },
+    langMenuLabel: "多语言",
+    returnToTopLabel: "回到顶部",
+    sidebarMenuLabel: "菜单",
+    darkModeSwitchLabel: "主题",
+    lightModeSwitchTitle: "切换到浅色模式",
+    darkModeSwitchTitle: "切换到深色模式",
   },
   rewrites: {
     // 主页
     "docs/index.md": "index.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
+    ...Object.fromEntries(blogsConfig.map((item) => [item.from, item.to])),
   },
   vite: {
     resolve: {
@@ -144,49 +106,3 @@ export default defineConfig({
     },
   },
 });
-
-// 获取目录下所有的md文件
-function findMarkdownFiles(
-  dir,
-  fileList: string[] = [],
-  excludes: RegExp[] = []
-) {
-  const files = readdirSync(dir);
-
-  files.forEach((file) => {
-    const filePath = join(dir, file);
-    if (excludes.some((ex) => ex.test(filePath))) {
-      return;
-    }
-    if (statSync(filePath).isDirectory()) {
-      findMarkdownFiles(filePath, fileList, excludes);
-    } else if (extname(file) === ".md") {
-      fileList.push(filePath);
-    }
-  });
-
-  return fileList;
-}
-
-// 获取sidebar配置
-function getSideBar(group: DocGroup) {
-  const configs = rewrites.filter((item) => item.group === group);
-  const sidebarList: DefaultTheme.SidebarItem[] = [];
-  allMdFilePaths.forEach((filePath) => {
-    for (const config of configs) {
-      const fn = match(`(.*)/${config.from}`, { decode: decodeURIComponent });
-      const fromRes = fn(filePath);
-      if (fromRes && config.sidebarName) {
-        const fromParams = fromRes.params;
-        const toPath = compile(config.to);
-        const toResPath = toPath(fromParams);
-        sidebarList.push({
-          text: compile(config.sidebarName)(fromParams),
-          link: toResPath.replace(/\.md$/, ""),
-        });
-        break;
-      }
-    }
-  });
-  return sidebarList;
-}

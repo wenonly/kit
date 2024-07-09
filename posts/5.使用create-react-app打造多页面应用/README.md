@@ -1,9 +1,7 @@
 ---
 title: 使用create-react-app打造多页面应用
 date: 2019-12-14 12:20:22
-categories:
-- 前端
-- react
+categories: 前端
 tags:
 - react
 ---
@@ -266,8 +264,10 @@ if (!checkRequiredFiles([paths.appHtml, ...paths.appIndexJs.map(e => e.path)])) 
 1. 添加页面的方法
 如果需要添加页面，只需要复制page1和page2的目录结构，放在src目录下，注意不能同名。
 2. 访问路径
+```
 http://localhost:3000/page1.html
 http://localhost:3000/page2.html
+```
 3. 项目地址
 当前配置我已经添加到了github，如果有相关配置没有配置好，可以直接下载使用
 [https://github.com/iwowen/react-multi-template](https://github.com/iwowen/react-multi-template)

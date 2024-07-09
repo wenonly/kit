@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "vitepress dev",
-    "build": "pnpm -r run build && vitepress build",
+    "build:docs": "vitepress build",
+    "build": "pnpm -r run build && pnpm run build:docs",
     "preview": "vitepress preview"
   },
   "keywords": [],
@@ -27,7 +28,9 @@
     "@changesets/cli": "^2.27.1",
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.54",
+    "dayjs": "^1.11.11",
     "fs-extra": "^11.2.0",
+    "gray-matter": "^4.0.3",
     "markdown-it": "^14.1.0",
     "path-to-regexp": "^6.2.1",
     "ts-morph": "^23.0.0",
