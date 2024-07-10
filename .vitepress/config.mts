@@ -1,6 +1,6 @@
 import { join } from "path";
 import { defineConfig } from "vitepress";
-import { blogsConfig, getBlogsSidebar } from "./configs/blogsConfig";
+import { blogNav, blogRewrites, blogSideBar } from "./configs/blog";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
 import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
 
@@ -8,8 +8,6 @@ const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
 const reactHooksSidebars = getSideBar(DocGroup.ReactHooks);
 const utilsSidebars = getSideBar(DocGroup.Utils);
 const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
-
-const blogsSidebar = getBlogsSidebar();
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -20,13 +18,13 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: "博客", link: blogsSidebar?.[0]?.link ?? "/" },
+      { text: "博客", items: blogNav },
       { text: "React组件", link: reactComponentsSidebars[0]?.link ?? "/" },
       { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
       { text: "工具函数", link: utilsSidebars[0]?.link ?? "/" },
     ],
     sidebar: {
-      "/posts": blogsSidebar,
+      ...blogSideBar,
       "/react-components": reactComponentsSidebars,
       "/react-hooks": reactHooksSidebars,
       "/utils": [
@@ -80,7 +78,7 @@ export default defineConfig({
     // 主页
     "docs/index.md": "index.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
-    ...Object.fromEntries(blogsConfig.map((item) => [item.from, item.to])),
+    ...blogRewrites,
   },
   vite: {
     resolve: {
