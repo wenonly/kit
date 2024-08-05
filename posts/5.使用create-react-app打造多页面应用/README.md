@@ -10,13 +10,13 @@ tags:
 
 <!-- more -->
 
-# 使用工具版本
+## 使用工具版本
 nodejs --> v8.16.1
 npm --> 6.11.3
 yarn --> 1.19.1
 create-react-app --> 3.3.0
 
-# 初始化项目
+## 初始化项目
 ```
 create-react-app react-multi-page
 ```
@@ -62,7 +62,7 @@ export default App;
     —— 目录结构如下：
 ![目录结构](./1.png)
 
-# 弹出webpack配置
+## 弹出webpack配置
 
 先git提交代码，不然没法弹出webpack配置
 ```
@@ -72,7 +72,7 @@ yarn eject
 ```
 当出现`Are you sure you want to eject? This action is permanent?`时输入`y`。
 
-# 读取src下有的目录名称
+## 读取src下有的目录名称
 进入`config/paths.js`中配置`appIndexJs`路径，默认是路径字符串，现在获取几个页面的字符串列表，将会配置在入口地址。
 在`module.exports`之前添加如下代码
 ```
@@ -127,7 +127,7 @@ module.exports = {
 };
 ```
 上面有`+`号的部分为更改的内容。
-# 配置webpack入口entry
+## 配置webpack入口entry
 在`return`配置之前加入如下代码。
 ```
 // 配置入口
@@ -141,7 +141,7 @@ module.exports = {
   });
 ```
 然后更改`return`中`entry`的值为`entry`。
-# 更改出口文件的配置ouput
+## 更改出口文件的配置ouput
 ```
 // 没更改之前的
 // filename: isEnvProduction
@@ -161,7 +161,7 @@ chunkFilename: isEnvProduction
 ? 'static/js/[name]/[name].[contenthash:8].chunk.js'
 : isEnvDevelopment && 'static/js/[name]/[name].chunk.js',
 ```
-# 更改HtmlWebpackPlugin配置
+## 更改HtmlWebpackPlugin配置
 
 HtmlWebpackPlugin
 这个plugin曝光率很高，他主要有两个作用
@@ -202,7 +202,7 @@ HtmlWebpackPlugin
 }),
 ```
 上面的代码是循环`entries`设置`HtmlWebpackPlugin`。
-# 注释ManifestPlugin部分代码
+## 注释ManifestPlugin部分代码
 ```
 // new ManifestPlugin({
 //   fileName: 'asset-manifest.json',
@@ -224,7 +224,7 @@ HtmlWebpackPlugin
 // }),
 ```
 这是为了生成`manifest.json`文件的配置，这里不需要。
-# 更改校验文件是否存在的代码
+## 更改校验文件是否存在的代码
 修改`scripts/build.js`和`scripts/start.js`文件的校验代码
 ```
 // 原来的代码
@@ -238,7 +238,7 @@ if (!checkRequiredFiles([paths.appHtml, ...paths.appIndexJs.map(e => e.path)])) 
 }
 ```
 当然这串代码也可以注释掉，运行时不需要校验。
-# 删除public下多余文件
+## 删除public下多余文件
 现在项目已经能够正常运行，但是public下还有多余的代码可以删除。
 其中只需要留下`index.html`作为模板文件，并进行修改。
 ```
@@ -260,7 +260,7 @@ if (!checkRequiredFiles([paths.appHtml, ...paths.appIndexJs.map(e => e.path)])) 
   </body>
 </html>
 ```
-# 总结
+## 总结
 1. 添加页面的方法
 如果需要添加页面，只需要复制page1和page2的目录结构，放在src目录下，注意不能同名。
 2. 访问路径

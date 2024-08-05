@@ -2,13 +2,14 @@
 import { VueWrapper } from "@wenonly/react-in-vue";
 import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
+import MyLayout from "./MyLayout.vue";
 import { h } from "vue";
 import "./style.css";
 
 export default {
   extends: DefaultTheme,
   Layout: () => {
-    return h(DefaultTheme.Layout, null, {
+    return h(MyLayout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
     });
   },

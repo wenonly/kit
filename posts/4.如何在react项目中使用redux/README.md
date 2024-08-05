@@ -11,7 +11,7 @@ tags:
 
 <!-- more -->
 
-# 初始化react项目
+## 初始化react项目
 
 首先需要初始化`react`项目，在安装了`nodejs`环境的情况下，运行下面了命令安装`create-react-app`工具。
 ```
@@ -51,7 +51,7 @@ export default App;
 ```
 其中`index.js`是项目的入口文件，而`App.js`是新增的一个组件。
 
-# 新建一个组件
+## 新建一个组件
 
 这里新建一个组件，使用span标签显示一个数字，使用button按钮来加数字。
 ```
@@ -76,7 +76,7 @@ export default Page;
 ```
 现在页面只有样式，没有交互，之后会添加交互。
 
-# 创建redux仓库
+## 创建redux仓库
 
 首先安装redux
 ```
@@ -103,7 +103,7 @@ import reducer from './reducer'
 const store = createStore(reducer);
 export default store;
 ```
-# 初始页面数据，在reducer中管理默认数据
+## 初始页面数据，在reducer中管理默认数据
 
 首先在`reducer`中初始`redux`数据。进入`reducer`，在`defaultState`中加入变量`num`。
 ```
@@ -115,7 +115,7 @@ export default (state = defaultState, action) => {
 }
 ```
 
-# 在组件中调用redux的数据
+## 在组件中调用redux的数据
 
 进入`Page`组件，先引入`redux`。
 ```
@@ -149,7 +149,7 @@ export default Page;
 ```
 现在`redux`中存的值就能显示到页面了。
 
-# 修改redux中的数据
+## 修改redux中的数据
 
 先为button按钮添加一个点击事件，让其出发`addNum`函数
 ```
@@ -177,7 +177,7 @@ export default (state = defaultState, action) => {
 ```
 意思是当`type`是`add_num`时，执行+1的操作
 
-# store的自动推送策略
+## store的自动推送策略
 
 通过上面的代码，每次点击+之后store中的值已经改变，但没有更新在组件上，于是需要在值变动时自动更新组件的state
 
@@ -196,7 +196,7 @@ storeChange() {
 }
 ```
 
-# 统一管理actionType
+## 统一管理actionType
 
 在写`redux action`时会产生很多的`action Types`，项目小的时候没什么，但当项目很大的时候就不好管理这些`action Types`，比如，在组件中改动了`type`，那么也需要在`reducer`中去找到这个`type`并修改。为了统一管理`action Types`，创建一个单独的文件。
 在`store`中创建`actionTypes.js`

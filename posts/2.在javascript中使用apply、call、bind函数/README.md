@@ -9,7 +9,7 @@ tags:
 每个`javascript`函数都有两个非继承的方法 `apply()`、 `call()`，这两个方法的用途相同，都是在特定的作用域中调用函数，直接一点的说法就是改变函数内部的`this`指针。
 <!-- more -->
 
-# this指针介绍
+## this指针介绍
 `this`表示当前对象的一个引用。
 
 单独使用`this`时，`this`默认指向全局对象`window`。（当前对象是`window`对象）
@@ -32,7 +32,7 @@ var obj = {
 }
 ```
 
-# 使用apply()方法
+## 使用apply()方法
 `apply()`方法接受两个参数，第一个参数是在其中运行函数的作用域，第二个参数是是一个参数数组，用于向函数中传递参数。
 ```javascript
 var num = 10
@@ -65,12 +65,12 @@ myObj.myFun2.apply(window, [1, 2])
 最终打印的结果是`13`，说明这里的`this.num`是`10`。
 上面的代码`apply`函数传参使用参数数组，也就是`[1, 2]`的形式，分别代表第一第二个参数，如果函数不需要传参数，可以不传`apply`的第二个参数。
 
-# 使用call()方法，它与apply()有什么不同？
+## 使用call()方法，它与apply()有什么不同？
 `call`函数的使用方法基本上和`apply`一样，`只是传递参数的方式不一样`，`apply`通过参数数组的形式传参，而`call`需要把参数一个个都分别传进去。例如将上面的例子改成使用`call`函数，如下：
 ```javascript
 myFun1.call(myObj, 1, 2)
 ```
-# 使用bind()函数绑定this指针
+## 使用bind()函数绑定this指针
 `bind`方法同样用于改变`this`指针，但和`apply`、`call`方法不同。`apply`和`call`在调用函数后会立即执行，不会保存`this`改变后的状态。而`bind`在调用函数后不会立即执行，在改变`this`指针后返回一个新的函数，供以后使用。
 ```javascript
 myFun1.apply(myObj, [1, 2]) // 23
