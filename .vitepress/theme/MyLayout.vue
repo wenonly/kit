@@ -3,7 +3,8 @@
 import DefaultTheme from "vitepress/theme";
 import { useData } from "vitepress";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
-import WordCloud from './components/WordCloud.vue'
+import WordCloud from "./components/WordCloud.vue";
+import HomeFeatures from "./components/HomeFeatures.vue";
 
 const { Layout } = DefaultTheme;
 
@@ -17,6 +18,7 @@ const { frontmatter } = useData();
       <article-meta-data />
     </template>
     <template #home-features-after>
+      <home-features />
       <word-cloud />
     </template>
   </Layout>
