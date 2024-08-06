@@ -5,9 +5,22 @@
 <script lang="ts" setup>
 import { WordCloud } from "@antv/g2plot";
 import blogConfig from "config:blog";
-import { computed, defineEmits, onBeforeUnmount, onMounted } from "vue";
+import {
+  computed,
+  defineEmits,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  defineProps,
+} from "vue";
 
-const onClick = defineEmits<(tag: string) => void>();
+const props = defineProps({
+  activeTag: {
+    type: String,
+  },
+});
+const activeTag = ref();
+const onSelect = defineEmits<(tag: string) => void>();
 
 const tags = computed(() => {
   const tgs = blogConfig.map((item) => item.tags ?? []).flat();
@@ -25,11 +38,22 @@ const tags = computed(() => {
 // 渲染WordCloud
 let wordCloud: WordCloud;
 onMounted(() => {
+  activeTag.value = props.activeTag;
   wordCloud = new WordCloud("wordcloud-container", {
     data: tags.value,
     wordField: "name",
     weightField: "value",
     colorField: "name",
+    interactions: [
+      {
+        enable: true,
+        type: "element-active",
+      },
+      {
+        enable: true,
+        type: "element-selected",
+      },
+    ],
     wordStyle: {
       fontFamily: "Verdana",
       fontSize: [18, 45],
@@ -41,26 +65,55 @@ onMounted(() => {
     random: () => (Math.random() * 5 + 2.5) / 10,
   });
   wordCloud.render();
+  let previousSelectedElement:
+    | (typeof chart.geometries)[0]["elements"][0]
+    | undefined;
+  const chart = wordCloud.chart;
 
-  // 添加 hover 事件
+  const findTagElementFromChart = (text: string) => {
+    return chart.geometries
+      .flatMap((geom) => geom.elements)
+      .find((element) => element.getData().text === text);
+  };
+
+  // 如果初始化参数中包含activeTag，则选中
+  if (activeTag.value) {
+    const element = findTagElementFromChart(activeTag.value);
+    if (element) {
+      element.setState("selected", true);
+      previousSelectedElement = element;
+    }
+  }
+
   wordCloud.on("element:mouseenter", ({ gEvent }) => {
-    gEvent.currentTarget.attr(
-      "fontSize",
-      gEvent.currentTarget.attr("fontSize") + 5
-    );
     gEvent.currentTarget.attr("cursor", "pointer");
   });
 
-  wordCloud.on("element:mouseleave", ({ gEvent }) => {
-    gEvent.currentTarget.attr(
-      "fontSize",
-      gEvent.currentTarget.attr("fontSize") - 5
-    );
-    gEvent.currentTarget.attr("fontWeight", "normal");
-  });
+  // 电机的时候选中新的
+  wordCloud.on("element:click", (event) => {
+    const clickTag = event.gEvent.currentTarget.attr("text");
+    const currentElement = findTagElementFromChart(clickTag);
+    // 执行点击
+    onSelect?.(clickTag);
 
-  wordCloud.on("element:click", ({ gEvent }) => {
-    onClick?.(gEvent.currentTarget.attr("text"));
+    // 取消上一个选中的元素的选中状态
+    if (previousSelectedElement && previousSelectedElement !== currentElement) {
+      chart.geometries
+        .flatMap((geom) => geom.elements)
+        .forEach((element) => {
+          if (
+            element.getData().name === previousSelectedElement?.getData().name
+          ) {
+            element.setState("selected", false);
+          }
+        });
+    }
+
+    // 设置当前元素为选中状态
+    currentElement?.setState("selected", true);
+
+    // 记录当前选中的元素
+    previousSelectedElement = currentElement;
   });
 });
 
