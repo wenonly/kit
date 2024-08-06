@@ -82,9 +82,7 @@ const data = {
               v-for="(category, index) in [frontmatter.categories]"
               :key="index"
             >
-              <a href="javascript:void(0);" target="_self" :title="category">{{
-                category
-              }}</a>
+              <a target="_self" :title="category">{{ category }}</a>
               <!-- <span v-if="index != categories.length - 1">, </span> -->
             </span>
           </span>
@@ -104,13 +102,7 @@ const data = {
           </span>
           <span class="meta-content">
             <span v-for="(tag, index) in frontmatter.tags" :key="index">
-              <a
-                href="javascript:void(0);"
-                @click="goToLink('/archives', 'tag', tag)"
-                target="_self"
-                :title="tag"
-                >{{ tag }}</a
-              >
+              <a target="_self" :title="tag">{{ tag }}</a>
               <span v-if="index != frontmatter.tags.length - 1">, </span>
             </span>
           </span>
@@ -166,7 +158,7 @@ meta-content {
   font-weight: 400;
   color: var(--vp-c-text-2);
 }
-.meta-content a:hover {
+/* .meta-content a:hover {
   color: var(--vp-c-brand);
-}
+} */
 </style>

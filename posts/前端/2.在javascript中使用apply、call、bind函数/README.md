@@ -1,7 +1,7 @@
 ---
 title: 在javascript中使用apply、call、bind函数
 date: 2019-11-08 23:55:22
-categories: 前端
+categories: 前端笔记
 tags:
 - js
 - 函数

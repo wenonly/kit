@@ -1,7 +1,7 @@
 ---
 title: hexo使用Aomori主题遇到问题的解决办法
 date: 2021-11-21 14:39:23
-categories: 其它
+categories: 杂谈日记
 tags:
 - hexo
 - 主题
@@ -17,7 +17,7 @@ tags:
 ---
 title: hexo使用Aomori主题遇到问题的解决办法
 date: 2021-11-21 14:39:23
-categories: 其它
+categories: 杂谈日记
 tags:
 - hexo
 - 主题

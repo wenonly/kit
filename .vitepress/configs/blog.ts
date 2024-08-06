@@ -16,7 +16,7 @@ interface BlogRewritesConfigItem extends RewritesConfigItem {
 }
 
 const config: RewritesConfigItem = {
-  from: "posts/:postName/README.md",
+  from: "posts{/:folder}*/:postName/README.md",
   to: "posts/:categories/:year/:title.md",
   sidebarName: ":title",
 };

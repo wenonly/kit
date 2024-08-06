@@ -1,6 +1,6 @@
 ---
 title: 如何使用docker安装jenkins
-categories: 其它
+categories: 杂谈日记
 date: 2021-11-27 16:39:53
 tags:
 - docker

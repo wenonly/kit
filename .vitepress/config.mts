@@ -11,7 +11,7 @@ const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Kit",
+  title: "wenonly的知识库",
   description: "A doc web with components, utils and hooks",
   srcDir: "./",
   outDir: "./docs",
@@ -19,9 +19,14 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "博客", items: blogNav },
-      { text: "React组件", link: reactComponentsSidebars[0]?.link ?? "/" },
-      { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
-      { text: "工具函数", link: utilsSidebars[0]?.link ?? "/" },
+      {
+        text: "库",
+        items: [
+          { text: "React组件", link: reactComponentsSidebars[0]?.link ?? "/" },
+          { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
+          { text: "工具函数", link: utilsSidebars[0]?.link ?? "/" },
+        ],
+      },
     ],
     sidebar: {
       ...blogSideBar,

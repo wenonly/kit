@@ -1,7 +1,7 @@
 ---
 title: 使用kodexplorer可道云作为hexo静态网站的后台
 date: 2019-11-11 17:34:22
-categories: 其它
+categories: 杂谈日记
 tags:
 - kodexplorer
 - hexo

@@ -1,6 +1,6 @@
 ---
 title: 使用rollup和typescript搭建自己的函数库
-categories: 前端
+categories: 前端笔记
 date: 2020-12-02 15:15:59
 tags:
 - npm

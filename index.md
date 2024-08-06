@@ -3,12 +3,12 @@
 layout: home
 
 hero:
-  name: "Kit"
-  text: "集合"
-  tagline: 整合blog和一些开发工具
+  name: "wenonly的知识库"
+  text: "专注 & 洞察 & 分享"
+  tagline: 纪录碎片化技术知识，纪录自定义组件、库使用文档。
   # actions:
   #   - theme: brand
-  #     text: React Components
+  #     text: 快速开始
   #     link: /react-components/
   #   - theme: alt
   #     text: API Examples
@@ -22,4 +22,3 @@ features:
   - title: React hooks 工具
     details: 整合开发过程中常用的react hooks
 ---
-

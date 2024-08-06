@@ -1,7 +1,7 @@
 ---
 title: 使用create-react-app打造多页面应用
 date: 2019-12-14 12:20:22
-categories: 前端
+categories: 前端笔记
 tags:
 - react
 ---

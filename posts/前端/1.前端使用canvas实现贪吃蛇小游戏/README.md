@@ -1,7 +1,7 @@
 ---
 title: 前端使用canvas实现贪吃蛇小游戏
 date: 2019-10-02 22:59:23
-categories: 前端
+categories: 前端笔记
 tags:
   - canvas
   - js
