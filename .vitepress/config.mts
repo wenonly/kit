@@ -21,6 +21,7 @@ export default defineConfig({
     nav: [
       { text: "我的分类", items: blogNav },
       { text: "我的归档", link: '/archive' },
+      { text: "我的标签", link: '/tag' },
       {
         text: "自定义库",
         items: [
@@ -84,6 +85,7 @@ export default defineConfig({
   rewrites: {
     // 主页
     "pages/index.md": "index.md",
+    "pages/tag.md": "tag.md",
     "pages/archive.md": "archive.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
     ...blogRewrites,

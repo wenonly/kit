@@ -1,5 +1,5 @@
 <!--.vitepress/theme/MyLayout.vue-->
-<script setup>
+<script lang="ts" setup>
 import DefaultTheme from "vitepress/theme";
 import { useData } from "vitepress";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
@@ -9,6 +9,10 @@ import HomeFeatures from "./components/HomeFeatures.vue";
 const { Layout } = DefaultTheme;
 
 const { frontmatter } = useData();
+
+const onTagClick = (tag: string) => {
+  location.href = `/tag?tag=${tag}`;
+};
 </script>
 
 <template>
@@ -19,7 +23,7 @@ const { frontmatter } = useData();
     </template>
     <template #home-features-after>
       <home-features />
-      <word-cloud />
+      <word-cloud @onSelect="onTagClick" />
     </template>
   </Layout>
 </template>

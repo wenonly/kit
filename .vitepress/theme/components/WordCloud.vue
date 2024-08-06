@@ -15,12 +15,12 @@ import {
 } from "vue";
 
 const props = defineProps({
-  activeTag: {
+  defaultActiveTag: {
     type: String,
   },
 });
 const activeTag = ref();
-const onSelect = defineEmits<(tag: string) => void>();
+const emit = defineEmits(["onSelect"]);
 
 const tags = computed(() => {
   const tgs = blogConfig.map((item) => item.tags ?? []).flat();
@@ -38,7 +38,7 @@ const tags = computed(() => {
 // 渲染WordCloud
 let wordCloud: WordCloud;
 onMounted(() => {
-  activeTag.value = props.activeTag;
+  activeTag.value = props.defaultActiveTag;
   wordCloud = new WordCloud("wordcloud-container", {
     data: tags.value,
     wordField: "name",
@@ -94,7 +94,7 @@ onMounted(() => {
     const clickTag = event.gEvent.currentTarget.attr("text");
     const currentElement = findTagElementFromChart(clickTag);
     // 执行点击
-    onSelect?.(clickTag);
+    emit("onSelect", clickTag);
 
     // 取消上一个选中的元素的选中状态
     if (previousSelectedElement && previousSelectedElement !== currentElement) {
