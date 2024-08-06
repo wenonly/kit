@@ -5,7 +5,9 @@
 <script lang="ts" setup>
 import { WordCloud } from "@antv/g2plot";
 import blogConfig from "config:blog";
-import { computed, onBeforeUnmount, onMounted } from "vue";
+import { computed, defineEmits, onBeforeUnmount, onMounted } from "vue";
+
+const onClick = defineEmits<(tag: string) => void>();
 
 const tags = computed(() => {
   const tgs = blogConfig.map((item) => item.tags ?? []).flat();
@@ -21,7 +23,7 @@ const tags = computed(() => {
 });
 
 // 渲染WordCloud
-let wordCloud;
+let wordCloud: WordCloud;
 onMounted(() => {
   wordCloud = new WordCloud("wordcloud-container", {
     data: tags.value,
@@ -39,6 +41,27 @@ onMounted(() => {
     random: () => (Math.random() * 5 + 2.5) / 10,
   });
   wordCloud.render();
+
+  // 添加 hover 事件
+  wordCloud.on("element:mouseenter", ({ gEvent }) => {
+    gEvent.currentTarget.attr(
+      "fontSize",
+      gEvent.currentTarget.attr("fontSize") + 5
+    );
+    gEvent.currentTarget.attr("cursor", "pointer");
+  });
+
+  wordCloud.on("element:mouseleave", ({ gEvent }) => {
+    gEvent.currentTarget.attr(
+      "fontSize",
+      gEvent.currentTarget.attr("fontSize") - 5
+    );
+    gEvent.currentTarget.attr("fontWeight", "normal");
+  });
+
+  wordCloud.on("element:click", ({ gEvent }) => {
+    onClick?.(gEvent.currentTarget.attr("text"));
+  });
 });
 
 onBeforeUnmount(() => {
