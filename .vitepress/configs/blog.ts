@@ -124,7 +124,7 @@ function getBlogNav(
   return nav;
 }
 
-const blogConfig = generateBlogConfig();
+export const blogConfig = generateBlogConfig();
 const groupMap = getSideBarGroupByCategoriesAndMonth(blogConfig);
 export const blogRewrites = Object.fromEntries(
   blogConfig.map((item) => [item.from, item.to])

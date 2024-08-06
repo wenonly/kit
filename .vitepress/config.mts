@@ -2,6 +2,7 @@ import { join } from "path";
 import { defineConfig } from "vitepress";
 import { blogNav, blogRewrites, blogSideBar } from "./configs/blog";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
+import resolveConfigVitePlugin from "./plugins/resolveConfigVitePlugin";
 import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
 
 const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
@@ -18,9 +19,10 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: "博客", items: blogNav },
+      { text: "我的分类", items: blogNav },
+      { text: "我的归档", link: '/archive' },
       {
-        text: "库",
+        text: "自定义库",
         items: [
           { text: "React组件", link: reactComponentsSidebars[0]?.link ?? "/" },
           { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
@@ -81,11 +83,13 @@ export default defineConfig({
   },
   rewrites: {
     // 主页
-    "docs/index.md": "index.md",
+    "pages/index.md": "index.md",
+    "pages/archive.md": "archive.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
     ...blogRewrites,
   },
   vite: {
+    plugins: [resolveConfigVitePlugin()],
     resolve: {
       alias: {
         "@": join(__dirname, "../"),

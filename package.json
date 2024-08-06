@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@antv/g2plot": "^2.4.32",
     "@wenonly/react-components": "workspace:^",
     "@wenonly/react-hooks": "workspace:^",
     "@wenonly/react-in-vue": "workspace:^",
