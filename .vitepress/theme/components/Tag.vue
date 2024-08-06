@@ -43,6 +43,7 @@ const articleData: ThemeType.ArticleData[] = blogConfig.map((article) => {
 });
 
 const articleFilterByTag = computed(() => {
+  if(!currentTag.value) return articleData;
   return articleData.filter((item) => item.tags?.includes(currentTag.value));
 });
 
