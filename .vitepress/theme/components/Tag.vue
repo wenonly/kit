@@ -43,15 +43,19 @@ const articleData: ThemeType.ArticleData[] = blogConfig.map((article) => {
 });
 
 const articleFilterByTag = computed(() => {
-  if(!currentTag.value) return articleData;
+  if (!currentTag.value) return articleData;
   return articleData.filter((item) => item.tags?.includes(currentTag.value));
 });
 
-const onChange = (tag: string) => {
+const onChange = (tag?: string) => {
   currentTag.value = tag;
   // 只改url，但是不刷新页面
   const url = new URL(window.location.href);
-  url.searchParams.set("tag", tag);
+  if (tag) {
+    url.searchParams.set("tag", tag);
+  } else {
+    url.searchParams.delete("tag");
+  }
   window.history.replaceState(null, "", url);
 };
 </script>

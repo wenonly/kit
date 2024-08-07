@@ -93,8 +93,6 @@ onMounted(() => {
   wordCloud.on("element:click", (event: any) => {
     const clickTag = event.gEvent.currentTarget.attr("text");
     const currentElement = findTagElementFromChart(clickTag);
-    // 执行点击
-    emit("onSelect", clickTag);
 
     // 取消上一个选中的元素的选中状态
     if (previousSelectedElement && previousSelectedElement !== currentElement) {
@@ -109,11 +107,20 @@ onMounted(() => {
         });
     }
 
-    // 设置当前元素为选中状态
-    currentElement?.setState("selected", true);
-
-    // 记录当前选中的元素
-    previousSelectedElement = currentElement;
+    if (previousSelectedElement && previousSelectedElement === currentElement) {
+      // 再次点击取消选中
+      currentElement?.setState("selected", false);
+      previousSelectedElement = undefined;
+      // 执行点击
+      emit("onSelect", undefined);
+    } else {
+      // 设置当前元素为选中状态
+      currentElement?.setState("selected", true);
+      // 记录当前选中的元素
+      previousSelectedElement = currentElement;
+      // 执行点击
+      emit("onSelect", clickTag);
+    }
   });
 });
 
