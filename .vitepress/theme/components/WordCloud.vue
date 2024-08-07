@@ -85,12 +85,12 @@ onMounted(() => {
     }
   }
 
-  wordCloud.on("element:mouseenter", ({ gEvent }) => {
+  wordCloud.on("element:mouseenter", ({ gEvent }: any) => {
     gEvent.currentTarget.attr("cursor", "pointer");
   });
 
-  // 电机的时候选中新的
-  wordCloud.on("element:click", (event) => {
+  // 点击的时候选中新的
+  wordCloud.on("element:click", (event: any) => {
     const clickTag = event.gEvent.currentTarget.attr("text");
     const currentElement = findTagElementFromChart(clickTag);
     // 执行点击

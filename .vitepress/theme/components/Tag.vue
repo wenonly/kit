@@ -22,7 +22,7 @@
 import blogConfig from "config:blog";
 import qs from "query-string";
 import { computed, ref } from "vue";
-import ArticleMetadata from "./ArticleMetadata.vue";
+import ArticleMetadata from "./ArticleMetaData.vue";
 import WordCloud from "./WordCloud.vue";
 
 const currentTag = ref();
