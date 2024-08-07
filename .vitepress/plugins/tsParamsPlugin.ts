@@ -1,7 +1,7 @@
 import fs from "fs-extra";
-import type MarkdownIt from "markdown-it";
 import path from "path";
 import { InterfaceDeclaration, Project } from "ts-morph";
+import { MarkdownRenderer } from "vitepress";
 
 function escapeHtml(str: string): string {
   return str
@@ -81,7 +81,7 @@ function paramsToTableHtml(data: TsParamsItem[]) {
  * 写法：<<< @/path/to/file.ts::params:UseTreeLoadOptions
  * 其中 UseTreeLoadOptions 是需要展示为参数的interface
  */
-export const tsParamsPlugin = (md: MarkdownIt, srcDir: string) => {
+export const tsParamsPlugin = (md: MarkdownRenderer, srcDir: string) => {
   const fence = md.renderer.rules.fence!;
 
   md.renderer.rules.fence = (...args) => {

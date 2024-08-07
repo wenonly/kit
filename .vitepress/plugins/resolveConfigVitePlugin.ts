@@ -3,17 +3,17 @@ import { blogConfig } from "../configs/blog";
 export default function resolveConfigVitePlugin() {
   return {
     name: "vite-plugin-config-data",
-    resolveId(source) {
+    resolveId(source: string) {
       if (source.startsWith("config:")) {
         return source;
       }
       return null;
     },
-    async load(id) {
+    async load(id: string) {
       if (id === "config:blog") {
         try {
           return `export default ${JSON.stringify(blogConfig)};`;
-        } catch (err) {
+        } catch (err: any) {
           throw new Error(`Failed: ${err.message}`);
         }
       }

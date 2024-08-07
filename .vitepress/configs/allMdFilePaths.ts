@@ -3,7 +3,7 @@ import { extname, join } from "path";
 
 // 获取目录下所有的md文件
 function findMarkdownFiles(
-  dir,
+  dir: string,
   fileList: string[] = [],
   excludes: RegExp[] = []
 ) {
