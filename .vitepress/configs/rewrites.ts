@@ -69,7 +69,7 @@ export function getSideBar(group: DocGroup) {
         const toResPath = toPath(fromParams);
         sidebarList.push({
           text: compile(config.sidebarName)(fromParams),
-          link: toResPath.replace(/\.md$/, ""),
+          link: "/" + toResPath.replace(/\.md$/, ""),
         });
         break;
       }

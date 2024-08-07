@@ -82,7 +82,7 @@ function getSideBarGroupByCategoriesAndMonth(
       if (!sidebarMap[categories][year]) sidebarMap[categories][year] = [];
       sidebarMap[categories][year].push({
         text: sidebarName,
-        link: item.to.replace(/\.md$/, ""),
+        link: "/" + item.to.replace(/\.md$/, ""),
       });
     });
   return sidebarMap;
