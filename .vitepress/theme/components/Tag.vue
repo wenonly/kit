@@ -60,6 +60,7 @@ const onChange = (tag: string) => {
 .main-container-tag {
   max-width: 1152px;
   margin: 0 auto;
+  margin-bottom: 20px;
 }
 .tag-list {
   display: flex;
