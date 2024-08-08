@@ -4,3 +4,4 @@ node_modules
 **/dist
 .vitepress/cache
 .vitepress/config.mts.*
+**/.temp

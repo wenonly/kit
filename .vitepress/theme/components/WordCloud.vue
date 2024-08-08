@@ -3,16 +3,16 @@
 </template>
 
 <script lang="ts" setup>
-import { WordCloud } from "@antv/g2plot";
 import blogConfig from "config:blog";
 import {
   computed,
-  defineEmits,
   onBeforeUnmount,
   onMounted,
   ref,
-  defineProps,
+  watch,
+  watchEffect,
 } from "vue";
+import WordCloud from "wordcloud";
 
 const props = defineProps({
   defaultActiveTag: {
@@ -35,96 +35,93 @@ const tags = computed(() => {
   return Object.entries(tagsMap).map(([name, value]) => ({ name, value }));
 });
 
-// 渲染WordCloud
-let wordCloud: WordCloud;
+// 创建一个简单的哈希函数
+function hashCode(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash |= 0; // 转换为32位整数
+  }
+  return hash;
+}
+
+// 将哈希值映射到HSL颜色
+function hashToHSL(hash: number) {
+  const hue = Math.abs(hash) % 360; // 确保色相在0到360之间
+  const lightness = 20 + (Math.abs(hash) % 30); // 亮度范围在40%到69%之间
+  return `hsl(${hue}, 100%, ${lightness}%)`;
+}
+
+const renderCloud = () => {
+  WordCloud.stop();
+  const container = document.getElementById("wordcloud-container");
+  if (container) {
+    WordCloud(container, {
+      list: tags.value.map((item) => [
+        item.name,
+        Math.max(Math.min(item.value, 10), 1) + 20,
+      ]), // (1~10) + 20
+      rotateRatio: 0,
+      gridSize: 31,
+      shrinkToFit: true,
+      shuffle: false,
+      classes: (word) => {
+        if (!activeTag.value) {
+          return "cloud-tag-all";
+        }
+        if (word === activeTag.value) {
+          return "cloud-tag-active";
+        }
+        return "cloud-tag";
+      },
+      color(word) {
+        const hash = hashCode(word);
+        return hashToHSL(hash);
+      },
+      click: (entry) => {
+        if (entry[0] !== activeTag.value) {
+          activeTag.value = entry[0];
+        } else {
+          activeTag.value = undefined;
+        }
+        emit("onSelect", activeTag.value);
+      },
+    });
+  }
+};
+
 onMounted(() => {
   activeTag.value = props.defaultActiveTag;
-  wordCloud = new WordCloud("wordcloud-container", {
-    data: tags.value,
-    wordField: "name",
-    weightField: "value",
-    colorField: "name",
-    interactions: [
-      {
-        enable: true,
-        type: "element-active",
-      },
-      {
-        enable: true,
-        type: "element-selected",
-      },
-    ],
-    wordStyle: {
-      fontFamily: "Verdana",
-      fontSize: [18, 45],
-      rotation: 0,
-      padding: 10,
-    },
-    // 返回值设置成一个 [0, 1) 区间内的值，
-    // 可以让每次渲染的位置相同（前提是每次的宽高一致）。
-    random: () => (Math.random() * 5 + 2.5) / 10,
-  });
-  wordCloud.render();
-  let previousSelectedElement:
-    | (typeof chart.geometries)[0]["elements"][0]
-    | undefined;
-  const chart = wordCloud.chart;
+  renderCloud();
+});
 
-  const findTagElementFromChart = (text: string) => {
-    return chart.geometries
-      .flatMap((geom) => geom.elements)
-      .find((element) => element.getData().text === text);
-  };
-
-  // 如果初始化参数中包含activeTag，则选中
-  if (activeTag.value) {
-    const element = findTagElementFromChart(activeTag.value);
-    if (element) {
-      element.setState("selected", true);
-      previousSelectedElement = element;
-    }
-  }
-
-  wordCloud.on("element:mouseenter", ({ gEvent }: any) => {
-    gEvent.currentTarget.attr("cursor", "pointer");
-  });
-
-  // 点击的时候选中新的
-  wordCloud.on("element:click", (event: any) => {
-    const clickTag = event.gEvent.currentTarget.attr("text");
-    const currentElement = findTagElementFromChart(clickTag);
-
-    // 取消上一个选中的元素的选中状态
-    if (previousSelectedElement && previousSelectedElement !== currentElement) {
-      chart.geometries
-        .flatMap((geom) => geom.elements)
-        .forEach((element) => {
-          if (
-            element.getData().name === previousSelectedElement?.getData().name
-          ) {
-            element.setState("selected", false);
-          }
-        });
-    }
-
-    if (previousSelectedElement && previousSelectedElement === currentElement) {
-      // 再次点击取消选中
-      currentElement?.setState("selected", false);
-      previousSelectedElement = undefined;
-      // 执行点击
-      emit("onSelect", undefined);
-    } else {
-      // 设置当前元素为选中状态
-      currentElement?.setState("selected", true);
-      // 记录当前选中的元素
-      previousSelectedElement = currentElement;
-      // 执行点击
-      emit("onSelect", clickTag);
-    }
-  });
+watch(activeTag, () => {
+  renderCloud();
 });
 
 onBeforeUnmount(() => {
-  wordCloud.destroy();
+  WordCloud.stop();
 });
 </script>
+
+<style>
+#wordcloud-container {
+  height: 300px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.cloud-tag {
+  opacity: 0.2;
+}
+.cloud-tag:hover,
+.cloud-tag-active {
+  cursor: pointer;
+  opacity: 1;
+  transform: scale(1.5) !important;
+}
+.cloud-tag-all {
+  opacity: 1;
+  cursor: pointer;
+}
+</style>

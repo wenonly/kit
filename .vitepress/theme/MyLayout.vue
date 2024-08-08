@@ -1,17 +1,19 @@
 <!--.vitepress/theme/MyLayout.vue-->
 <script lang="ts" setup>
 import DefaultTheme from "vitepress/theme";
-import { useData } from "vitepress";
+import { defineClientComponent, useData, withBase } from "vitepress";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
-import WordCloud from "./components/WordCloud.vue";
 import HomeFeatures from "./components/HomeFeatures.vue";
+const WordCloud = defineClientComponent(
+  () => import("./components/WordCloud.vue")
+);
 
 const { Layout } = DefaultTheme;
 
 const { frontmatter } = useData();
 
 const onTagClick = (tag: string) => {
-  location.href = `/tag?tag=${tag}`;
+  location.href = withBase(`/tag?tag=${tag}`);
 };
 </script>
 
@@ -23,6 +25,8 @@ const onTagClick = (tag: string) => {
     </template>
     <template #home-features-after>
       <home-features />
+      <br />
+      <br />
       <word-cloud @onSelect="onTagClick" />
     </template>
   </Layout>

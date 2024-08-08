@@ -25,9 +25,11 @@
         <img
           class="chinese-zodiac"
           :src="
-            '/img/svg/chinese-zodiac/' +
-            getChineseZodiac(Number(year.replace('年', ''))) +
-            '.svg'
+            withBase(
+              '/img/svg/chinese-zodiac/' +
+                getChineseZodiac(Number(year.replace('年', ''))) +
+                '.svg'
+            )
           "
           :title="getChineseZodiacAlias(Number(year.replace('年', '')))"
           alt="生肖"
@@ -58,6 +60,7 @@
 <script lang="ts" setup>
 import blogConfig from "config:blog";
 import ArticleMetadata from "./ArticleMetaData.vue";
+import { withBase } from "vitepress";
 
 // 文章原始数据和归档数据
 let $articleData: ThemeType.ArticleData[];
