@@ -1,1 +1,0 @@
-import{_ as s,c as a,a as i,W as n}from"./chunks/framework.PgU_rKP2.js";const g=JSON.parse('{"title":"components-and-utils","description":"","frontmatter":{},"headers":[],"relativePath":"README.md","filePath":"README.md"}'),e={name:"README.md"},t=n("",6),l=[t];function p(h,d,o,c,r,k){return i(),a("div",null,l)}const _=s(e,[["render",p]]);export{g as __pageData,_ as default};
