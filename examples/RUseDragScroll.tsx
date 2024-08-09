@@ -1,4 +1,5 @@
 import { useDragScroll } from "@wenonly/react-hooks";
+import React from "react";
 
 const RUseDragScroll = () => {
   const domRef = useDragScroll();

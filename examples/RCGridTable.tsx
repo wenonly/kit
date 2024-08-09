@@ -1,5 +1,6 @@
 import { GridTable } from "@wenonly/react-components";
 import { Card } from "antd";
+import React from "react";
 import { useMemo, useState } from "react";
 
 const data = Array(100)
@@ -10,7 +11,7 @@ const data = Array(100)
     age: index,
   }));
 
-const RCGridTable = () => {
+const RCGridTable: React.FunctionComponent = () => {
   const [pageSize, setPageSize] = useState(6);
   const [page, setPage] = useState(1);
 

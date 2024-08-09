@@ -1,5 +1,6 @@
 import { GlobalModalScope, useGlobalModal } from "@wenonly/react-hooks";
 import { Alert, Button, Modal, ModalProps, Space } from "antd";
+import React from "react";
 
 interface Modal1Props extends ModalProps {
   // 定义除modal外的其它参数

@@ -1,5 +1,6 @@
 import { AutoScrollBox } from "@wenonly/react-components";
 import { Card } from "antd";
+import React from "react";
 
 const RCAutoScrollBox: React.FunctionComponent = () => {
   return (
