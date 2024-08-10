@@ -13,6 +13,9 @@ const config = defineConfig({
     typescript({
       // 使用 TypeScript 插件
       tsconfig: "tsconfig.json", // 指定 tsconfig.json 文件
+      declaration: true,
+      declarationDir: "lib",
+      include: ["src/**/*"],
     }),
     commonjs({
       include: /node_modules/,
