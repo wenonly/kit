@@ -24,7 +24,9 @@ const onTagClick = (tag: string) => {
       <article-meta-data />
     </template>
     <template #home-features-after>
-      <home-features />
+      <ClientOnly>
+        <home-features />
+      </ClientOnly>
       <br />
       <br />
       <word-cloud @onSelect="onTagClick" />
@@ -39,9 +41,11 @@ const onTagClick = (tag: string) => {
   font-size: 32px;
   font-weight: 600;
 }
+
 .meta-wrapper {
   margin-top: 10px;
 }
+
 .meta-item {
   display: inline-block;
   overflow: hidden;
@@ -53,31 +57,38 @@ const onTagClick = (tag: string) => {
   cursor: default;
   font-size: 14px;
 }
+
 .meta-item:not(:last-child) {
   margin-right: 1rem;
 }
+
 .meta-icon,
 meta-content {
   display: inline-block;
   margin-right: 0.375rem;
   vertical-align: middle;
 }
+
 .meta-icon {
   position: relative;
   bottom: 1.5px;
 }
+
 .meta-icon.date {
   bottom: 1.3px;
 }
+
 .meta-icon svg {
   fill: var(--vp-c-text-2);
   height: 16px;
   width: 16px;
 }
+
 .meta-content a {
   font-weight: 400;
   color: var(--vp-c-text-2);
 }
+
 /* .meta-content a:hover {
   color: var(--vp-c-brand);
 } */
