@@ -17,7 +17,8 @@ function findMarkdownFiles(
     if (statSync(filePath).isDirectory()) {
       findMarkdownFiles(filePath, fileList, excludes);
     } else if (extname(file) === ".md") {
-      fileList.push(filePath);
+      // replace 作用是将window路径斜杠\换为/
+      fileList.push(filePath.replace(/\\/g, '/'));
     }
   });
 
