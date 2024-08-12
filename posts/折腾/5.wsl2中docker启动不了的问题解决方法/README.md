@@ -1,6 +1,6 @@
 ---
 title: wsl2中docker启动不了的问题解决方法
-categories: 杂谈日记
+categories: 折腾纪录
 date: 2023-04-22 22:46
 tags:
 - wsl

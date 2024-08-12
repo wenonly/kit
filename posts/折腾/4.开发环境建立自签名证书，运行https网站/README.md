@@ -1,6 +1,6 @@
 ---
 title: 开发环境建立自签名证书，运行https网站
-categories: 杂谈日记
+categories: 折腾纪录
 date: 2023-10-16 14:23
 tags:
 - 部署

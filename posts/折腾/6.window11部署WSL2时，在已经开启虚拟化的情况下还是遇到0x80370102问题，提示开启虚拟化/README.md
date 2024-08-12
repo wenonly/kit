@@ -1,6 +1,6 @@
 ---
 title: window11部署WSL2时，在已经开启虚拟化的情况下还是遇到0x80370102问题，提示开启虚拟化
-categories: 杂谈日记
+categories: 折腾纪录
 date: 2023-03-11 15:17
 tags:
   - wsl
