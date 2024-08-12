@@ -66,6 +66,7 @@ const data = computed(() => {
       </span>
       <time class="meta-content">{{
         new Date(data.date).toLocaleString("zh", {
+          timeZone: data.date.endsWith("Z") ? "UTC" : undefined,
           year: "numeric",
           month: "numeric",
           day: "numeric",
