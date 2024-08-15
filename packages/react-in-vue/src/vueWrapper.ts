@@ -5,6 +5,7 @@ import { defineComponent, h, onMounted, ref } from "vue";
 // Vue 组件
 export default defineComponent({
   props: ["component"],
+  inheritAttrs: false,
   setup(props, ctx) {
     const react = ref(); // 根节点实例
     const { component, ...rest } = props; // 接收的 React 组件
