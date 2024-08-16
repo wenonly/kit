@@ -1,5 +1,5 @@
 <script setup>
-import RCGridTable from '@/examples/RCGridTable.tsx'
+import RCGridTable from '@/examples/react/RCGridTable.tsx'
 </script>
 
 # GridTable
@@ -13,7 +13,7 @@ import RCGridTable from '@/examples/RCGridTable.tsx'
 <br />
 
 ::: details 点我查看代码
-<<< @/examples/RCGridTable.tsx
+<<< @/examples/react/RCGridTable.tsx
 :::
 
 ## 参数

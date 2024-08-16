@@ -1,5 +1,5 @@
 <script setup>
-import RUseAsyncTasks from '@/examples/RUseAsyncTasks.tsx'
+import RUseAsyncTasks from '@/examples/react/RUseAsyncTasks.tsx'
 </script>
 
 # useAsyncTasks
@@ -11,7 +11,7 @@ import RUseAsyncTasks from '@/examples/RUseAsyncTasks.tsx'
 <VueWrapper :component="RUseAsyncTasks" />
 
 ::: details 点我查看代码
-<<< @/examples/RUseAsyncTasks.tsx
+<<< @/examples/react/RUseAsyncTasks.tsx
 :::
 
 ## 参数

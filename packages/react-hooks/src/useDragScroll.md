@@ -1,5 +1,5 @@
 <script setup>
-import RUseDragScroll from '@/examples/RUseDragScroll.tsx'
+import RUseDragScroll from '@/examples/react/RUseDragScroll.tsx'
 </script>
 
 # useDragScroll
@@ -11,5 +11,5 @@ import RUseDragScroll from '@/examples/RUseDragScroll.tsx'
 <VueWrapper :component="RUseDragScroll" />
 
 ::: details 点我查看代码
-<<< @/examples/RUseDragScroll.tsx
+<<< @/examples/react/RUseDragScroll.tsx
 :::

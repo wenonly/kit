@@ -1,5 +1,5 @@
 <script setup>
-import RCAutoScrollBox from '@/examples/RCAutoScrollBox.tsx'
+import RCAutoScrollBox from '@/examples/react/RCAutoScrollBox.tsx'
 </script>
 
 # AutoScrollBox
@@ -14,7 +14,7 @@ import RCAutoScrollBox from '@/examples/RCAutoScrollBox.tsx'
 鼠标指上可以滚动
 
 ::: details 点我查看代码
-<<< @/examples/RCAutoScrollBox.tsx
+<<< @/examples/react/RCAutoScrollBox.tsx
 :::
 
 ## 参数

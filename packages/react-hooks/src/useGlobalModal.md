@@ -1,5 +1,5 @@
 <script setup>
-import RUseGlobalModal from '@/examples/RUseGlobalModal.tsx'
+import RUseGlobalModal from '@/examples/react/RUseGlobalModal.tsx'
 </script>
 
 # useGlobalModal
@@ -12,5 +12,5 @@ import RUseGlobalModal from '@/examples/RUseGlobalModal.tsx'
 <VueWrapper :component="RUseGlobalModal" />
 
 ::: details 点我查看代码
-<<< @/examples/RUseGlobalModal.tsx{37-45}
+<<< @/examples/react/RUseGlobalModal.tsx{37-45}
 :::

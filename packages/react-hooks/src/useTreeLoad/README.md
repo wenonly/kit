@@ -1,5 +1,5 @@
 <script setup>
-import RUseTreeLoad from '@/examples/RUseTreeLoad.tsx'
+import RUseTreeLoad from '@/examples/react/RUseTreeLoad.tsx'
 </script>
 
 # useTreeLoad
@@ -11,7 +11,7 @@ import RUseTreeLoad from '@/examples/RUseTreeLoad.tsx'
 <VueWrapper :component="RUseTreeLoad" />
 
 ::: details 点我查看代码
-<<< @/examples/RUseTreeLoad.tsx
+<<< @/examples/react/RUseTreeLoad.tsx
 :::
 
 ## 参数
