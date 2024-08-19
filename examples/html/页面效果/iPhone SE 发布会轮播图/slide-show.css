@@ -8,8 +8,8 @@
   --iphone-red-bg: #960b19;
   --iphone-red-text: #e57571;
   --iphone-red-text-highlight: #f5f5f7;
-  --iphone-width: 460px;
-  --iphone-offscreen: -720px;
+  --iphone-width: 376px;
+  --iphone-offscreen: 0;
 }
 body {
   margin: 0;
@@ -36,6 +36,7 @@ body {
   left: 0;
 }
 .sticky-container .iphone h3 {
+  display: block;
   font-size: 1rem;
   margin: 0 0 60px 0;
   width: var(--iphone-width);
