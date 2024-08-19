@@ -23,7 +23,6 @@ function appendImage(url, col = 0, selector = '.col') {
 }
 
 function init() {
-  debugger
   getImageList(current, 30)
   current += 2
   
