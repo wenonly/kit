@@ -3,26 +3,28 @@ import { defineConfig } from "vitepress";
 import { blogNav, blogRewrites, blogSideBar } from "./configs/blog";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
 import resolveConfigVitePlugin from "./plugins/resolveConfigVitePlugin";
+import resolveDemoVitePlugin from "./plugins/resolveDemoVitePlugin";
 import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
 
 const reactComponentsSidebars = getSideBar(DocGroup.ReactComponents);
 const reactHooksSidebars = getSideBar(DocGroup.ReactHooks);
 const utilsSidebars = getSideBar(DocGroup.Utils);
 const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
+const demoSidebars = getSideBar(DocGroup.Demo);
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "wenonly的知识库",
   description: "A doc web with components, utils and hooks",
-  base: '/kit',
+  base: "/kit",
   srcDir: "./",
   outDir: "./docs",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "我的分类", items: blogNav },
-      { text: "我的归档", link: '/archive' },
-      { text: "我的标签", link: '/tag' },
+      { text: "我的归档", link: "/archive" },
+      { text: "我的标签", link: "/tag" },
       {
         text: "自定义库",
         items: [
@@ -30,6 +32,10 @@ export default defineConfig({
           { text: "React Hooks", link: reactHooksSidebars[0]?.link ?? "/" },
           { text: "工具函数", link: utilsSidebars[0]?.link ?? "/" },
         ],
+      },
+      {
+        text: "展示柜",
+        link: demoSidebars[0]?.link ?? demoSidebars[0]?.items?.[0].link ?? "/",
       },
     ],
     sidebar: {
@@ -48,6 +54,7 @@ export default defineConfig({
           collapsed: false,
         },
       ],
+      "/show": demoSidebars,
     },
     socialLinks: [
       {
@@ -92,7 +99,7 @@ export default defineConfig({
     ...blogRewrites,
   },
   vite: {
-    plugins: [resolveConfigVitePlugin()],
+    plugins: [resolveConfigVitePlugin(), resolveDemoVitePlugin()],
     resolve: {
       alias: {
         "@": join(__dirname, "../"),

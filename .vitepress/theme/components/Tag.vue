@@ -62,7 +62,7 @@ const onChange = (tag?: string) => {
 
 <style scoped>
 .main-container-tag {
-  max-width: 1152px;
+  max-width: calc(var(--vp-layout-max-width) - 64px);
   margin: 0 auto;
   margin-bottom: 20px;
 }
