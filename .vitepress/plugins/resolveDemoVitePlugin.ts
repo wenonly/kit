@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import JsonpData from "jsonp-data";
 import * as path from "path";
 import { RollupOutput } from "rollup";
 import { build, defineConfig, Plugin, ResolvedConfig } from "vite";
@@ -6,6 +7,7 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 
 export default function resolveDemoVitePlugin(): Plugin {
   let viteRootConfig: ResolvedConfig;
+  const baseUrl = "https://wenonly.github.io/kit/";
   return {
     name: "vite-plugin-demo",
     configResolved(resolvedConfig) {
@@ -37,6 +39,7 @@ export default function resolveDemoVitePlugin(): Plugin {
                 },
               ],
               build: {
+                outDir: path.join(__dirname, "../cache/viewer"),
                 rollupOptions: {
                   input: htmlPath,
                 },
@@ -56,10 +59,26 @@ export default function resolveDemoVitePlugin(): Plugin {
               type: path.extname(item).slice(1),
             };
           });
+          // 生成jsonp文件，适用于外部引用
+          let jsonpPath =
+            htmlPath.replace(process.cwd(), "").replace(".html", "") +
+            ".jsonp.js";
+          if (jsonpPath.startsWith("/")) {
+            jsonpPath = jsonpPath.slice(1);
+          }
+          jsonpPath = "viewer/" + jsonpPath;
+
           const viewerData = {
             html: output?.source ?? "",
             files: viewerFiles,
+            source: baseUrl + jsonpPath,
           };
+
+          this.emitFile({
+            type: "asset",
+            fileName: jsonpPath,
+            source: await JsonpData.getJsonpFromData(viewerData),
+          });
           return `export default ${JSON.stringify(viewerData)};`;
         } catch (err: any) {
           throw new Error(`Failed: ${err.message}`);
