@@ -1,12 +1,11 @@
+import * as fs from "fs";
+import * as path from "path";
+import { RollupOutput } from "rollup";
 import { build, defineConfig, Plugin, ResolvedConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
-import { RollupOutput } from "rollup";
-import * as path from "path";
-import * as fs from "fs";
-
-let viteRootConfig: ResolvedConfig;
 
 export default function resolveDemoVitePlugin(): Plugin {
+  let viteRootConfig: ResolvedConfig;
   return {
     name: "vite-plugin-demo",
     configResolved(resolvedConfig) {
@@ -49,11 +48,14 @@ export default function resolveDemoVitePlugin(): Plugin {
           );
           // console.log(output)
           // process.exit()
-          const viewerFiles = depFiles.map((item) => ({
-            fileName: path.basename(item),
-            content: fs.readFileSync(item, "utf-8"),
-            type: path.extname(item).slice(1),
-          }));
+          const viewerFiles = depFiles.map((item) => {
+            this.addWatchFile(item);
+            return {
+              fileName: path.basename(item),
+              content: fs.readFileSync(item, "utf-8"),
+              type: path.extname(item).slice(1),
+            };
+          });
           const viewerData = {
             html: output?.source ?? "",
             files: viewerFiles,
