@@ -8,10 +8,14 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 export default function resolveDemoVitePlugin(): Plugin {
   let viteRootConfig: ResolvedConfig;
   const baseUrl = "https://wenonly.github.io/kit/";
+  let depsToSourceMap: Map<string, string>; // 存入反向依赖关系，比如 /demo/index.js -> /demo/index.html
   return {
     name: "vite-plugin-demo",
     configResolved(resolvedConfig) {
       viteRootConfig = resolvedConfig;
+    },
+    buildStart() {
+      depsToSourceMap = new Map();
     },
     resolveId(source: string) {
       if (source.endsWith("?viewer")) {
@@ -49,10 +53,9 @@ export default function resolveDemoVitePlugin(): Plugin {
           const output = buildResult.output.find(
             (item) => item.type === "asset"
           );
-          // console.log(output)
-          // process.exit()
           const viewerFiles = depFiles.map((item) => {
             this.addWatchFile(item);
+            depsToSourceMap.set(item, id);
             return {
               fileName: path.basename(item),
               content: fs.readFileSync(item, "utf-8"),
@@ -74,17 +77,34 @@ export default function resolveDemoVitePlugin(): Plugin {
             source: baseUrl + jsonpPath,
           };
 
-          this.emitFile({
-            type: "asset",
-            fileName: jsonpPath,
-            source: await JsonpData.getJsonpFromData(viewerData),
-          });
+          if (process.env.NODE_ENV !== "development") {
+            this.emitFile({
+              type: "asset",
+              fileName: jsonpPath,
+              source: await JsonpData.getJsonpFromData(viewerData),
+            });
+          }
           return `export default ${JSON.stringify(viewerData)};`;
         } catch (err: any) {
           throw new Error(`Failed: ${err.message}`);
         }
       }
       return null;
+    },
+    handleHotUpdate({ file, server }) {
+      if (depsToSourceMap.has(file)) {
+        // 触发更新指定的文件
+        const module = server.moduleGraph.getModuleById(
+          depsToSourceMap.get(file)!
+        );
+        if (module) {
+          server.moduleGraph.invalidateModule(module);
+          server.ws.send({
+            type: "full-reload",
+            path: "*",
+          });
+        }
+      }
     },
   };
 }

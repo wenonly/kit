@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 import grayMatter from "gray-matter";
 import { compile, match } from "path-to-regexp";
 import { DefaultTheme } from "vitepress";
-import { allMdFilePaths } from "./allMdFilePaths";
+import { allMdFilePaths } from "./files";
 
 export enum DocGroup {
   ReactComponents = "react-components",
