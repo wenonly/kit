@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { withBase } from "vitepress";
 const index = Math.floor(Math.random() * 26);
 const data = [
   {
@@ -156,6 +157,7 @@ const data = [
         <div class="item" v-for="(item, index) in data" :key="index">
           <div class="VPLink no-icon VPFeature">
             <article class="box">
+              <img style="width: 50px;margin-bottom: 10px;" :src="withBase('/img/svg/feature' + index + '.svg')" />
               <!--v-if-->
               <h2 class="title">{{ item.title }}</h2>
               <p class="details">
