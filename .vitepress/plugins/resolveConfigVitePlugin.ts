@@ -1,4 +1,4 @@
-import { blogConfig } from "../configs/blog";
+import { blogRewrites } from "../configs/blog";
 
 export default function resolveConfigVitePlugin() {
   return {
@@ -12,7 +12,9 @@ export default function resolveConfigVitePlugin() {
     async load(id: string) {
       if (id === "config:blog") {
         try {
-          return `export default ${JSON.stringify(blogConfig)};`;
+          return `export default ${JSON.stringify(
+            blogRewrites.map((item) => ({ ...item, ...item.meta }))
+          )};`;
         } catch (err: any) {
           throw new Error(`Failed: ${err.message}`);
         }

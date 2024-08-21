@@ -1,7 +1,7 @@
 <!--.vitepress/theme/MyLayout.vue-->
 <script lang="ts" setup>
-import DefaultTheme from "vitepress/theme";
 import { defineClientComponent, useData, withBase } from "vitepress";
+import DefaultTheme from "vitepress/theme";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
 import HomeFeatures from "./components/HomeFeatures.vue";
 const WordCloud = defineClientComponent(
@@ -19,7 +19,7 @@ const onTagClick = (tag: string) => {
 
 <template>
   <Layout>
-    <template v-if="frontmatter.title" #doc-before>
+    <template v-if="frontmatter.date" #doc-before>
       <h1 class="title">{{ frontmatter.title }}</h1>
       <article-meta-data />
     </template>

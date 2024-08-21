@@ -35,6 +35,7 @@
     "@types/react": "^18.2.54",
     "@types/wordcloud": "^1.2.2",
     "dayjs": "^1.11.11",
+    "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "gray-matter": "^4.0.3",
     "jsonp-data": "workspace:^",

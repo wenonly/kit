@@ -1,6 +1,6 @@
 import { join } from "path";
 import { defineConfig } from "vitepress";
-import { blogNav, blogRewrites, blogSideBar } from "./configs/blog";
+import { blogNav, blogSideBar } from "./configs/blog";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
 import resolveConfigVitePlugin from "./plugins/resolveConfigVitePlugin";
 import resolveDemoVitePlugin from "./plugins/resolveDemoVitePlugin";
@@ -96,7 +96,6 @@ export default defineConfig({
     "pages/tag.md": "tag.md",
     "pages/archive.md": "archive.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
-    ...blogRewrites,
   },
   vite: {
     plugins: [resolveConfigVitePlugin(), resolveDemoVitePlugin()],

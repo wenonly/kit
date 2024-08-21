@@ -1,5 +1,6 @@
 declare module "config:blog" {
-  const value: typeof import("./configs/blog").blogConfig;
+  type Rewrite = typeof import("./configs/blog").blogRewrites[0];
+  const value: (Rewrite & Rewrite["meta"])[];
   export default value;
 }
 
