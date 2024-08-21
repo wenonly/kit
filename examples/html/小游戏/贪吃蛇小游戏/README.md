@@ -1,6 +1,6 @@
 ---
-title: iPhone SE 发布会轮播图
-categories: 页面效果
+title: 贪吃蛇小游戏
+categories: 小游戏
 ---
 
 <script setup>

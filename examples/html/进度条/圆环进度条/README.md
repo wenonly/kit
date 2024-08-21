@@ -1,6 +1,6 @@
 ---
-title: iPhone SE 发布会轮播图
-categories: 页面效果
+title: 圆环进度条
+categories: 进度条
 ---
 
 <script setup>

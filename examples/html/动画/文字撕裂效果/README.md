@@ -1,5 +1,5 @@
 ---
-title: 故障风按钮
+title: 文字撕裂效果
 categories: 动画
 ---
 

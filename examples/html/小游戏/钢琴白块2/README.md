@@ -1,6 +1,6 @@
 ---
-title: iPhone SE 发布会轮播图
-categories: 页面效果
+title: 钢琴白块2
+categories: 小游戏
 ---
 
 <script setup>

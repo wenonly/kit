@@ -1,6 +1,6 @@
 ---
-title: iPhone SE 发布会轮播图
-categories: 页面效果
+title: picture标签
+categories: 基础
 ---
 
 <script setup>
