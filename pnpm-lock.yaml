@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@babylonjs/core':
+        specifier: ^7.22.0
+        version: 7.22.0
       '@wenonly/html-viewer':
         specifier: workspace:^
         version: link:packages/html-viewer
@@ -1961,6 +1964,10 @@ packages:
       '@babel/helper-string-parser': 7.24.7
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
+
+  /@babylonjs/core@7.22.0:
+    resolution: {integrity: sha512-RyPUHadXKQCo9YI6NENozo9m/F3jhCccrQZTu3PhA2VwzCVzJBglcZVKPegnPdXIAFO8WB6GCE+s5uNsxwoWEA==}
+    dev: false
 
   /@changesets/apply-release-plan@7.0.0:
     resolution: {integrity: sha512-vfi69JR416qC9hWmFGSxj7N6wA5J222XNBmezSVATPWDVPIF7gkd4d8CpbEbXmRWbVrkoli3oerGS6dcL/BGsQ==}

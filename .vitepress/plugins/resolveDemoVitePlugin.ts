@@ -1,10 +1,10 @@
+import { createHash } from "crypto";
 import * as fs from "fs";
 import JsonpData from "jsonp-data";
 import * as path from "path";
 import { RollupOutput } from "rollup";
 import { build, defineConfig, Plugin, ResolvedConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
-import { createHash } from "crypto";
 
 export default function resolveDemoVitePlugin(): Plugin {
   let viteRootConfig: ResolvedConfig;
@@ -37,7 +37,7 @@ export default function resolveDemoVitePlugin(): Plugin {
                   name: "vite-plugin-resolve-files",
                   load(id) {
                     // 纪录有哪些文件
-                    if (!id.includes("node_modules")) {
+                    if (!id.includes("node_modules") && !id.includes("\x00")) {
                       depFiles.push(id);
                     }
                   },
