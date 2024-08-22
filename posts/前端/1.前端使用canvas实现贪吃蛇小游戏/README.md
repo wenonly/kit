@@ -13,8 +13,12 @@ tags:
 
 贪吃蛇是一款益智小游戏，通过点击上下左右四个按键控制蛇头移动。
 
-- 项目地址：[snake](https://github.com/wenonly/demobar/tree/blog/src/%E5%B0%8F%E6%B8%B8%E6%88%8F/%E8%B4%AA%E5%90%83%E8%9B%87%E5%B0%8F%E6%B8%B8%E6%88%8F '贪吃蛇')
-- demo 地址：<https://wenonly.github.io/demobar/#/xiaoyouxi/tanchishexiaoyouxi>
+## 示例
+
+<script setup>
+import { HtmlViewer } from '@wenonly/html-viewer'
+</script>
+<html-viewer src="https://wenonly.github.io/kit/viewer/examples/html/小游戏/贪吃蛇小游戏/index.jsonp.js" />
 
 <!-- more -->
 
