@@ -34,6 +34,7 @@
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.54",
     "@types/wordcloud": "^1.2.2",
+    "crypto": "^1.0.1",
     "dayjs": "^1.11.11",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",

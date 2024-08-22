@@ -4,6 +4,7 @@ import * as path from "path";
 import { RollupOutput } from "rollup";
 import { build, defineConfig, Plugin, ResolvedConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
+import { createHash } from "crypto";
 
 export default function resolveDemoVitePlugin(): Plugin {
   let viteRootConfig: ResolvedConfig;
@@ -43,7 +44,14 @@ export default function resolveDemoVitePlugin(): Plugin {
                 },
               ],
               build: {
-                outDir: path.join(__dirname, "../cache/viewer"),
+                outDir: path.join(
+                  __dirname,
+                  "../cache/viewer",
+                  createHash("sha256")
+                    .update(htmlPath)
+                    .digest("hex")
+                    .substring(0, 8)
+                ),
                 rollupOptions: {
                   input: htmlPath,
                 },
