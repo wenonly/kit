@@ -1,7 +1,10 @@
 <!--.vitepress/theme/MyLayout.vue-->
 <script lang="ts" setup>
+import Gitalk from "gitalk";
+import "gitalk/dist/gitalk.css";
 import { defineClientComponent, useData, withBase } from "vitepress";
 import DefaultTheme from "vitepress/theme";
+import { onMounted, ref } from "vue";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
 import HomeFeatures from "./components/HomeFeatures.vue";
 const WordCloud = defineClientComponent(
@@ -15,6 +18,22 @@ const { frontmatter } = useData();
 const onTagClick = (tag: string) => {
   location.href = withBase(`/tag?tag=${tag}`);
 };
+
+const gitalkRef = ref<HTMLDivElement>();
+onMounted(() => {
+  if (!gitalkRef.value) return;
+  const gitalk = new Gitalk({
+    clientID: "Ov23liMOutAMqp7zubFX",
+    clientSecret: "4c5bf0b63ee73a08e6fc0ec65e8bcf5271f6f8f5",
+    repo: "kit", // The repository of store comments,
+    owner: "wenonly",
+    admin: ["wenonly"],
+    id: location.pathname, // Ensure uniqueness and length less than 50
+    distractionFreeMode: false, // Facebook-like distraction free mode
+  });
+
+  gitalk.render(gitalkRef.value);
+});
 </script>
 
 <template>
@@ -30,6 +49,9 @@ const onTagClick = (tag: string) => {
       <br />
       <br />
       <word-cloud @onSelect="onTagClick" />
+    </template>
+    <template #doc-after>
+      <div ref="gitalkRef"></div>
     </template>
   </Layout>
 </template>
