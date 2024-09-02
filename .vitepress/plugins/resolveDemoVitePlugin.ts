@@ -44,16 +44,23 @@ export default function resolveDemoVitePlugin(): Plugin {
                 },
               ],
               build: {
-                outDir: path.join(
-                  __dirname,
-                  "../cache/viewer",
-                  createHash("sha256")
-                    .update(htmlPath)
-                    .digest("hex")
-                    .substring(0, 8)
-                ),
                 rollupOptions: {
                   input: htmlPath,
+                  external: ["@babylonjs/core"],
+                  output: {
+                    dir: path.join(
+                      __dirname,
+                      "../cache/viewer",
+                      createHash("sha256")
+                        .update(htmlPath)
+                        .digest("hex")
+                        .substring(0, 8)
+                    ),
+                    format: "iife",
+                    globals: {
+                      "@babylonjs/core": "BABYLON",
+                    },
+                  },
                 },
               },
             })
