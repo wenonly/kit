@@ -2,9 +2,9 @@
 <script lang="ts" setup>
 import Gitalk from "gitalk";
 import "gitalk/dist/gitalk.css";
-import { defineClientComponent, useData, withBase } from "vitepress";
+import { defineClientComponent, useData, withBase, useRoute } from "vitepress";
 import DefaultTheme from "vitepress/theme";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
 import HomeFeatures from "./components/HomeFeatures.vue";
 import sha256 from "crypto-js/sha256";
@@ -22,8 +22,10 @@ const onTagClick = (tag: string) => {
 };
 
 const gitalkRef = ref<HTMLDivElement>();
-onMounted(() => {
+
+const renderGitalk = () => {
   if (!gitalkRef.value) return;
+  gitalkRef.value.innerHTML = '';
   const gitalk = new Gitalk({
     clientID: "Ov23liMOutAMqp7zubFX",
     clientSecret: "4c5bf0b63ee73a08e6fc0ec65e8bcf5271f6f8f5",
@@ -33,9 +35,21 @@ onMounted(() => {
     id: sha256(location.pathname).toString(EncHex).slice(0, 16), // Ensure uniqueness and length less than 50
     distractionFreeMode: false, // Facebook-like distraction free mode
   });
-
   gitalk.render(gitalkRef.value);
+}
+
+onMounted(() => {
+  renderGitalk();
 });
+
+const route = useRoute();
+
+watch(
+  () => route.path,
+  () => {
+    renderGitalk(); // Re-render Gitalk on every route change
+  }
+);
 </script>
 
 <template>
