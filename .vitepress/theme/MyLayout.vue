@@ -7,6 +7,8 @@ import DefaultTheme from "vitepress/theme";
 import { onMounted, ref } from "vue";
 import ArticleMetaData from "./components/ArticleMetaData.vue";
 import HomeFeatures from "./components/HomeFeatures.vue";
+import sha256 from "crypto-js/sha256";
+import EncHex from "crypto-js/enc-hex";
 const WordCloud = defineClientComponent(
   () => import("./components/WordCloud.vue")
 );
@@ -28,7 +30,7 @@ onMounted(() => {
     repo: "kit", // The repository of store comments,
     owner: "wenonly",
     admin: ["wenonly"],
-    id: location.pathname, // Ensure uniqueness and length less than 50
+    id: sha256(location.pathname).toString(EncHex).slice(0, 16), // Ensure uniqueness and length less than 50
     distractionFreeMode: false, // Facebook-like distraction free mode
   });
 

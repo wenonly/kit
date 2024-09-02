@@ -1,4 +1,5 @@
-import { createHash } from "crypto";
+import sha256 from "crypto-js/sha256";
+import EncHex from "crypto-js/enc-hex";
 import * as fs from "fs";
 import JsonpData from "jsonp-data";
 import * as path from "path";
@@ -51,10 +52,7 @@ export default function resolveDemoVitePlugin(): Plugin {
                     dir: path.join(
                       __dirname,
                       "../cache/viewer",
-                      createHash("sha256")
-                        .update(htmlPath)
-                        .digest("hex")
-                        .substring(0, 8)
+                      sha256(htmlPath).toString(EncHex).slice(0, 16)
                     ),
                     format: "iife",
                     globals: {
