@@ -16,7 +16,7 @@ const demoSidebars = getSideBar(DocGroup.Demo);
 export default defineConfig({
   title: "wenonly的知识库",
   description: "A doc web with components, utils and hooks",
-  base: "/kit",
+  base: "/kit/",
   srcDir: "./",
   outDir: "./docs",
   themeConfig: {
