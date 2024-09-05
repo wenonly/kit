@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@babylonjs/core": "^7.22.0",
+    "@babylonjs/loaders": "^7.23.1",
     "@wenonly/html-viewer": "workspace:^",
     "@wenonly/react-components": "workspace:^",
     "@wenonly/react-hooks": "workspace:^",

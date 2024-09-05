@@ -11,6 +11,9 @@ importers:
       '@babylonjs/core':
         specifier: ^7.22.0
         version: 7.22.0
+      '@babylonjs/loaders':
+        specifier: ^7.23.1
+        version: 7.23.1(@babylonjs/core@7.22.0)(babylonjs-gltf2interface@7.23.1)
       '@wenonly/html-viewer':
         specifier: workspace:^
         version: link:packages/html-viewer
@@ -1973,6 +1976,16 @@ packages:
 
   /@babylonjs/core@7.22.0:
     resolution: {integrity: sha512-RyPUHadXKQCo9YI6NENozo9m/F3jhCccrQZTu3PhA2VwzCVzJBglcZVKPegnPdXIAFO8WB6GCE+s5uNsxwoWEA==}
+    dev: false
+
+  /@babylonjs/loaders@7.23.1(@babylonjs/core@7.22.0)(babylonjs-gltf2interface@7.23.1):
+    resolution: {integrity: sha512-GST0zyqbWFSKMRpJ1TFpCkMWmWffPD+aeWFMuOqk2e7TFd4P9uuP0D80Wxk+cK3n9f5aJr8Pc/9JF9RL3sWkTQ==}
+    peerDependencies:
+      '@babylonjs/core': ^7.0.0
+      babylonjs-gltf2interface: ^7.0.0
+    dependencies:
+      '@babylonjs/core': 7.22.0
+      babylonjs-gltf2interface: 7.23.1
     dev: false
 
   /@changesets/apply-release-plan@7.0.0:
@@ -4274,6 +4287,10 @@ packages:
       '@babel/helper-define-polyfill-provider': 0.6.2(@babel/core@7.24.7)
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /babylonjs-gltf2interface@7.23.1:
+    resolution: {integrity: sha512-lNwBjpTStqGS2u4Gw1kux7ruETz1r++R1fMcEK3Jc8vuS7OhHVDCHqoqAnBSCTqBPQ50l9oKJ8c2L4fGvZQi1w==}
     dev: false
 
   /balanced-match@1.0.2:
