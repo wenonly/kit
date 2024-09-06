@@ -4,8 +4,9 @@ import * as fs from "fs";
 import JsonpData from "jsonp-data";
 import * as path from "path";
 import { RollupOutput } from "rollup";
-import { build, defineConfig, Plugin, ResolvedConfig } from "vite";
+import { build, defineConfig, ResolvedConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
+import { Plugin } from "vitepress";
 
 // 打包html，depFiles用于记录依赖文件
 async function viteBuildHtml(input: string, depFiles: string[]) {
@@ -26,7 +27,6 @@ async function viteBuildHtml(input: string, depFiles: string[]) {
       build: {
         rollupOptions: {
           input,
-          external: ["@babylonjs/core"],
           output: {
             dir: path.join(
               __dirname,
@@ -34,9 +34,6 @@ async function viteBuildHtml(input: string, depFiles: string[]) {
               sha256(input).toString(EncHex).slice(0, 16)
             ),
             format: "iife",
-            globals: {
-              "@babylonjs/core": "BABYLON",
-            },
           },
         },
       },
@@ -51,6 +48,7 @@ export default function resolveDemoVitePlugin(): Plugin {
   let baseUrl =
     process.env.NODE_ENV === "development" ? "" : "https://wenonly.github.io";
   let depsToSourceMap: Map<string, string>; // 存入反向依赖关系，比如 /demo/index.js -> /demo/index.html
+  let pathToJsonpSourceMap: Map<string, string>;
   return {
     name: "vite-plugin-demo",
     configResolved(resolvedConfig) {
@@ -59,6 +57,7 @@ export default function resolveDemoVitePlugin(): Plugin {
     },
     buildStart() {
       depsToSourceMap = new Map();
+      pathToJsonpSourceMap = new Map();
     },
     resolveId(source: string) {
       if (source.endsWith("?viewer")) {
@@ -91,24 +90,43 @@ export default function resolveDemoVitePlugin(): Plugin {
           const emitJsonpPath = path.join("viewer/", curFileName + ".jsonp.js");
 
           const viewerData = {
+            // 注释这两个，因为html太大vite会正则校验报错
             html: buildResult ?? "",
             files: viewerFiles,
-            source: baseUrl + emitJsonpPath,
           };
 
+          const jsonpSource = await JsonpData.getJsonpFromData(viewerData);
           if (process.env.NODE_ENV !== "development") {
             this.emitFile({
               type: "asset",
               fileName: emitJsonpPath,
-              source: await JsonpData.getJsonpFromData(viewerData),
+              source: jsonpSource,
             });
+          } else {
+            pathToJsonpSourceMap.set(emitJsonpPath, jsonpSource);
           }
-          return `export default ${JSON.stringify(viewerData)};`;
+          return `export default ${JSON.stringify({
+            source: baseUrl + emitJsonpPath,
+          })};`;
         } catch (err: any) {
           throw new Error(`Failed: ${err.message}`);
         }
       }
       return null;
+    },
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        let urlWithoutBase = req.url?.replace(viteRootConfig.base, "");
+        urlWithoutBase = urlWithoutBase && decodeURIComponent(urlWithoutBase);
+        if (urlWithoutBase && pathToJsonpSourceMap.has(urlWithoutBase)) {
+          // 设置正确的 Content-Type 头部
+          res.setHeader("Content-Type", "application/javascript");
+          // 返回自定义的 JavaScript 内容
+          res.end(pathToJsonpSourceMap.get(urlWithoutBase));
+        } else {
+          next();
+        }
+      });
     },
     handleHotUpdate({ file, server }) {
       if (depsToSourceMap.has(file)) {

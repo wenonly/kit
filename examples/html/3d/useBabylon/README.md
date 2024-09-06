@@ -8,7 +8,7 @@ import { HtmlViewer } from '@wenonly/html-viewer';
 import viewerData from './index.html?viewer';
 </script>
 
-<html-viewer :previewHtml="viewerData.html" :files="viewerData.files" iframeHeight="calc(100vh - 451px)"/>
+<html-viewer :src="viewerData.source" iframeHeight="calc(100vh - 451px)"/>
 
 :::details 复制代码
 
