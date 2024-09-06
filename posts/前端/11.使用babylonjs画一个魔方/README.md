@@ -16,10 +16,26 @@ onMounted(() => {
 })
 </script>
 
-## 初始 babylon 代码
+## 示例
 
-<canvas id="canvas1" height="500" width="500"></canvas>
+<canvas id="canvas1" style="height:500px;width:100%;"></canvas>
 
 ::: details 点我查看代码
 <<< ./cubeBox.ts
 :::
+
+## 基础模板
+
+```js
+const canvas = document.querySelector("#canvas");
+const engine = new Engine(canvas, true);
+const scene = new Scene(engine);
+// 添加灯光
+// 添加一些其它逻辑
+engine.runRenderLoop(() => {
+  scene.render();
+});
+window.addEventListener("resize", () => {
+  engine.resize();
+});
+```
