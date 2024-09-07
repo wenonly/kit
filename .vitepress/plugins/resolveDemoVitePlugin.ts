@@ -4,7 +4,7 @@ import * as fs from "fs";
 import JsonpData from "jsonp-data";
 import * as path from "path";
 import { RollupOutput } from "rollup";
-import { build, defineConfig, ResolvedConfig } from "vite";
+import { build, defineConfig, ResolvedConfig, normalizePath } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
 import { Plugin } from "vitepress";
 
@@ -82,7 +82,7 @@ export default function resolveDemoVitePlugin(): Plugin {
           });
           // 生成jsonp文件，适用于外部引用
           let curFileName = htmlPath
-            .replace(path.normalize(process.cwd()), "")
+            .replace(normalizePath(process.cwd()), "")
             .replace(".html", "");
           curFileName = curFileName.startsWith("/")
             ? curFileName.slice(1)
