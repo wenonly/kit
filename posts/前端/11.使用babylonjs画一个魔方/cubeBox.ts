@@ -1,82 +1,128 @@
 import {
-  ArcRotateCamera,
-  AxesViewer,
+  Animation,
   Color4,
-  DirectionalLight,
-  Engine,
+  EngineStore,
   Mesh,
   MeshBuilder,
-  PointLight,
+  Nullable,
   Scene,
+  Tools,
+  TransformNode,
   Vector3,
-  Tools
 } from "@babylonjs/core";
 
-interface CubeBoxOptions {
-  cubeletSize: number; // 每一小块的大小
-  centerPositions: [number, number, number]; // xyz
+// 排列
+function permute(arr: number[], stack: number[], result: number[][]) {
+  if (stack.length === arr.length) {
+    result.push(stack.slice());
+    return;
+  }
+  for (let i = 0; i < arr.length; i++) {
+    stack.push(arr[i]);
+    permute(arr, stack, result);
+    stack.pop();
+  }
 }
 
-const defaultOptions: CubeBoxOptions = {
-  cubeletSize: 1,
-  centerPositions: [0, 0, 0],
+export enum CubeFace {
+  Front = "F",
+  Back = "B",
+  Up = "U",
+  Down = "D",
+  Left = "L",
+  Right = "R",
+}
+
+const faceGetters = {
+  [CubeFace.Front]: (pos: number[]) => pos[2] === -1,
+  [CubeFace.Back]: (pos: number[]) => pos[2] === 1,
+  [CubeFace.Up]: (pos: number[]) => pos[1] === 1,
+  [CubeFace.Down]: (pos: number[]) => pos[1] === -1,
+  [CubeFace.Left]: (pos: number[]) => pos[0] === -1,
+  [CubeFace.Right]: (pos: number[]) => pos[0] === 1,
 };
 
-class CubeBoxSpace {
-  private _canvas: HTMLCanvasElement | undefined;
-  private _engine: Engine | undefined;
-  private _scene: Scene | undefined;
-  private _options: CubeBoxOptions;
+let id = 0;
+
+export class CubeBox {
   private _cubelets: Mesh[] = [];
-  constructor(options?: CubeBoxOptions) {
-    this._options = {
-      ...defaultOptions,
-      ...options,
-    };
+  private _cubeletSize;
+  private _centerPosition: Vector3;
+  private _scene: Nullable<Scene>;
+  private _id: number;
+  constructor(cubeletSize: number, centerPosition: Vector3, scene?: Scene) {
+    this._cubeletSize = cubeletSize;
+    this._centerPosition = centerPosition;
+    this._scene = scene ?? EngineStore.LastCreatedScene;
+    this._id = id++;
+    this.createCube();
   }
-  private createLight() {
-    const { centerPositions, cubeletSize } = this._options;
-    // 各个面都创建光源
-    const lights = [
-      [1, 1, 1],
-      [-1, -1, -1],
-    ];
-    const lightDistance = cubeletSize * 1.5 + 2;
-    lights.reverse().forEach((lt, index) => {
-      const light = new PointLight(
-        `light-${index}`,
-        new Vector3(
-          centerPositions[0] + lt[0] * lightDistance,
-          centerPositions[1] + lt[1] * lightDistance,
-          centerPositions[2] + lt[2] * lightDistance
-        ),
-        this._scene
-      );
-      light.intensity = 1;
-      const dlight = new DirectionalLight(
-        "d-light",
-        new Vector3(lt[0], lt[1], lt[2]),
-        this._scene
-      );
-      dlight.intensity = 0.5;
-    });
-  }
-  private createCamera() {
-    const { centerPositions, cubeletSize } = this._options;
-    const camera = new ArcRotateCamera(
-      "camera1",
-      Tools.ToRadians(30),
-      Tools.ToRadians(75),
-      cubeletSize * 10,
-      new Vector3(centerPositions[0], centerPositions[1], centerPositions[2]),
-      this._scene
+  // 获取一个面的方块
+  private getFaceCublets(faceDirection: CubeFace) {
+    return this._cubelets.filter((item) =>
+      faceGetters[faceDirection](item.metadata.currentPos)
     );
-    camera.attachControl(this._canvas, true);
-    camera.setTarget(Vector3.Zero());
   }
-  private createScene(engine: Engine) {
-    const scene = new Scene(engine);
-    this._scene = scene;
+  public rotate(faceDirection: CubeFace, clockwise = true) {
+    const faceCublets = this.getFaceCublets(faceDirection);
+    const axis =
+      faceDirection === CubeFace.Up || faceDirection === CubeFace.Down
+        ? "y"
+        : faceDirection === CubeFace.Left || faceDirection === CubeFace.Right
+        ? "x"
+        : "z";
+
+    const angle = clockwise ? Tools.ToRadians(90) : Tools.ToRadians(-90);
+    // 定义一个空节点，用于旋转
+    const axisNode = new TransformNode("axis", this._scene);
+    faceCublets.forEach((item) => {
+      item.parent = axisNode;
+    });
+    const frameRate = 60;
+    // 定义绕世界Y轴旋转的动画
+    const rotationAnimation = new Animation(
+      "rotationAnimation",
+      `rotation.${axis}`,
+      frameRate,
+      Animation.ANIMATIONTYPE_FLOAT,
+      Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+    const keys = [
+      { frame: 0, value: 0 },
+      { frame: frameRate, value: angle },
+    ];
+    rotationAnimation.setKeys(keys);
+    axisNode.animations = [rotationAnimation];
+
+    return new Promise((resolve, reject) => {
+      if (!this._scene) {
+        reject(new Error("cannot find scene!"));
+        return;
+      }
+      try {
+        // 开始动画
+        this._scene.beginAnimation(axisNode, 0, frameRate, false, 1, () => {
+          faceCublets.forEach((item) => {
+            // 解绑和重新计算模块位置
+            this.calcCurrentPos(item);
+            this.calcRealPosition(item);
+            if (item.name === "cubelet-0-1--1--1") {
+              console.log(item.rotation[axis], axis);
+            }
+            item.rotation[axis] = item.rotation[axis] + angle;
+            if (item.name === "cubelet-0-1--1--1") {
+              console.log(item.rotation[axis], axis);
+              console.log(item);
+            }
+            item.parent = null;
+          });
+          axisNode.dispose();
+          resolve(true);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
   private getColors() {
     const cubeColors = [
@@ -90,19 +136,7 @@ class CubeBoxSpace {
     return cubeColors;
   }
   private createCube() {
-    const { cubeletSize, centerPositions } = this._options;
     const cubelets: number[][] = [];
-    function permute(arr: number[], stack: number[], result: number[][]) {
-      if (stack.length === arr.length) {
-        result.push(stack.slice());
-        return;
-      }
-      for (let i = 0; i < arr.length; i++) {
-        stack.push(arr[i]);
-        permute(arr, stack, result);
-        stack.pop();
-      }
-    }
     // 全排列，构成26块位置
     permute([-1, 1, 0], [], cubelets);
     cubelets.pop(); // 不要0 0 0的项
@@ -110,53 +144,46 @@ class CubeBoxSpace {
     const colors = this.getColors();
     cubelets.forEach((pos) => {
       const cubeletBox = MeshBuilder.CreateBox(
-        `cubelet-${pos[0]}-${pos[1]}-${pos[2]}`,
+        `cubelet-${this._id}-${pos[0]}-${pos[1]}-${pos[2]}`,
         {
-          width: cubeletSize,
-          height: cubeletSize,
-          depth: cubeletSize,
+          width: this._cubeletSize,
+          height: this._cubeletSize,
+          depth: this._cubeletSize,
           faceColors: colors,
         },
         this._scene
       );
-      const x = centerPositions[0] - pos[0] * cubeletSize;
-      const y = centerPositions[1] - pos[1] * cubeletSize;
-      const z = centerPositions[2] - pos[2] * cubeletSize;
-      cubeletBox.position = new Vector3(x, y, z);
       cubeletBox.scaling = new Vector3(0.98, 0.98, 0.98);
       cubeletBox.metadata = {
-        pos,
+        originPos: pos.slice(), // 纪录排列位置
+        currentPos: pos.slice(),
       };
+      this.calcRealPosition(cubeletBox);
       this._cubelets.push(cubeletBox);
     });
   }
-  public mount(canvasDom: HTMLCanvasElement | string) {
-    if (!canvasDom) throw new Error("canvas is required");
-    if (typeof canvasDom === "string") {
-      const canvas = document.querySelector(canvasDom);
-      if (!canvas) throw new Error("canvas is not found");
-      this._canvas = canvas as HTMLCanvasElement;
-    } else {
-      this._canvas = canvasDom;
-    }
-    this._engine = new Engine(this._canvas, true);
-    this.createScene(this._engine);
-    this.createCamera();
-    this.createLight();
-    this.createCube();
-    // 添加坐标轴
-    new AxesViewer(this._scene);
-    const scene = this._scene!;
-    this._engine.runRenderLoop(() => {
-      scene.render();
-    });
-    window.addEventListener("resize", () => {
-      this._engine?.resize();
-    });
+  private calcRealPosition(cubelet: Mesh) {
+    const currentPos = cubelet.metadata.currentPos.slice();
+    const x = currentPos[0] * this._cubeletSize + this._centerPosition.x;
+    const y = currentPos[1] * this._cubeletSize + this._centerPosition.y;
+    const z = currentPos[2] * this._cubeletSize + this._centerPosition.z;
+    cubelet.position = new Vector3(x, y, z);
   }
-}
-
-export function renderCube(canvas: string) {
-  const cubeBoxSpace = new CubeBoxSpace();
-  cubeBoxSpace.mount(canvas);
+  private calcCurrentPos(cubelet: Mesh) {
+    const newPos = [
+      Math.round(
+        (cubelet.getAbsolutePosition().x - this._centerPosition.x) /
+          this._cubeletSize
+      ),
+      Math.round(
+        (cubelet.getAbsolutePosition().y - this._centerPosition.y) /
+          this._cubeletSize
+      ),
+      Math.round(
+        (cubelet.getAbsolutePosition().z - this._centerPosition.z) /
+          this._cubeletSize
+      ),
+    ];
+    cubelet.metadata.currentPos = newPos;
+  }
 }

@@ -9,7 +9,7 @@ tags:
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { renderCube } from './cubeBox.ts'
+import { renderCube } from './cubeBoxSpace.ts'
 
 onMounted(() => {
     renderCube("#canvas1")
