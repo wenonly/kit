@@ -74,7 +74,16 @@ export class CubeBox {
         ? Axis.X
         : Axis.Z;
 
-    const angle = clockwise ? Tools.ToRadians(90) : Tools.ToRadians(-90);
+    const angle = !(
+      Number(clockwise) ^
+      Number(
+        faceDirection === CubeFace.Up ||
+          faceDirection === CubeFace.Right ||
+          faceDirection === CubeFace.Back
+      )
+    )
+      ? Tools.ToRadians(90)
+      : Tools.ToRadians(-90);
     // 定义一个空节点，用于旋转
     const axisNode = new TransformNode("axis", this._scene);
     faceCublets.forEach((item) => {
