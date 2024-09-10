@@ -108,9 +108,10 @@ class CubeBoxSpace {
       this._engine?.resize();
     });
     setTimeout(async () => {
-      // await this._cube?.rotate(CubeFace.Up);
+      await this._cube?.rotate(CubeFace.Up);
+      await this._cube?.rotate(CubeFace.Down);
       await this._cube?.rotate(CubeFace.Back);
-      await this._cube?.rotate(CubeFace.Right);
+      await this._cube?.rotate(CubeFace.Up);
       await this._cube?.rotate(CubeFace.Front);
     }, 1000);
   }

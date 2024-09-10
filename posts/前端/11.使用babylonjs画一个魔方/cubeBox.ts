@@ -1,10 +1,12 @@
 import {
   Animation,
+  Axis,
   Color4,
   EngineStore,
   Mesh,
   MeshBuilder,
   Nullable,
+  Quaternion,
   Scene,
   Tools,
   TransformNode,
@@ -67,10 +69,10 @@ export class CubeBox {
     const faceCublets = this.getFaceCublets(faceDirection);
     const axis =
       faceDirection === CubeFace.Up || faceDirection === CubeFace.Down
-        ? "y"
+        ? Axis.Y
         : faceDirection === CubeFace.Left || faceDirection === CubeFace.Right
-        ? "x"
-        : "z";
+        ? Axis.X
+        : Axis.Z;
 
     const angle = clockwise ? Tools.ToRadians(90) : Tools.ToRadians(-90);
     // 定义一个空节点，用于旋转
@@ -82,14 +84,14 @@ export class CubeBox {
     // 定义绕世界Y轴旋转的动画
     const rotationAnimation = new Animation(
       "rotationAnimation",
-      `rotation.${axis}`,
+      "rotationQuaternion",
       frameRate,
-      Animation.ANIMATIONTYPE_FLOAT,
+      Animation.ANIMATIONTYPE_QUATERNION,
       Animation.ANIMATIONLOOPMODE_CONSTANT
     );
     const keys = [
-      { frame: 0, value: 0 },
-      { frame: frameRate, value: angle },
+      { frame: 0, value: Quaternion.Identity() },
+      { frame: frameRate, value: Quaternion.RotationAxis(axis, angle) },
     ];
     rotationAnimation.setKeys(keys);
     axisNode.animations = [rotationAnimation];
@@ -106,15 +108,11 @@ export class CubeBox {
             // 解绑和重新计算模块位置
             this.calcCurrentPos(item);
             this.calcRealPosition(item);
-            if (item.name === "cubelet-0-1--1--1") {
-              console.log(item.rotation[axis], axis);
-            }
-            item.rotation[axis] = item.rotation[axis] + angle;
-            if (item.name === "cubelet-0-1--1--1") {
-              console.log(item.rotation[axis], axis);
-              console.log(item);
-            }
             item.parent = null;
+            item.rotationQuaternion = Quaternion.RotationAxis(
+              axis,
+              angle
+            ).multiply(item.rotationQuaternion ?? Quaternion.Identity());
           });
           axisNode.dispose();
           resolve(true);
