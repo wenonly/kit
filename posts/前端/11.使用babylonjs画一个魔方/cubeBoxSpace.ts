@@ -69,7 +69,7 @@ class CubeBoxSpace {
       new Vector3(centerPositions[0], centerPositions[1], centerPositions[2]),
       this._scene
     );
-    camera.attachControl(this._canvas, true);
+    camera.attachControl();
     camera.setTarget(Vector3.Zero());
   }
   private createScene(engine: Engine) {
@@ -108,18 +108,18 @@ class CubeBoxSpace {
       this._engine?.resize();
     });
     setTimeout(async () => {
-      await this._cube?.rotate(CubeFace.Up);
-      await this._cube?.rotate(CubeFace.Down);
-      await this._cube?.rotate(CubeFace.Right);
-      await this._cube?.rotate(CubeFace.Left);
-      await this._cube?.rotate(CubeFace.Front);
-      await this._cube?.rotate(CubeFace.Back);
-      await this._cube?.rotate(CubeFace.Up, false);
-      await this._cube?.rotate(CubeFace.Down, false);
-      await this._cube?.rotate(CubeFace.Right, false);
-      await this._cube?.rotate(CubeFace.Left, false);
-      await this._cube?.rotate(CubeFace.Front, false);
-      await this._cube?.rotate(CubeFace.Back, false);
+      // await this._cube?.rotate(CubeFace.Up);
+      // await this._cube?.rotate(CubeFace.Down);
+      // await this._cube?.rotate(CubeFace.Right);
+      // await this._cube?.rotate(CubeFace.Left);
+      // await this._cube?.rotate(CubeFace.Front);
+      // await this._cube?.rotate(CubeFace.Back);
+      // await this._cube?.rotate(CubeFace.Up, false);
+      // await this._cube?.rotate(CubeFace.Down, false);
+      // await this._cube?.rotate(CubeFace.Right, false);
+      // await this._cube?.rotate(CubeFace.Left, false);
+      // await this._cube?.rotate(CubeFace.Front, false);
+      // await this._cube?.rotate(CubeFace.Back, false);
     }, 1000);
   }
 }

@@ -6,6 +6,7 @@ import {
   Mesh,
   MeshBuilder,
   Nullable,
+  PointerEventTypes,
   Quaternion,
   Scene,
   Tools,
@@ -58,6 +59,122 @@ export class CubeBox {
     this._scene = scene ?? EngineStore.LastCreatedScene;
     this._id = id++;
     this.createCube();
+    this.attachDrag();
+  }
+  // 计算移动的方向
+  private moveVectorToAxis(moveVecotor: Vector3) {
+    // 计算向量在各个坐标轴上的分量
+    var xComponent = moveVecotor.x;
+    var yComponent = moveVecotor.y;
+    var zComponent = moveVecotor.z;
+
+    // 找出绝对值最大的分量
+    var absComponents = [
+      Math.abs(xComponent),
+      Math.abs(yComponent),
+      Math.abs(zComponent),
+    ];
+    var maxIndex = absComponents.indexOf(Math.max(...absComponents));
+
+    // 构建与坐标轴平行的新向量
+    switch (maxIndex) {
+      case 0:
+        return new Vector3(Math.sign(xComponent), 0, 0);
+      case 1:
+        return new Vector3(0, Math.sign(yComponent), 0);
+      case 2:
+      default:
+        return new Vector3(0, 0, Math.sign(zComponent));
+    }
+  }
+  // 根据法线和移动方向计算旋转量
+  private getRotationQueration(normal: Vector3, direct: Vector3) {
+    // 计算两个向量的点积
+    const dotProduct = normal.dot(direct);
+    // 计算两个向量的叉积（得到旋转轴）
+    const rotationAxis = normal.cross(direct);
+    // 计算夹角（弧度制）
+    let angle = Math.acos(dotProduct / (normal.length() * direct.length()));
+    // 如果向量A和向量B方向相反，需要特殊处理
+    if (dotProduct < 0) {
+      rotationAxis.scaleInPlace(-1);
+      angle = Math.PI - angle;
+    }
+    // 构造旋转四元数
+    const rotationQuaternion = Quaternion.RotationAxis(rotationAxis, angle);
+    return rotationQuaternion;
+  }
+  // 根据法线和旋转方向，获取一面的方块节点
+  private getFaceCubeletsByNormalAndDirect(pointedMesh: Mesh, normal: Vector3, direct: Vector3) {
+    // 计算两个向量的叉积（得到旋转轴）
+    const rotationAxis = normal.cross(direct).normalize();
+    
+  }
+  // 开启拖动魔方
+  private attachDrag() {
+    let pickedMeshNormal: Vector3 | undefined;
+    let pickedMesh: Mesh | undefined;
+    let pickedStartPoint: Vector3 | undefined;
+    let pickedEndPoint: Vector3 | undefined;
+    this._scene?.onPointerObservable.add((pointerInfo) => {
+      if (pointerInfo.type === PointerEventTypes.POINTERUP) {
+        this._scene?.activeCamera?.attachControl();
+        if (
+          !pickedMesh ||
+          !pickedStartPoint ||
+          !pickedEndPoint ||
+          !pickedMeshNormal
+        )
+          return;
+        const moveVecotor = pickedEndPoint.subtract(pickedStartPoint);
+        const moveDirection = this.moveVectorToAxis(moveVecotor);
+        console.log(moveDirection, pickedMeshNormal);
+        pickedMeshNormal = undefined;
+        pickedMesh = undefined;
+        pickedStartPoint = undefined;
+        pickedEndPoint = undefined;
+      }
+      if (pointerInfo.type === PointerEventTypes.POINTERMOVE) {
+        if (pointerInfo.pickInfo) {
+          const pickResult = this._scene?.pickWithRay(
+            pointerInfo.pickInfo.ray!,
+            (m) => {
+              return m.metadata?.originPos;
+            }
+          );
+          if (
+            pickResult?.pickedPoint &&
+            pickResult.pickedMesh === pickedMesh &&
+            pickedMeshNormal &&
+            pickResult.getNormal()?.equals(pickedMeshNormal)
+          ) {
+            // 更新end信息
+            pickedEndPoint = pickResult.pickedPoint;
+          }
+        }
+      }
+      if (pointerInfo.type === PointerEventTypes.POINTERDOWN) {
+        if (
+          !pointerInfo.pickInfo?.hit ||
+          !pointerInfo.pickInfo?.pickedMesh?.metadata.originPos
+        )
+          return;
+        this._scene?.activeCamera?.detachControl();
+        // 使用场景的pick方法来获取被点击的对象
+        const normal = pointerInfo.pickInfo.getNormal(true);
+        // 说明不是魔方的方块
+        if (!normal) return;
+        if (!pointerInfo.pickInfo.pickedPoint) return;
+        const realNormal = new Vector3(
+          Math.round(normal.x),
+          Math.round(normal.y),
+          Math.round(normal.z)
+        ).normalize();
+        pickedMeshNormal = realNormal;
+        pickedMesh = pointerInfo.pickInfo.pickedMesh as Mesh;
+        pickedStartPoint = pointerInfo.pickInfo.pickedPoint;
+      }
+    });
   }
   // 获取一个面的方块
   private getFaceCublets(faceDirection: CubeFace) {
