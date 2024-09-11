@@ -9,27 +9,40 @@
 本项目文档使用[vitepress](https://vitepress.dev/)，详细语法阅读[文档](https://vitepress.dev/guide/markdown)。
 又对`vitepress`进行了一些扩展。
 
-### 扩展内容
+在原有语法的基础上加了一些其它语法。
 
-1. 读取typescript文件中的interface，生成文档表格。这样只需要在编写库的时候定义好类型，在文档中引入文件即可按表格展示库的参数说明。
+1. 读取 typescript 文件中的 interface，生成文档表格。这样只需要在编写库的时候定义好类型，在文档中引入文件即可按表格展示库的参数说明。
 
 ```md
 <!-- 文件路径::params:InterfaceName -->
+
 <<< @/packages/kit/src/utils/index.ts::params:IConfig
 ```
+
 2. 可以在文档或主题中导入博客数据列表
 
 ```js
 import blogConfig from "config:blog";
 ```
 
-## 编译所有packages目录中的库
+3. 可以在文档中导入`html`路径，直接展示效果和源码。
+
+```vue
+<script setup>
+import { HtmlViewer } from "@wenonly/html-viewer";
+import viewerData from "./index.html?viewer";
+</script>
+
+<html-viewer :src="viewerData.source" iframeHeight="calc(100vh - 451px)" />
+```
+
+## 编译所有 packages 目录中的库
 
 ```shell
 pnpm -r run build
 ```
 
-## 发布packages目录中编译好的库
+## 发布 packages 目录中编译好的库
 
 ```shell
 # 生成变更集
