@@ -20,8 +20,11 @@ onMounted(() => {
 
 <canvas id="canvas1" style="height:500px;width:100%;"></canvas>
 
-::: details 点我查看代码
+::: details cubeBox.ts
 <<< ./cubeBox.ts
+:::
+::: details cubeBoxSpace.ts
+<<< ./cubeBoxSpace.ts
 :::
 
 ## 基础模板
@@ -44,55 +47,14 @@ window.addEventListener("resize", () => {
 
 配置一个 `ArcRotateCamera` ，然后将视线固定到中心点，然后加上交互，就能围绕中心点拖动交互查看了。
 
-```js
-  private createCamera() {
-    const { centerPositions, cubeletSize } = this._options;
-    const camera = new ArcRotateCamera(
-      "camera1",
-      Tools.ToRadians(30),
-      Tools.ToRadians(75),
-      cubeletSize * 10,
-      new Vector3(centerPositions[0], centerPositions[1], centerPositions[2]),
-      this._scene
-    );
-    camera.attachControl(this._canvas, true);
-    camera.setTarget(Vector3.Zero());
-  }
-```
+<<< ./cubeBoxSpace.ts#camera
 
 2. 添加灯光
 
 如果一个场景中没有灯光，则无法查看到效果。
 在正方体的相对的两个角设置点光源，另外多设置一个直射光源加强光照。
 
-```js
-private createLight() {
-    const { centerPositions, cubeletSize } = this._options;
-    const lights = [
-      [1, 1, 1],
-      [-1, -1, -1],
-    ];
-    const lightDistance = cubeletSize * 1.5 + 2;
-    lights.reverse().forEach((lt, index) => {
-      const light = new PointLight(
-        `light-${index}`,
-        new Vector3(
-          centerPositions[0] + lt[0] * lightDistance,
-          centerPositions[1] + lt[1] * lightDistance,
-          centerPositions[2] + lt[2] * lightDistance
-        ),
-        this._scene
-      );
-      light.intensity = 1;
-      const dlight = new DirectionalLight(
-        "d-light",
-        new Vector3(lt[0], lt[1], lt[2]),
-        this._scene
-      );
-      dlight.intensity = 0.5;
-    });
-  }
-```
+<<< ./cubeBoxSpace.ts#light
 
 ## 创建模型
 
@@ -105,23 +67,8 @@ private createLight() {
 
 魔方需要绘制 26 个小方块，这些方块的配置位置可以使用`1,-1,0`排列表示。
 
-```js
-const cubelets: number[][] = [];
-function permute(arr: number[], stack: number[], result: number[][]) {
-  if (stack.length === arr.length) {
-    result.push(stack.slice());
-    return;
-  }
-  for (let i = 0; i < arr.length; i++) {
-    stack.push(arr[i]);
-    permute(arr, stack, result);
-    stack.pop();
-  }
-}
-// 全排列，构成26块位置
-permute([-1, 1, 0], [], cubelets);
-cubelets.pop(); // 不要0 0 0的项
-```
+<<< ./cubeBox.ts#permute
+<<< ./cubeBox.ts#permute-use
 
 <script lang="ts">
 function getCubeletsPos() {
@@ -156,41 +103,53 @@ function getCubeletsPos() {
 
 设置六个面的颜色。
 
-```js
-// 设置六个面的颜色，每个小方块六个面都会上色，这样比较简单
-const colors = [
-  new Color4(1, 1, 1, 1), // 白色
-  new Color4(1, 1, 0, 1), // 黄色
-  new Color4(0, 0, 1, 1), // 蓝色
-  new Color4(0, 1, 0, 1), // 绿色
-  new Color4(1, 0.5, 0, 1), // 橙色
-  new Color4(1, 0, 0, 1), // 红色
-];
-```
+<<< ./cubeBox.ts#color
 
 绘制方块，每个方块的各个面分别都设置有颜色。
 
-```js
-cubelets.forEach((pos) => {
-  // pos 就是使用1,-1,0组合的数组，例如[1,0,0]表示沿x轴正方向的方块
-  const cubeletBox = MeshBuilder.CreateBox(
-    `cubelet-${pos[0]}-${pos[1]}-${pos[2]}`,
-    {
-      width: cubeletSize,
-      height: cubeletSize,
-      depth: cubeletSize,
-      faceColors: colors,
-    },
-    this._scene
-  );
-  const x = centerPositions[0] - pos[0] * cubeletSize;
-  const y = centerPositions[1] - pos[1] * cubeletSize;
-  const z = centerPositions[2] - pos[2] * cubeletSize;
-  cubeletBox.position = new Vector3(x, y, z);
-  cubeletBox.scaling = new Vector3(0.98, 0.98, 0.98);
-  cubeletBox.metadata = {
-    pos,
-  };
-  this._cubelets.push(cubeletBox);
-});
+<<< ./cubeBox.ts#createCubelets
+
+根据参数计算方块实际位置。
+
+<<< ./cubeBox.ts#calcRealPosition
+
+## 旋转动画
+
+旋转的时候需要同时旋转一个面的所有方块，为了方便计算，创建一个空的节点，将需要旋转的方块全部绑定到这个空的节点上，然后旋转这个节点，就能实现旋转。
+
+<<< ./cubeBox.ts#rotateCustomFace
+
+旋转后因为会将空的节点删除掉，所以旋转后的节点为了保持位置还需重新计算。
+
+<<< ./cubeBox.ts#recalc
+
+## 拖动交互
+
+为了实现拖动旋转的功能，需要全局监听拖动事件，纪录下拖动方块的法线和旋转方向。
+在鼠标点击的时候纪录点击的方块坐标和法线等信息，移动的时候纪录下在相同方块移动的最后位置，最后根据坐标和法线计算旋转角度，并旋转。
+
+<<< ./cubeBox.ts#attachDrag
+
+根据法线和移动方向还有点击的方块信息，能计算出最终需要旋转的所有方块。
+有法线和移动方向，能很方便的通过叉积计算旋转轴。
+然后根据之间纪录的在节点 metadata 中的 currentPos 信息，就能过滤出所有需要旋转的方块。
+
+<<< ./cubeBox.ts#getFaceCubeletsByNormalAndDirect
+
+根据法线和鼠标移动方向也能很好的计算出旋转方向。
+
+<<< ./cubeBox.ts#getRotationQueration
+
+旋转角度使用`Quaternion`四元数是为了更精准的表示旋转方向，能够明确的表示最后的旋转状态。
+
+在旋转魔方的时候也需要关闭摄像机的旋转交互，不然摄像机会跟着旋转。
+
+```ts
+this._scene?.activeCamera?.detachControl();
+```
+
+旋转完成再次开启摄像机交互。
+
+```ts
+this._scene?.activeCamera?.attachControl();
 ```

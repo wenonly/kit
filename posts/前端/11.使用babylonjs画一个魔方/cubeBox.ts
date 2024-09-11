@@ -15,6 +15,7 @@ import {
 } from "@babylonjs/core";
 
 // 排列
+// #region permute
 function permute(arr: number[], stack: number[], result: number[][]) {
   if (stack.length === arr.length) {
     result.push(stack.slice());
@@ -26,6 +27,7 @@ function permute(arr: number[], stack: number[], result: number[][]) {
     stack.pop();
   }
 }
+// #endregion permute
 
 export enum CubeFace {
   Front = "F",
@@ -87,6 +89,7 @@ export class CubeBox {
         return new Vector3(0, 0, Math.sign(zComponent));
     }
   }
+  // #region getRotationQueration
   // 根据法线和移动方向计算旋转量
   private getRotationQueration(normal: Vector3, direct: Vector3) {
     // 计算两个向量的点积
@@ -104,7 +107,9 @@ export class CubeBox {
     const rotationQuaternion = Quaternion.RotationAxis(rotationAxis, angle);
     return rotationQuaternion;
   }
+  // #endregion getRotationQueration
   // 根据法线和旋转方向，获取一面的方块节点
+  // #region getFaceCubeletsByNormalAndDirect
   private getFaceCubeletsByNormalAndDirect(
     pointedMesh: Mesh,
     normal: Vector3,
@@ -126,6 +131,9 @@ export class CubeBox {
       return false;
     });
   }
+  // #endregion getFaceCubeletsByNormalAndDirect
+  // 拖动旋转的时候调用
+  // #region rotateCustomFace
   public rotateCustomFace(
     faceCubelets: Mesh[],
     rotationQuaternion: Quaternion
@@ -159,6 +167,7 @@ export class CubeBox {
       try {
         // 开始动画
         this._scene.beginAnimation(axisNode, 0, frameRate, false, 1, () => {
+          // #region recalc
           faceCubelets.forEach((item) => {
             // 解绑和重新计算模块位置
             this.calcCurrentPos(item);
@@ -169,6 +178,7 @@ export class CubeBox {
             );
           });
           axisNode.dispose();
+          // #endregion recalc
           resolve(true);
         });
       } catch (error) {
@@ -176,7 +186,9 @@ export class CubeBox {
       }
     });
   }
+  // #endregion rotateCustomFace
   // 开启拖动魔方
+  // #region attachDrag
   private attachDrag() {
     let pickedMeshNormal: Vector3 | undefined;
     let pickedMesh: Mesh | undefined;
@@ -187,7 +199,6 @@ export class CubeBox {
       if (moving) return;
       if (pointerInfo.type === PointerEventTypes.POINTERUP) {
         this._scene?.activeCamera?.attachControl();
-        // console.log(pickedEndPoint,pickedMesh,pickedStartPoint,pickedMeshNormal)
         if (
           !pickedMesh ||
           !pickedStartPoint ||
@@ -272,12 +283,14 @@ export class CubeBox {
       }
     });
   }
+  // #endregion attachDrag
   // 获取一个面的方块
   private getFaceCublets(faceDirection: CubeFace) {
     return this._cubelets.filter((item) =>
       faceGetters[faceDirection](item.metadata.currentPos)
     );
   }
+  // 可以通过CubeFace类型字段控制旋转哪一个面
   public rotate(faceDirection: CubeFace, clockwise = true) {
     const faceCublets = this.getFaceCublets(faceDirection);
     const axis =
@@ -297,55 +310,12 @@ export class CubeBox {
     )
       ? Tools.ToRadians(90)
       : Tools.ToRadians(-90);
-    // 定义一个空节点，用于旋转
-    const axisNode = new TransformNode("axis", this._scene);
-    faceCublets.forEach((item) => {
-      item.parent = axisNode;
-    });
-    const frameRate = 60;
-    // 定义绕世界Y轴旋转的动画
-    const rotationAnimation = new Animation(
-      "rotationAnimation",
-      "rotationQuaternion",
-      frameRate,
-      Animation.ANIMATIONTYPE_QUATERNION,
-      Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-    const keys = [
-      { frame: 0, value: Quaternion.Identity() },
-      { frame: frameRate, value: Quaternion.RotationAxis(axis, angle) },
-    ];
-    rotationAnimation.setKeys(keys);
-    axisNode.animations = [rotationAnimation];
-
-    return new Promise((resolve, reject) => {
-      if (!this._scene) {
-        reject(new Error("cannot find scene!"));
-        return;
-      }
-      try {
-        // 开始动画
-        this._scene.beginAnimation(axisNode, 0, frameRate, false, 1, () => {
-          faceCublets.forEach((item) => {
-            // 解绑和重新计算模块位置
-            this.calcCurrentPos(item);
-            this.calcRealPosition(item);
-            item.parent = null;
-            item.rotationQuaternion = Quaternion.RotationAxis(
-              axis,
-              angle
-            ).multiply(item.rotationQuaternion ?? Quaternion.Identity());
-          });
-          axisNode.dispose();
-          resolve(true);
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const rotationQuaternion = Quaternion.RotationAxis(axis, angle);
+    return this.rotateCustomFace(faceCublets, rotationQuaternion);
   }
+  // #region color
   private getColors() {
-    const cubeColors = [
+    return [
       new Color4(1, 1, 1, 1), // 白色
       new Color4(1, 1, 0, 1), // 黄色
       new Color4(0, 0, 1, 1), // 蓝色
@@ -353,15 +323,18 @@ export class CubeBox {
       new Color4(1, 0.5, 0, 1), // 橙色
       new Color4(1, 0, 0, 1), // 红色
     ];
-    return cubeColors;
   }
+  // #endregion color
   private createCube() {
+    // #region permute-use
     const cubelets: number[][] = [];
     // 全排列，构成26块位置
     permute([-1, 1, 0], [], cubelets);
     cubelets.pop(); // 不要0 0 0的项
+    // #endregion permute-use
     this._cubelets = [];
     const colors = this.getColors();
+    // #region createCubelets
     cubelets.forEach((pos) => {
       const cubeletBox = MeshBuilder.CreateBox(
         `cubelet-${this._id}-${pos[0]}-${pos[1]}-${pos[2]}`,
@@ -381,7 +354,9 @@ export class CubeBox {
       this.calcRealPosition(cubeletBox);
       this._cubelets.push(cubeletBox);
     });
+    // #endregion createCubelets
   }
+  // #region calcRealPosition
   private calcRealPosition(cubelet: Mesh) {
     const currentPos = cubelet.metadata.currentPos.slice();
     const x = currentPos[0] * this._cubeletSize + this._centerPosition.x;
@@ -389,6 +364,7 @@ export class CubeBox {
     const z = currentPos[2] * this._cubeletSize + this._centerPosition.z;
     cubelet.position = new Vector3(x, y, z);
   }
+  // #endregion calcRealPosition
   private calcCurrentPos(cubelet: Mesh) {
     const newPos = [
       Math.round(

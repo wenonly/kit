@@ -32,6 +32,7 @@ class CubeBoxSpace {
       ...options,
     };
   }
+  // #region light
   private createLight() {
     const { centerPositions, cubeletSize } = this._options;
     // 各个面都创建光源
@@ -59,6 +60,8 @@ class CubeBoxSpace {
       dlight.intensity = 0.5;
     });
   }
+  // #endregion light
+  // #region camera
   private createCamera() {
     const { centerPositions, cubeletSize } = this._options;
     const camera = new ArcRotateCamera(
@@ -72,6 +75,7 @@ class CubeBoxSpace {
     camera.attachControl();
     camera.setTarget(Vector3.Zero());
   }
+  // #endregion camera
   private createScene(engine: Engine) {
     const scene = new Scene(engine);
     this._scene = scene;
