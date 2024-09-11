@@ -20,13 +20,6 @@ onMounted(() => {
 
 <canvas id="canvas1" style="height:500px;width:100%;"></canvas>
 
-::: details cubeBox.ts
-<<< ./cubeBox.ts
-:::
-::: details cubeBoxSpace.ts
-<<< ./cubeBoxSpace.ts
-:::
-
 ## 基础模板
 
 ```js
@@ -153,3 +146,20 @@ this._scene?.activeCamera?.detachControl();
 ```ts
 this._scene?.activeCamera?.attachControl();
 ```
+
+## 源码
+
+::: code-group
+
+```ts [index.ts]
+import { onMounted } from "vue";
+import { renderCube } from "./cubeBoxSpace.ts";
+
+onMounted(() => {
+  renderCube("#canvas1");
+});
+```
+
+<<< ./cubeBoxSpace.ts
+<<< ./cubeBox.ts
+:::
