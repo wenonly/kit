@@ -105,10 +105,76 @@ export class CubeBox {
     return rotationQuaternion;
   }
   // 根据法线和旋转方向，获取一面的方块节点
-  private getFaceCubeletsByNormalAndDirect(pointedMesh: Mesh, normal: Vector3, direct: Vector3) {
+  private getFaceCubeletsByNormalAndDirect(
+    pointedMesh: Mesh,
+    normal: Vector3,
+    direct: Vector3
+  ) {
     // 计算两个向量的叉积（得到旋转轴）
     const rotationAxis = normal.cross(direct).normalize();
-    
+    const axis = rotationAxis.x !== 0 ? "x" : rotationAxis.y !== 0 ? "y" : "z";
+    return this._cubelets.filter((item) => {
+      const currentPos: number[] = item.metadata.currentPos;
+      const pointCurrentPos: number[] = pointedMesh.metadata.currentPos;
+      if (axis === "x") {
+        return currentPos[0] === pointCurrentPos[0];
+      } else if (axis === "y") {
+        return currentPos[1] === pointCurrentPos[1];
+      } else if (axis === "z") {
+        return currentPos[2] === pointCurrentPos[2];
+      }
+      return false;
+    });
+  }
+  public rotateCustomFace(
+    faceCubelets: Mesh[],
+    rotationQuaternion: Quaternion
+  ) {
+    // 定义一个空节点，用于旋转
+    const axisNode = new TransformNode("axis", this._scene);
+    faceCubelets.forEach((item) => {
+      item.parent = axisNode;
+    });
+    const frameRate = 60;
+    // 定义绕世界Y轴旋转的动画
+    const rotationAnimation = new Animation(
+      "rotationAnimation",
+      "rotationQuaternion",
+      frameRate,
+      Animation.ANIMATIONTYPE_QUATERNION,
+      Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+    const keys = [
+      { frame: 0, value: Quaternion.Identity() },
+      { frame: frameRate, value: rotationQuaternion },
+    ];
+    rotationAnimation.setKeys(keys);
+    axisNode.animations = [rotationAnimation];
+
+    return new Promise((resolve, reject) => {
+      if (!this._scene) {
+        reject(new Error("cannot find scene!"));
+        return;
+      }
+      try {
+        // 开始动画
+        this._scene.beginAnimation(axisNode, 0, frameRate, false, 1, () => {
+          faceCubelets.forEach((item) => {
+            // 解绑和重新计算模块位置
+            this.calcCurrentPos(item);
+            this.calcRealPosition(item);
+            item.parent = null;
+            item.rotationQuaternion = rotationQuaternion.multiply(
+              item.rotationQuaternion ?? Quaternion.Identity()
+            );
+          });
+          axisNode.dispose();
+          resolve(true);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
   // 开启拖动魔方
   private attachDrag() {
@@ -116,19 +182,40 @@ export class CubeBox {
     let pickedMesh: Mesh | undefined;
     let pickedStartPoint: Vector3 | undefined;
     let pickedEndPoint: Vector3 | undefined;
+    let moving = false; // 动画正在运行
     this._scene?.onPointerObservable.add((pointerInfo) => {
+      if (moving) return;
       if (pointerInfo.type === PointerEventTypes.POINTERUP) {
         this._scene?.activeCamera?.attachControl();
+        // console.log(pickedEndPoint,pickedMesh,pickedStartPoint,pickedMeshNormal)
         if (
           !pickedMesh ||
           !pickedStartPoint ||
           !pickedEndPoint ||
           !pickedMeshNormal
-        )
+        ) {
+          pickedMeshNormal = undefined;
+          pickedMesh = undefined;
+          pickedStartPoint = undefined;
+          pickedEndPoint = undefined;
           return;
+        }
         const moveVecotor = pickedEndPoint.subtract(pickedStartPoint);
         const moveDirection = this.moveVectorToAxis(moveVecotor);
-        console.log(moveDirection, pickedMeshNormal);
+        // 需要旋转的cubelets
+        const cubelets = this.getFaceCubeletsByNormalAndDirect(
+          pickedMesh,
+          pickedMeshNormal,
+          moveDirection
+        );
+        const rotationQueration = this.getRotationQueration(
+          pickedMeshNormal,
+          moveDirection
+        );
+        moving = true;
+        this.rotateCustomFace(cubelets, rotationQueration).finally(
+          () => (moving = false)
+        );
         pickedMeshNormal = undefined;
         pickedMesh = undefined;
         pickedStartPoint = undefined;
@@ -145,11 +232,20 @@ export class CubeBox {
           if (
             pickResult?.pickedPoint &&
             pickResult.pickedMesh === pickedMesh &&
-            pickedMeshNormal &&
-            pickResult.getNormal()?.equals(pickedMeshNormal)
+            pickedMeshNormal
           ) {
-            // 更新end信息
-            pickedEndPoint = pickResult.pickedPoint;
+            const normal = pickResult.getNormal(true);
+            if (normal) {
+              const realNormal = new Vector3(
+                Math.round(normal.x),
+                Math.round(normal.y),
+                Math.round(normal.z)
+              ).normalize();
+              if (realNormal.equals(pickedMeshNormal)) {
+                // 更新end信息
+                pickedEndPoint = pickResult.pickedPoint;
+              }
+            }
           }
         }
       }
