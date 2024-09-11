@@ -116,7 +116,9 @@ export default function resolveDemoVitePlugin(): Plugin {
     },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        let urlWithoutBase = req.url?.replace(viteRootConfig.base, "");
+        let urlWithoutBase = req.url
+          ?.replace(viteRootConfig.base, "")
+          .replace(/\?.*$/, "");
         urlWithoutBase = urlWithoutBase && decodeURIComponent(urlWithoutBase);
         if (urlWithoutBase && pathToJsonpSourceMap.has(urlWithoutBase)) {
           // 设置正确的 Content-Type 头部
