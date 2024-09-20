@@ -1,6 +1,6 @@
 {
   "name": "load-yaml-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "load yaml config with .d.ts file for typescript",
   "main": "lib/index.cjs",
   "module": "lib/index.js",
