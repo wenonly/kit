@@ -1,0 +1,31 @@
+{
+  "name": "load-yaml-config",
+  "version": "1.0.0",
+  "description": "load yaml config with .d.ts file for typescript",
+  "main": "lib/index.cjs",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "test": "tsc example/index.ts && node example/index.js"
+  },
+  "keywords": [
+    "typescript",
+    "yaml"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^18.7.23",
+    "rollup": "^4.9.6",
+    "rollup-plugin-copy": "^3.5.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@wenonly/json2ts": "workspace:^",
+    "js-yaml": "^4.1.0"
+  }
+}

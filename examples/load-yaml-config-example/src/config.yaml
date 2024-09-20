@@ -1,0 +1,8 @@
+name: "test"
+clientId: "client-test"
+categories:
+  - file
+  - config
+
+tags:
+ - test

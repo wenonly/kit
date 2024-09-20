@@ -60,6 +60,12 @@ const rewritesConfig: RewritesConfigItem[] = [
     sidebarName: "json2ts",
   },
   {
+    from: "packages/loadYamlConfig/README.md",
+    to: "utils/load-yaml-config.md",
+    group: DocGroup.OtherUtils,
+    sidebarName: "load-yaml-config",
+  },
+  {
     from: "examples{/:folder}*/:demoName/README.md",
     to: "show/:categories/:title.md",
     group: DocGroup.Demo,
