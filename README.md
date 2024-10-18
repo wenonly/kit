@@ -13,28 +13,44 @@
 
 1. 读取 typescript 文件中的 interface，生成文档表格。这样只需要在编写库的时候定义好类型，在文档中引入文件即可按表格展示库的参数说明。
 
-```md
-<!-- 文件路径::params:InterfaceName -->
+   ```md
+   <!-- 文件路径::params:InterfaceName -->
 
-<<< @/packages/kit/src/utils/index.ts::params:IConfig
-```
+   <<< @/packages/kit/src/utils/index.ts::params:IConfig
+   ```
 
 2. 可以在文档或主题中导入博客数据列表
 
-```js
-import blogConfig from "config:blog";
-```
+   ```js
+   import blogConfig from "config:blog";
+   ```
 
 3. 可以在文档中导入`html`路径，直接展示效果和源码。
 
-```vue
-<script setup>
-import { HtmlViewer } from "@wenonly/html-viewer";
-import viewerData from "./index.html?viewer";
-</script>
+   ```vue
+   <script setup>
+   import { HtmlViewer } from "@wenonly/html-viewer";
+   import viewerData from "./index.html?viewer";
+   </script>
 
-<html-viewer :src="viewerData.source" iframeHeight="calc(100vh - 451px)" />
-```
+   <html-viewer :src="viewerData.source" iframeHeight="calc(100vh - 451px)" />
+   ```
+
+4. 可以在文档中使用 mermaid 语法
+
+   Code with ```mmd
+
+   ```mmd
+   flowchart LR
+   Start --> Stop
+   ```
+
+   Visualize with ```mermaid
+
+   ```mermaid
+   flowchart LR
+   Start --> Stop
+   ```
 
 ## 编译所有 packages 目录中的库
 

@@ -1,5 +1,5 @@
 import { join } from "path";
-import { defineConfig } from "vitepress";
+import { withMermaid } from "vitepress-plugin-mermaid";
 import { blogNav, blogSideBar } from "./configs/blog";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
 import resolveConfigVitePlugin from "./plugins/resolveConfigVitePlugin";
@@ -13,7 +13,7 @@ const otherUtilsSidebars = getSideBar(DocGroup.OtherUtils);
 const demoSidebars = getSideBar(DocGroup.Demo);
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default withMermaid({
   title: "wenonly的知识库",
   description: "A doc web with components, utils and hooks",
   base: "/kit/",
@@ -120,5 +120,9 @@ export default defineConfig({
     config: (md) => {
       md.use(tsParamsPlugin);
     },
+  },
+  mermaid: {},
+  mermaidPlugin: {
+    class: "mermaid my-class", // set additional css classes for parent container
   },
 });
