@@ -3,7 +3,8 @@ title: 使用pytorch理解神经网络
 categories: AI
 date: 2024-10-17 15:11
 tags:
-  - AI
+  - pytorch
+  - 神经网络
 ---
 
 ## 关于 Tensors

@@ -3,7 +3,7 @@ title: 关于Hugging Face
 categories: AI
 date: 2024-10-17 10:58
 tags:
-  - AI
+  - Hugging Face
 ---
 
 Hugging Face是一个领先的人工智能平台，提供了多种工具和资源来支持机器学习和自然语言处理任务。以下是Hugging Face的主要模块及其简介：
