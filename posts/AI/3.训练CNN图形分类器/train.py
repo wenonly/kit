@@ -156,6 +156,10 @@ if __name__ == "__main__":
             [
                 transforms.Grayscale(),
                 transforms.Resize((28, 28)),
+                transforms.RandomHorizontalFlip(p=1),  # 左右镜像翻转
+                transforms.Lambda(
+                    lambda x: x.rotate(90, expand=True)
+                ),  # 逆时针旋转90度
                 transforms.ToTensor(),
                 transforms.Lambda(lambda x: 1 - x),
                 transforms.Normalize((0.5,), (0.5,)),
