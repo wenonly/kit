@@ -6,3 +6,4 @@ export { default as SlickText } from "./components/SlickText";
 export { default as XgPlayer } from "./components/XgPlayer";
 export { default as ScrollText } from "./components/ScrollText";
 export { default as XgPlayerModal } from "./components/XgPlayer/XgPlayerModal";
+export { default as KeyValDefineInput } from "./components/KeyValDefineInput";
