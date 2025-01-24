@@ -22,7 +22,10 @@ export default defineComponent({
             ...rest,
             ...ctx.attrs,
           },
-          null
+          typeof ctx.attrs.children === "string" ||
+            typeof ctx.attrs.children === "number"
+            ? ctx.attrs.children
+            : null
         )
       );
     });

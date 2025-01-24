@@ -1,9 +1,9 @@
-import { useUpdate } from "ahooks";
-import React, { useEffect, useRef } from "react";
-import styles from "./index.module.less";
+import { useHover } from 'ahooks';
+import React, { useEffect, useRef, useState } from 'react';
+import styles from './index.module.less';
 
 interface ScrollTextProps {
-  text?: string;
+  children?: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
   textGap?: number;
@@ -11,43 +11,55 @@ interface ScrollTextProps {
 
 const ScrollText: React.FunctionComponent<ScrollTextProps> = (props) => {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const leftRef = useRef(0);
-  const update = useUpdate();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const isHover = useHover(wrapRef.current);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const translateWidth = contentRef.current?.offsetWidth ?? 0;
+  const wrapWidth = wrapRef.current?.offsetWidth ?? 0;
+  const gap = props.textGap ?? 30;
+  const isOverWidth = translateWidth > wrapWidth;
+  const timeLen = isOverWidth
+    ? Math.max(2, Math.floor((translateWidth + gap) / 100)) + 's'
+    : '';
 
   useEffect(() => {
-    const width = wrapRef.current?.scrollWidth;
-    let stop = false;
-    if (width) {
-      const toLeft = () => {
-        if (!wrapRef.current || stop) return;
-        const left = leftRef.current + 1;
-        if (left > width / 2 + (props.textGap ?? 30) / 2) {
-          leftRef.current = 0;
-        } else {
-          leftRef.current = left;
-        }
-        update();
-        requestAnimationFrame(toLeft);
-      };
-      toLeft();
-    }
+    setIsRunning(false);
+    const time = setTimeout(() => {
+      setIsRunning(true);
+    }, 200);
     return () => {
-      stop = true;
+      clearTimeout(time);
+      setIsRunning(false);
     };
-  }, [props.text, leftRef]);
+  }, [translateWidth]);
 
   return (
     <div
       ref={wrapRef}
-      style={props.style}
-      className={`${styles.textWrap} ${props.className ?? ""}`}
+      style={
+        {
+          ...(props.style ?? {}),
+          '--scroll-speed': timeLen,
+          '--translate-width': translateWidth + gap,
+        } as any
+      }
+      className={`${styles.textWrap} ${props.className ?? ''}`}
     >
-      <div style={{ transform: `translateX(-${leftRef.current}px)` }}>
-        <span>{props.text}</span>
-        <span
-          style={{ display: "inline-block", width: props.textGap ?? 30 }}
-        ></span>
-        <span>{props.text}</span>
+      <div
+        className={styles.aniWrap}
+        style={{
+          animationPlayState: isHover || !isRunning ? 'paused' : 'running',
+          width: translateWidth * 2 + gap,
+        }}
+      >
+        <span ref={contentRef}>{props.children}</span>
+        {isOverWidth && (
+          <>
+            <span style={{ display: 'inline-block', width: gap }}></span>
+            <span>{props.children}</span>
+          </>
+        )}
       </div>
     </div>
   );
