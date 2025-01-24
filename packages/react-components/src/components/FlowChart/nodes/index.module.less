@@ -1,0 +1,48 @@
+.nodeWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+
+  > img {
+    height: 30px;
+    margin-bottom: 8px;
+  }
+
+  > span {
+    color: #333;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon {
+  margin-left: 3px;
+}
+
+.runningIcon {
+  animation: spin 1s linear infinite;
+}
+
+.nodeTitle {
+  display: inline-block;
+  text-align: center;
+  white-space: wrap;
+}
+
+.nodeText {
+  display: flex;
+  align-items: center;
+}

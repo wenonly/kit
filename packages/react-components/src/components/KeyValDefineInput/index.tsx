@@ -1,8 +1,8 @@
+import { useRefData } from "@wenonly/react-hooks";
 import { Button, Input, Space } from "antd";
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.less";
-import { useRefData } from "@wenonly/react-hooks";
 
 function generate() {
   return String(Math.random() * 100000);

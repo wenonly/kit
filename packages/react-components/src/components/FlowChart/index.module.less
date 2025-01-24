@@ -1,0 +1,104 @@
+.flowChartContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  :global {
+    .x6-widget-selection-box {
+      border-color: #1890ff;
+      border-radius: 2px;
+      box-shadow: 0 0 0 4px #d4e8fe;
+    }
+
+    .x6-edge:hover path:nth-child(2) {
+      stroke: #1890ff;
+      stroke-width: 1px;
+    }
+
+    .x6-edge-selected path:nth-child(2) {
+      stroke: #1890ff;
+      stroke-width: 1.5px !important;
+    }
+    .x6-graph-scroller::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.buttonWrap {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  margin: 10px 0;
+  padding: 0 20px;
+  background: #f4f8ff;
+
+  .title {
+    margin-right: 20px;
+    color: #333333;
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+.flowGraphWrap {
+  position: relative;
+  flex: 1;
+  height: 0;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+.minimap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1px solid #f0f0f0;
+}
+
+.zoom {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  padding: 5px 0;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  .zoomItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 26px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .zoomItem:hover {
+    background-color: #e0e0e0;
+  }
+  .zoomItem:active {
+    font-size: 16px;
+  }
+}
+
+.buttonNode {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin-right: 10px;
+  padding: 0 15px;
+  background: #ffffff;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  cursor: pointer;
+
+  > img {
+    height: 20px;
+  }
+
+  > span {
+    margin-left: 10px;
+    color: #606266;
+    font-size: 14px;
+  }
+}

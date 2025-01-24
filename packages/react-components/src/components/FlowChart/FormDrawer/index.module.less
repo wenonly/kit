@@ -1,0 +1,46 @@
+.formContainer {
+  :global {
+    .ant-row {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.formDrawerTitle {
+  display: inline-block;
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.infoWrap {
+  display: flex;
+  line-height: 30px;
+
+  > span:nth-child(1) {
+    margin-right: 5px;
+    white-space: nowrap;
+  }
+
+  > span:nth-child(2) {
+    flex: 1;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  > span.remark {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.advancedSetting {
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+}

@@ -1,7 +1,7 @@
 import { useScript } from "@wenonly/react-hooks";
 import { useMemoizedFn, usePrevious, useUnmount } from "ahooks";
 import { Spin } from "antd";
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import type * as MonacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 import styles from "./index.module.less";

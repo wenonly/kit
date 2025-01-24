@@ -1,6 +1,7 @@
 export { default as AutoScrollBox } from "./components/AutoScrollBox";
 export { default as CodeEditor } from "./components/CodeEditor";
 export { default as DigitalFlop } from "./components/DigitalFlop";
+export { default as FlowChart } from "./components/FlowChart";
 export { default as GridTable } from "./components/GridTable";
 export { default as KeyValDefineInput } from "./components/KeyValDefineInput";
 export { default as LottieWrapper } from "./components/LottieWrapper";
