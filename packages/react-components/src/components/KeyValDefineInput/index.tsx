@@ -1,5 +1,5 @@
 import { Button, Input, Space } from "antd";
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.less";
 import { useRefData } from "@wenonly/react-hooks";
