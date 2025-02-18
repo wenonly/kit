@@ -38,7 +38,7 @@ jobs:
         with:
           node-version: '18'
       - name: Setup pnpm
-        run: corepack enable
+        run: npm install pnpm -g
       - name: Install dependencies
         run: pnpm install
       - name: Build doc
