@@ -18,6 +18,7 @@ export default withMermaid({
   description: "A doc web with components, utils and hooks",
   base: "/kit/",
   srcDir: "./",
+  srcExclude: ["public/**/*.md", "docs/**/*.md"],
   outDir: "./docs",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
