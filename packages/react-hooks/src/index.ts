@@ -4,6 +4,7 @@ export { default as useDragScroll } from "./useDragScroll";
 export { default as useGlobalMessage } from "./useGlobalMessage";
 export { GlobalModalScope, default as useGlobalModal } from "./useGlobalModal";
 export { default as useMessageRequest } from "./useMessageRequest";
+export { ModelProvider, useModel } from "./useModel/index";
 export { default as usePagination } from "./usePagination";
 export { default as useRefData } from "./useRefData";
 export {
