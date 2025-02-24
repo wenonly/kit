@@ -23,6 +23,7 @@ export default (props: ExecutorProps) => {
   useMemo(() => {
     updateRef.current(data);
     initialLoad.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // React 16.13 后 update 函数用 useEffect 包裹

@@ -2,14 +2,14 @@ export type HookType<T = any> = () => T;
 export type HookRefCallbackType = (val: any) => void;
 
 export default class ModelDispatcher {
-  callbacks: WeakMap<HookType, Set<HookRefCallbackType>> = new WeakMap();
+  callbacks: Map<string, Set<HookRefCallbackType>> = new Map();
 
-  data: WeakMap<HookType, any> = new WeakMap();
+  data: Map<string, any> = new Map();
 
-  update = (hookRef: HookType) => {
-    (this.callbacks.get(hookRef) || []).forEach((callback: HookRefCallbackType) => {
+  update = (hookName: string) => {
+    (this.callbacks.get(hookName) || []).forEach((callback: HookRefCallbackType) => {
       try {
-        const data = this.data.get(hookRef);
+        const data = this.data.get(hookName);
         callback(data);
       } catch (e) {
         callback(undefined);

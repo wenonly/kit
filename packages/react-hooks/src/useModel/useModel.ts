@@ -3,9 +3,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ModelContext } from "./ModelContext";
 import { HookType } from "./ModelDispatcher";
 
-function useModel<T = any>(hook: HookType<T>): T {
+export function useModel<T = any>(hook: HookType<T>): T {
+  if (!hook.name) {
+    throw new Error("models目录中的hooks必须提供函数名称");
+  }
   const { dispatcher } = useContext(ModelContext);
-  const [state, setState] = useState(() => dispatcher.data.get(hook));
+  const [state, setState] = useState(
+    () => dispatcher.data.get(hook.name) ?? {}
+  );
   const stateRef = useRef<any>(state);
   stateRef.current = state;
 
@@ -23,8 +28,8 @@ function useModel<T = any>(hook: HookType<T>): T {
         // 如果 handler 执行过程中，组件被卸载了，则强制更新全局 data
         // TODO: 需要加个 example 测试
         setTimeout(() => {
-          dispatcher.data.set(hook, data);
-          dispatcher.update(hook);
+          dispatcher.data.set(hook.name, data);
+          dispatcher.update(hook.name);
         });
       } else {
         const currentState = data;
@@ -37,12 +42,15 @@ function useModel<T = any>(hook: HookType<T>): T {
       }
     };
 
-    dispatcher.callbacks.set(hook, dispatcher.callbacks.get(hook) || new Set());
-    dispatcher.callbacks.get(hook)!.add(handler);
-    dispatcher.update(hook);
+    dispatcher.callbacks.set(
+      hook.name,
+      dispatcher.callbacks.get(hook.name) || new Set()
+    );
+    dispatcher.callbacks.get(hook.name)!.add(handler);
+    dispatcher.update(hook.name);
 
     return () => {
-      dispatcher.callbacks.get(hook)!.delete(handler);
+      dispatcher.callbacks.get(hook.name)!.delete(handler);
     };
   }, [dispatcher, hook]);
 
