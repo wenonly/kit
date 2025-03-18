@@ -1,4 +1,4 @@
-import { useMount, useUnmount } from "ahooks";
+import { useMemoizedFn, useMount, useUnmount } from "ahooks";
 import type { ModalProps } from "antd";
 import EventEmitter from "eventemitter3";
 import React, {
@@ -74,7 +74,7 @@ const GlobalModalContext = React.createContext({ group: "root" });
 
 // 类似 react.context scope，设置modal根目录
 export const GlobalModalScope: React.FunctionComponent<{
-  children?: React.ReactChild;
+  children?: React.ReactNode;
   root?: boolean;
 }> = (props) => {
   const [group] = useState(() => (props.root ? "root" : uuidV4()));
@@ -112,17 +112,38 @@ export const GlobalModalScope: React.FunctionComponent<{
 //   ReactDOM.create(modalRoot).render(<GlobalModalScope root />);
 // }
 
+// 这上面的配置将一直向下传递，所有modal都会接受上级的这个参数
+const DepOptionsContext = React.createContext<{
+  key?: string;
+  contextWrapper?: (modal: JSX.Element) => JSX.Element;
+}>({});
+
 // 使用hooks的方式控制modal，不再需要向代码中添加modal的dom结构
-export default <T extends ModalProps = ModalProps>(
+const useGlobalModal = <T extends ModalProps = ModalProps>(
   ModalComponent:
     | React.FunctionComponent<T>
     | React.FunctionComponentElement<T>,
   props: T,
   updateDeps: any[] = [],
-  key?: string
+  // 可以通过这个render函数传递context
+  // 如：(m) => <C.Provider value={{}}>{m}</C.Provider>
+  contextWrapper?: (modal: JSX.Element) => JSX.Element
 ) => {
+  const depContext = useContext(DepOptionsContext);
+  const propsContextWrapper = (m: JSX.Element) => {
+    if (contextWrapper) {
+      if (depContext.contextWrapper) {
+        return depContext.contextWrapper(contextWrapper(m));
+      }
+      return contextWrapper(m);
+    }
+    if (depContext.contextWrapper) {
+      return depContext.contextWrapper(m);
+    }
+    return m;
+  };
   const [visible, setVisible] = useState<boolean>(false);
-  const [modalKey] = useState(() => key ?? uuidV4());
+  const [modalKey] = useState(() => uuidV4());
   const { group } = useContext(GlobalModalContext);
   const assignPropsRef = useRef<Partial<Omit<T, "visible">>>({});
   const refData = useRefData(() => ({
@@ -133,17 +154,29 @@ export default <T extends ModalProps = ModalProps>(
     ModalComponent,
   }));
 
-  const createModalComponent = useCallback(
-    (createProps: T) => {
-      if (refData.current.ModalComponent instanceof Function) {
-        const Component = refData.current.ModalComponent;
-        return <Component {...createProps} />;
-      } else {
-        return React.cloneElement(refData.current.ModalComponent, createProps);
-      }
-    },
-    [refData]
-  );
+  const wrapper = useMemoizedFn((modal: JSX.Element) => {
+    return (
+      <DepOptionsContext.Provider
+        value={{
+          ...depContext,
+          contextWrapper: propsContextWrapper,
+        }}
+      >
+        {propsContextWrapper(modal)}
+      </DepOptionsContext.Provider>
+    );
+  });
+
+  const createModalComponent = useMemoizedFn((createProps: T) => {
+    if (refData.current.ModalComponent instanceof Function) {
+      const Component = refData.current.ModalComponent;
+      return wrapper(<Component {...createProps} />);
+    } else {
+      return wrapper(
+        React.cloneElement(refData.current.ModalComponent, createProps)
+      );
+    }
+  });
 
   const close = useCallback(() => {
     setVisible(false);
@@ -217,3 +250,5 @@ export default <T extends ModalProps = ModalProps>(
     close,
   };
 };
+
+export default useGlobalModal;
