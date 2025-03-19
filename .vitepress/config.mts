@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import { join } from "path";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { blogNav, blogSideBar } from "./configs/blog";
@@ -99,7 +100,11 @@ export default withMermaid({
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
   },
   vite: {
-    plugins: [resolveConfigVitePlugin(), resolveDemoVitePlugin()],
+    plugins: [
+      resolveConfigVitePlugin(),
+      resolveDemoVitePlugin(),
+      tailwindcss(),
+    ],
     resolve: {
       alias: {
         "@": join(__dirname, "../"),
