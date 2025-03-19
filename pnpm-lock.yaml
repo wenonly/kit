@@ -65,9 +65,6 @@ importers:
       vue:
         specifier: ^3.4.19
         version: 3.4.19(typescript@5.3.3)
-      wordcloud:
-        specifier: ^1.2.2
-        version: 1.2.2
     devDependencies:
       '@braintree/sanitize-url':
         specifier: ^7.1.0
@@ -5641,9 +5638,6 @@ packages:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
     hasBin: true
-
-  wordcloud@1.2.2:
-    resolution: {integrity: sha512-fUnDsGrHXou+49j1OeKaC7nOeZPx+sWjIet0L/j6eAcm0nXy+a+AuUs/iDAX4PLBg1Zc6wgXWXhoXdQsXRWAEw==}
 
   wrap-ansi@6.2.0:
     resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
@@ -11632,8 +11626,6 @@ snapshots:
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
-
-  wordcloud@1.2.2: {}
 
   wrap-ansi@6.2.0:
     dependencies:

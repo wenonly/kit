@@ -32,8 +32,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^4.0.14",
-    "vue": "^3.4.19",
-    "wordcloud": "^1.2.2"
+    "vue": "^3.4.19"
   },
   "devDependencies": {
     "@braintree/sanitize-url": "^7.1.0",

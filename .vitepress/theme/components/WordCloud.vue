@@ -1,18 +1,22 @@
 <template>
-  <div id="wordcloud-container"></div>
+  <div class="bg-white rounded-xl p-12 max-w-[1152px] mx-auto">
+    <h3 class="text-2xl! font-semibold! mb-8! text-center">技术标签</h3>
+    <div class="tag-cloud flex flex-wrap justify-center gap-4">
+      <span
+        v-for="(tag, index) in tags"
+        :key="index"
+        class="text-primary cursor-pointer text-blue-300 text-2xl hover:scale-110"
+        :style="formatStyle(tag.name)"
+        @click="onClick(tag.name)"
+        >{{ tag.name }}</span
+      >
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import blogConfig from "config:blog";
-import {
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-  watchEffect,
-} from "vue";
-import WordCloud from "wordcloud";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   defaultActiveTag: {
@@ -32,7 +36,12 @@ const tags = computed(() => {
       tagsMap[t] = 1;
     }
   });
-  return Object.entries(tagsMap).map(([name, value]) => ({ name, value }));
+  console.log(tagsMap);
+  return Object.entries(tagsMap).map(([name, value]) => ({
+    name,
+    value,
+    color: hashToHSL(hashCode(name)),
+  }));
 });
 
 // 创建一个简单的哈希函数
@@ -53,75 +62,25 @@ function hashToHSL(hash: number) {
   return `hsl(${hue}, 100%, ${lightness}%)`;
 }
 
-const renderCloud = () => {
-  WordCloud.stop();
-  const container = document.getElementById("wordcloud-container");
-  if (container) {
-    WordCloud(container, {
-      list: tags.value.map((item) => [
-        item.name,
-        Math.max(Math.min(item.value, 10), 1) + 20,
-      ]), // (1~10) + 20
-      rotateRatio: 0,
-      gridSize: 31,
-      shrinkToFit: true,
-      shuffle: false,
-      classes: (word) => {
-        if (!activeTag.value) {
-          return "cloud-tag-all";
-        }
-        if (word === activeTag.value) {
-          return "cloud-tag-active";
-        }
-        return "cloud-tag";
-      },
-      color(word) {
-        const hash = hashCode(word);
-        return hashToHSL(hash);
-      },
-      click: (entry) => {
-        if (entry[0] !== activeTag.value) {
-          activeTag.value = entry[0];
-        } else {
-          activeTag.value = undefined;
-        }
-        emit("onSelect", activeTag.value);
-      },
-    });
+const onClick = (name: string) => {
+  if (name === activeTag.value) {
+    activeTag.value = undefined;
+  } else {
+    activeTag.value = name;
   }
+  emit("onSelect", activeTag.value);
+};
+
+const formatStyle = (tag: string) => {
+  if (activeTag.value && activeTag.value !== tag) {
+    return { transform: "scale(0.8)" };
+  }
+  return {
+    color: hashToHSL(hashCode(tag)),
+  };
 };
 
 onMounted(() => {
   activeTag.value = props.defaultActiveTag;
-  renderCloud();
-});
-
-watch(activeTag, () => {
-  renderCloud();
-});
-
-onBeforeUnmount(() => {
-  WordCloud.stop();
 });
 </script>
-
-<style>
-#wordcloud-container {
-  height: 300px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.cloud-tag {
-  opacity: 0.2;
-}
-.cloud-tag:hover,
-.cloud-tag-active {
-  cursor: pointer;
-  opacity: 1;
-  transform: scale(1.5) !important;
-}
-.cloud-tag-all {
-  opacity: 1;
-  cursor: pointer;
-}
-</style>
