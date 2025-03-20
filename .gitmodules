@@ -7,3 +7,6 @@
 [submodule "packages/jsonp-data"]
 	path = packages/jsonp-data
 	url = https://github.com/wenonly/jsonp-data.git
+[submodule ".vitepress/theme/assets/works"]
+	path = .vitepress/theme/assets/works
+	url = https://github.com/wenonly/experience.git

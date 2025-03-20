@@ -1,8 +1,12 @@
 import tailwindcss from "@tailwindcss/vite";
 import { join } from "path";
+import AutoImport from "unplugin-auto-import/vite";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import Components from "unplugin-vue-components/vite";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { blogNav, blogSideBar } from "./configs/blog";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
+import { generateAssetsIndexPlugin } from "./plugins/generateAssetsIndex";
 import resolveConfigVitePlugin from "./plugins/resolveConfigVitePlugin";
 import resolveDemoVitePlugin from "./plugins/resolveDemoVitePlugin";
 import { tsParamsPlugin } from "./plugins/tsParamsPlugin";
@@ -39,6 +43,7 @@ export default withMermaid({
         text: "展示柜",
         link: demoSidebars[0]?.link ?? demoSidebars[0]?.items?.[0].link ?? "/",
       },
+      { text: "我的项目", link: "/works" },
     ],
     sidebar: {
       ...blogSideBar,
@@ -97,6 +102,7 @@ export default withMermaid({
     "pages/index.md": "index.md",
     "pages/tag.md": "tag.md",
     "pages/archive.md": "archive.md",
+    "pages/works.md": "works.md",
     ...Object.fromEntries(rewrites.map((item) => [item.from, item.to])),
   },
   vite: {
@@ -104,6 +110,13 @@ export default withMermaid({
       resolveConfigVitePlugin(),
       resolveDemoVitePlugin(),
       tailwindcss(),
+      generateAssetsIndexPlugin(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()],
+      }),
     ],
     resolve: {
       alias: {
