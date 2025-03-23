@@ -10,3 +10,6 @@
 [submodule ".vitepress/theme/assets/works"]
 	path = .vitepress/theme/assets/works
 	url = https://github.com/wenonly/experience.git
+[submodule "resume"]
+	path = resume
+	url = https://github.com/wenonly/resume.git
