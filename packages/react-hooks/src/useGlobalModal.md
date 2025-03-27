@@ -12,5 +12,5 @@ import RUseGlobalModal from '@/examples/react/RUseGlobalModal.tsx'
 <VueWrapper :component="RUseGlobalModal" />
 
 ::: details 点我查看代码
-<<< @/examples/react/RUseGlobalModal.tsx{37-45}
+<<< @/examples/react/RUseGlobalModal.tsx{38-46}
 :::

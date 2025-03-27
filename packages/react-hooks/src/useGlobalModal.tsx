@@ -1,4 +1,4 @@
-import { useMemoizedFn, useMount, useUnmount } from "ahooks";
+import { useMemoizedFn, useMount, usePrevious, useUnmount } from "ahooks";
 import type { ModalProps } from "antd";
 import EventEmitter from "eventemitter3";
 import React, {
@@ -33,7 +33,7 @@ class GlobalModalDom extends EventEmitter {
   set(
     key: string,
     modal: React.FunctionComponentElement<ModalProps>,
-    group: string = "root"
+    group: string = "root",
   ) {
     this.children[key] = modal;
     this.addToGroup(group, key);
@@ -62,8 +62,8 @@ class GlobalModalDom extends EventEmitter {
   dispose(group: string = "root") {
     this.children = Object.fromEntries(
       Object.entries(this.children).filter(
-        (item) => !this.group[group]?.has(item[0])
-      )
+        (item) => !this.group[group]?.has(item[0]),
+      ),
     );
     delete this.group[group];
   }
@@ -112,11 +112,22 @@ export const GlobalModalScope: React.FunctionComponent<{
 //   ReactDOM.create(modalRoot).render(<GlobalModalScope root />);
 // }
 
-// 这上面的配置将一直向下传递，所有modal都会接受上级的这个参数
-const DepOptionsContext = React.createContext<{
-  key?: string;
-  contextWrapper?: (modal: JSX.Element) => JSX.Element;
-}>({});
+type ModalContext =
+  | React.Context<any> // 直接读取当前所处组件的context
+  | {
+      context: React.Context<any>;
+      value: any; // 自定义context的值，覆盖更上层的值
+    };
+
+interface UseGlobalModalOptions {
+  updateDeps?: any[]; // 依赖数组，一般情况不需要使用，当依赖数据变化自动刷新modal
+  contexts?: ModalContext[]; // 注意contexts必须是静态的，不能动态改变, 直接读取当前所处组件的context
+}
+
+// 深度配置context，最上层的modal的context参数会向下传递
+const DepOptionsContext = React.createContext<
+  Pick<UseGlobalModalOptions, "contexts">
+>({});
 
 // 使用hooks的方式控制modal，不再需要向代码中添加modal的dom结构
 const useGlobalModal = <T extends ModalProps = ModalProps>(
@@ -124,24 +135,9 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
     | React.FunctionComponent<T>
     | React.FunctionComponentElement<T>,
   props: T,
-  updateDeps: any[] = [],
-  // 可以通过这个render函数传递context
-  // 如：(m) => <C.Provider value={{}}>{m}</C.Provider>
-  contextWrapper?: (modal: JSX.Element) => JSX.Element
+  options?: UseGlobalModalOptions,
 ) => {
-  const depContext = useContext(DepOptionsContext);
-  const propsContextWrapper = (m: JSX.Element) => {
-    if (contextWrapper) {
-      if (depContext.contextWrapper) {
-        return depContext.contextWrapper(contextWrapper(m));
-      }
-      return contextWrapper(m);
-    }
-    if (depContext.contextWrapper) {
-      return depContext.contextWrapper(m);
-    }
-    return m;
-  };
+  const depOptionsContextValue = useContext(DepOptionsContext);
   const [visible, setVisible] = useState<boolean>(false);
   const [modalKey] = useState(() => uuidV4());
   const { group } = useContext(GlobalModalContext);
@@ -154,15 +150,78 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
     ModalComponent,
   }));
 
+  const contexts = [
+    ...(depOptionsContextValue.contexts ?? []),
+    ...(options?.contexts ?? []),
+  ];
+
+  // contexts必须是静态的，不能动态改变
+  const previous = usePrevious(contexts);
+  if (previous) {
+    if (previous.length !== contexts.length) {
+      throw new Error("contexts must be static");
+    }
+    for (let i = 0; i < contexts.length; i++) {
+      // 只对比context，context变动会导致报错
+      const prevContextInstance = previous[i];
+      const curContextInstance = contexts[i];
+      const prevContext =
+        "context" in prevContextInstance
+          ? prevContextInstance.context
+          : prevContextInstance;
+      const curContext =
+        "context" in curContextInstance
+          ? curContextInstance.context
+          : curContextInstance;
+      if (prevContext !== curContext) {
+        throw new Error("contexts must be static");
+      }
+    }
+  }
+
+  // 存储的更上层的context信息
+  const contextValues: unknown[] = [];
+  for (let i = 0; i < contexts.length; i++) {
+    const curContextInstance = contexts[i];
+    const curContext =
+      "context" in curContextInstance
+        ? curContextInstance.context
+        : curContextInstance;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    contextValues.push(useContext(curContext));
+  }
+
+  // 递归创建给modal包裹context容器
   const wrapper = useMemoizedFn((modal: JSX.Element) => {
+    // 递归
+    let i = 0;
+    const recursive = (innerModal: JSX.Element) => {
+      if (i < contexts.length) {
+        const curContextInstance = contexts[i];
+        const ContextInstance =
+          "context" in curContextInstance
+            ? curContextInstance.context
+            : curContextInstance;
+        const contextValue =
+          "context" in curContextInstance ? curContextInstance.value : {};
+        return (
+          <ContextInstance.Provider
+            value={{ ...(contextValues[i++] ?? {}), ...(contextValue ?? {}) }}
+          >
+            {recursive(innerModal)}
+          </ContextInstance.Provider>
+        );
+      } else {
+        return innerModal;
+      }
+    };
     return (
       <DepOptionsContext.Provider
         value={{
-          ...depContext,
-          contextWrapper: propsContextWrapper,
+          contexts: contexts.slice(),
         }}
       >
-        {propsContextWrapper(modal)}
+        {recursive(modal)}
       </DepOptionsContext.Provider>
     );
   });
@@ -173,7 +232,7 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
       return wrapper(<Component {...createProps} />);
     } else {
       return wrapper(
-        React.cloneElement(refData.current.ModalComponent, createProps)
+        React.cloneElement(refData.current.ModalComponent, createProps),
       );
     }
   });
@@ -189,7 +248,7 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
     globalModalDom.set(
       refData.current.modalKey,
       createModalComponent(prop),
-      refData.current.group
+      refData.current.group,
     );
     assignPropsRef.current = {};
   }, [createModalComponent, refData]);
@@ -206,10 +265,10 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
           open: true,
           onCancel: () => close(),
         }),
-        refData.current.group
+        refData.current.group,
       );
     },
-    [close, createModalComponent, refData]
+    [close, createModalComponent, refData],
   );
 
   // updateDeps 更新依赖
@@ -222,10 +281,16 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
         open: refData.current.visible,
         onCancel: () => close(),
       }),
-      refData.current.group
+      refData.current.group,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [close, createModalComponent, modalKey, refData, ...updateDeps]);
+  }, [
+    close,
+    createModalComponent,
+    modalKey,
+    refData,
+    ...(options?.updateDeps ?? []),
+  ]);
 
   useMount(() => () => {
     globalModalDom.set(
@@ -235,7 +300,7 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
         open: refData.current.visible,
         onCancel: () => close(),
       }),
-      refData.current.group
+      refData.current.group,
     );
   });
 
