@@ -256,3 +256,9 @@ p.then((res) => {
 - executor 立即执行，错误会被捕获
 - 存储回调队列来实现异步
 - 链式调用靠直接返回新的promise实现
+
+剩余的功能一些实现思路：
+
+- 如果then中回调函数返回的是promise怎么办，这里可以通过递归promise获取最终值
+- 静态方法 resolve 和 reject 都返回一个新的 Promise
+- 静态方法 all，返回新的 Promise，记录个 count，每一次then回调都判断一下是否所有任务都已经完成
