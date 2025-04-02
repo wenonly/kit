@@ -15,3 +15,4 @@ export {
 export { default as useResize } from "./useResize";
 export { default as useScript } from "./useScript";
 export { default as useTreeLoad } from "./useTreeLoad/index";
+export { default as useUpdate } from "./useUpdate";
