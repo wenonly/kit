@@ -36,6 +36,7 @@ async function viteBuildHtml(input: string, depFiles: string[]) {
             format: "iife",
           },
         },
+        assetsInlineLimit: Infinity
       },
     })
   )) as RollupOutput;
@@ -87,7 +88,7 @@ export default function resolveDemoVitePlugin(): Plugin {
           curFileName = curFileName.startsWith("/")
             ? curFileName.slice(1)
             : curFileName;
-          const emitJsonpPath = path.join("viewer/", curFileName + ".jsonp.js");
+          const emitJsonpPath = path.posix.join("viewer/", curFileName + ".jsonp.js");
 
           const viewerData = {
             // 注释这两个，因为html太大vite会正则校验报错
