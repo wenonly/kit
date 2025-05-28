@@ -12,14 +12,14 @@
 
 ```ts
 import {
-  reponseHooksInterceptor,
+  responseHooksInterceptor,
   requestHooksInterceptor,
 } from "@wenonly/react-hooks";
 
 export const request: RequestConfig = {
   baseURL: "/base",
   requestInterceptors: [requestHooksInterceptor],
-  responseInterceptors: [reponseHooksInterceptor],
+  responseInterceptors: [responseHooksInterceptor],
 };
 ```
 

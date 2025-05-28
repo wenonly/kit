@@ -8,7 +8,7 @@ export { ModelProvider, useModel } from "./useModel/index";
 export { default as usePagination } from "./usePagination";
 export { default as useRefData } from "./useRefData";
 export {
-  reponseHooksInterceptor,
+  responseHooksInterceptor,
   requestHooksInterceptor,
   default as useRequestListener,
 } from "./useRequestListener";

@@ -18,7 +18,7 @@ export const requestHooksInterceptor = (
 };
 
 // 需要放到 app.tsx 中的request.responseInterceptors中，进行拦截
-export const reponseHooksInterceptor = (response: AxiosResponse<any>) => {
+export const responseHooksInterceptor = (response: AxiosResponse<any>) => {
   event.emit(ResHookName, { response });
   return response;
 };
