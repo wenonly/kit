@@ -292,27 +292,16 @@ const useGlobalModal = <T extends ModalProps = ModalProps>(
     ...(options?.updateDeps ?? []),
   ]);
 
-  useMount(() => () => {
-    globalModalDom.set(
-      modalKey,
-      createModalComponent({
-        ...refData.current.props,
-        open: refData.current.visible,
-        onCancel: () => close(),
-      }),
-      refData.current.group,
-    );
-  });
-
-  const dispose = () => {
+  const dispose = useMemoizedFn(() => {
     globalModalDom.delete(modalKey, refData.current.group);
-  };
+  });
   useUnmount(() => dispose());
 
   return {
     visible,
     open,
     close,
+    dispose,
   };
 };
 
