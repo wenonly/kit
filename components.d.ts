@@ -9,6 +9,5 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElImage: typeof import('element-plus/es')['ElImage']
-    ElInput: typeof import('element-plus/es')['ElInput']
   }
 }
