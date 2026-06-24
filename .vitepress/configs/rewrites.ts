@@ -12,6 +12,7 @@ export enum DocGroup {
   OtherUtils = "other-utils", // 不在packages/utils的一些包
   Demo = "Demo",
   Blog = "blog",
+  Tutorial = "tutorial", // tutorials/<category>/<post>/...
 }
 
 export interface RewritesConfigItem {
@@ -76,6 +77,12 @@ const rewritesConfig: RewritesConfigItem[] = [
     to: "posts/:categories/:year/:title.md",
     sidebarName: ":title",
     group: DocGroup.Blog,
+  },
+  {
+    from: "tutorials{/:folder}*/:postName/README.md",
+    to: "tutorials/:categories/:title.md",
+    sidebarName: ":title",
+    group: DocGroup.Tutorial,
   },
 ];
 
