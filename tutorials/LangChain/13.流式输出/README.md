@@ -14,7 +14,7 @@ tags:
 
 LangChain 内置了一套完整的流式系统，用于在 Agent 运行过程中实时呈现反馈。对于基于 LLM 的应用来说，流式输出是改善用户体验的关键手段：即便完整响应尚未生成，也可以先逐字、逐段地把内容推送给前端，极大缓解大模型的延迟焦虑。
 
-> 新应用建议优先考虑 [事件流](/tutorials/LangChain/14.事件流)。它是 LangChain v1.3 引入的类型化 projection API，把消息、状态、工具调用、子图等内容拆分成各自独立的迭代器，无需再在一个 `stream_mode` chunk 里做条件分支。
+> 新应用建议优先考虑 [事件流](/tutorials/LangChain/事件流)。它是 LangChain v1.3 引入的类型化 projection API，把消息、状态、工具调用、子图等内容拆分成各自独立的迭代器，无需再在一个 `stream_mode` chunk 里做条件分支。
 
 ## LangChain 流式能力一览
 
@@ -306,9 +306,9 @@ const model = new ChatOpenAI({
 
 ## 小结
 
-流式输出是 Agent 应用从"能用"到"好用"的关键一跃：它把 LLM 的延迟从阻塞变成渐进式反馈。选择合适的 stream 模式（`updates` 看进度、`messages` 看 token、`custom` 推自定义信号），或者直接升级到 [事件流](/tutorials/LangChain/14.事件流) 拿到更清晰的类型化 projection。
+流式输出是 Agent 应用从"能用"到"好用"的关键一跃：它把 LLM 的延迟从阻塞变成渐进式反馈。选择合适的 stream 模式（`updates` 看进度、`messages` 看 token、`custom` 推自定义信号），或者直接升级到 [事件流](/tutorials/LangChain/事件流) 拿到更清晰的类型化 projection。
 
-更多进阶内容可参考 [上下文工程](/tutorials/LangChain/15.上下文工程) 和 [短期记忆](/tutorials/LangChain/16.短期记忆)。
+更多进阶内容可参考 [上下文工程](/tutorials/LangChain/上下文工程) 和 [短期记忆](/tutorials/LangChain/短期记忆)。
 
 ---
 

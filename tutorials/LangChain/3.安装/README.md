@@ -69,7 +69,7 @@ export OPENAI_API_KEY="your-api-key"
 
 LangChain 安装完成后，你可以：
 
-- 跟着[快速开始](../4.快速开始/README.md)指南构建你的第一个代理。
+- 跟着[快速开始](/tutorials/LangChain/快速开始)指南构建你的第一个代理。
 - 设置 [LangSmith 追踪](https://docs.langchain.com/oss/javascript/langchain/observability)来调试你的应用——只需设置 `LANGSMITH_TRACING=true` 和 LangSmith API Key 即可。
 
 > **小贴士：** 强烈建议在开发之初就接入 LangSmith Engine。它会自动监控你的追踪数据、发现问题并提出修复建议，帮你少走弯路。

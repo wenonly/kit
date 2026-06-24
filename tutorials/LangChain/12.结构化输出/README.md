@@ -179,7 +179,7 @@ console.log(result.structuredResponse);
 
 结构化输出把 Agent 从"返回文字"升级到"返回数据"，是与下游系统集成的关键能力。选择策略时的经验法则：**模型支持原生结构化输出就用 provider strategy，否则用 tool calling strategy**——后者是万能兜底方案。
 
-更多 Agent 高阶用法，可参阅[中间件概览](/tutorials/LangChain/9.中间件概览)和[内置中间件](/tutorials/LangChain/10.内置中间件)。
+更多 Agent 高阶用法，可参阅[中间件概览](/tutorials/LangChain/中间件概览)和[内置中间件](/tutorials/LangChain/内置中间件)。
 
 ---
 

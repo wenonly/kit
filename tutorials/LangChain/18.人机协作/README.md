@@ -270,7 +270,7 @@ for await (const [mode, chunk] of await agent.stream(
 }
 ```
 
-更多流模式细节请参阅[流式输出](/tutorials/LangChain/13.流式输出)与[事件流](/tutorials/LangChain/14.事件流)。
+更多流模式细节请参阅[流式输出](/tutorials/LangChain/流式输出)与[事件流](/tutorials/LangChain/事件流)。
 
 ## 执行生命周期
 
@@ -284,7 +284,7 @@ for await (const [mode, chunk] of await agent.stream(
 
 ## 自定义 HITL 逻辑
 
-对于更定制化的流程，你可以直接基于 interrupt 原语和中间件抽象构建自己的 HITL 逻辑。结合上面描述的生命周期，就能把中断灵活嵌入 Agent 的运行流程。如果需要回顾中间件原理，请参阅[中间件概览](/tutorials/LangChain/9.中间件概览)与[自定义中间件](/tutorials/LangChain/11.自定义中间件)。
+对于更定制化的流程，你可以直接基于 interrupt 原语和中间件抽象构建自己的 HITL 逻辑。结合上面描述的生命周期，就能把中断灵活嵌入 Agent 的运行流程。如果需要回顾中间件原理，请参阅[中间件概览](/tutorials/LangChain/中间件概览)与[自定义中间件](/tutorials/LangChain/自定义中间件)。
 
 ---
 

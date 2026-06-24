@@ -332,6 +332,6 @@ function detectSSN(content: string): PIIMatch[] {
 
 ## 小结
 
-内置中间件覆盖了 Agent 开发中绝大多数横切关注点。对于这些场景，优先使用内置方案；当内置方案不满足时，再考虑编写[自定义中间件](/tutorials/LangChain/11.自定义中间件)。
+内置中间件覆盖了 Agent 开发中绝大多数横切关注点。对于这些场景，优先使用内置方案；当内置方案不满足时，再考虑编写[自定义中间件](/tutorials/LangChain/自定义中间件)。
 
 > 本文基于 [LangChain 官方文档](https://docs.langchain.com/oss/javascript/langchain/middleware/built-in) 翻译并二次创作。

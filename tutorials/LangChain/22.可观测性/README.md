@@ -153,7 +153,7 @@ await agent.invoke(
 
 ## 小结
 
-可观测性是 Agent 从开发走向生产的关键一环：只需设置 `LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，`createAgent` 创建的 Agent 就会自动上报全链路追踪。配合项目分组、标签和元数据，你可以在 LangSmith 中高效地调试、评估和监控 Agent 行为。如果需要回顾 Agent 的创建方式，请参阅[快速开始](/tutorials/LangChain/4.快速开始)与[Agent](/tutorials/LangChain/5.Agent)。
+可观测性是 Agent 从开发走向生产的关键一环：只需设置 `LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，`createAgent` 创建的 Agent 就会自动上报全链路追踪。配合项目分组、标签和元数据，你可以在 LangSmith 中高效地调试、评估和监控 Agent 行为。如果需要回顾 Agent 的创建方式，请参阅[快速开始](/tutorials/LangChain/快速开始)与[Agent](/tutorials/LangChain/Agent（create_agent）)。
 
 ---
 

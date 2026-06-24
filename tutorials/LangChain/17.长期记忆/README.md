@@ -324,7 +324,7 @@ console.log(result?.value);
 
 长期记忆是 Agent 的"硬盘"：它通过 store + namespace + key 实现跨会话的信息持久化。开发时用 `InMemoryStore`，生产环境切到 `PostgresStore` 或其他数据库后端。工具通过 `runtime.store` 无缝读写，无需改变业务逻辑。
 
-短期记忆解决"这次对话记得住"的问题，长期记忆解决"下次对话还记得"的问题。两者结合，再配合[上下文工程](/tutorials/LangChain/15.上下文工程)中的中间件机制，就构成了 Agent 完整的记忆体系。如需回顾短期记忆，请参阅[短期记忆](/tutorials/LangChain/16.短期记忆)。
+短期记忆解决"这次对话记得住"的问题，长期记忆解决"下次对话还记得"的问题。两者结合，再配合[上下文工程](/tutorials/LangChain/上下文工程)中的中间件机制，就构成了 Agent 完整的记忆体系。如需回顾短期记忆，请参阅[短期记忆](/tutorials/LangChain/短期记忆)。
 
 ---
 

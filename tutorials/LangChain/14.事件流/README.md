@@ -288,7 +288,7 @@ const agent = createAgent({
 
 事件流是 LangChain v1.3 起推荐的流式消费方式。它用类型化 projection 取代了旧式 stream_mode 元组分支，让消息、工具调用、状态、子图等关注点各自独立。前端 UI、日志监控、多 Agent 编排场景都能从中受益。
 
-如果需要更底层的 Pregel stream 模式（`values`、`debug` 等），可以回到 [流式输出](/tutorials/LangChain/13.流式输出) 查阅；想了解 Agent 如何在对话中保持记忆，请继续阅读 [短期记忆](/tutorials/LangChain/16.短期记忆)。
+如果需要更底层的 Pregel stream 模式（`values`、`debug` 等），可以回到 [流式输出](/tutorials/LangChain/流式输出) 查阅；想了解 Agent 如何在对话中保持记忆，请继续阅读 [短期记忆](/tutorials/LangChain/短期记忆)。
 
 ---
 

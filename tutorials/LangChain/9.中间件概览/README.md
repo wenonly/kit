@@ -87,9 +87,9 @@ const graph = new StateGraph(AgentState)
 
 ## 接下来
 
-- [内置中间件](/tutorials/LangChain/10.内置中间件)：开箱即用的常用中间件详解。
-- [自定义中间件](/tutorials/LangChain/11.自定义中间件)：用钩子构建你自己的中间件。
-- [结构化输出](/tutorials/LangChain/12.结构化输出)：让 Agent 返回可预测的结构化数据。
+- [内置中间件](/tutorials/LangChain/内置中间件)：开箱即用的常用中间件详解。
+- [自定义中间件](/tutorials/LangChain/自定义中间件)：用钩子构建你自己的中间件。
+- [结构化输出](/tutorials/LangChain/结构化输出)：让 Agent 返回可预测的结构化数据。
 
 ---
 

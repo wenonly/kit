@@ -22,7 +22,7 @@ tags:
 - 强制执行业务规则和合规要求
 - 校验输出质量和准确性
 
-实现护栏的核心思路是利用中间件，在 Agent 执行流程的关键节点上拦截处理——可以在 Agent 启动前、完成后，或者在模型调用和工具调用前后进行校验。如果不熟悉中间件机制，请先阅读[中间件概览](/tutorials/LangChain/9.中间件概览)。
+实现护栏的核心思路是利用中间件，在 Agent 执行流程的关键节点上拦截处理——可以在 Agent 启动前、完成后，或者在模型调用和工具调用前后进行校验。如果不熟悉中间件机制，请先阅读[中间件概览](/tutorials/LangChain/中间件概览)。
 
 LangChain 既提供了内置护栏（如 PII 检测、人机协作），也提供了灵活的中间件系统用于构建自定义护栏，两种方式可以互补使用。
 
@@ -101,7 +101,7 @@ const result = await agent.invoke({
 
 LangChain 还提供了内置的人机协作中间件，用于在执行敏感操作前要求人类审批。这是针对高风险决策最有效的护栏之一，典型场景包括金融交易与转账、删除或修改生产数据、向外部发送通信，以及任何具有重大业务影响的操作。
 
-> 代码要点：`humanInTheLoopMiddleware` 通过 `interruptOn` 配置需要审批的工具，安全操作可设为 `false` 跳过审批。更多细节请参阅[人机协作](/tutorials/LangChain/18.人机协作)。
+> 代码要点：`humanInTheLoopMiddleware` 通过 `interruptOn` 配置需要审批的工具，安全操作可设为 `false` 跳过审批。更多细节请参阅[人机协作](/tutorials/LangChain/人机协作)。
 
 ```ts
 import { createAgent, humanInTheLoopMiddleware } from "langchain";
@@ -327,7 +327,7 @@ const agent = createAgent({
 
 ## 小结
 
-护栏是 Agent 安全的"安检口"：通过中间件在执行流程的关键节点拦截，你可以在输入端做确定性过滤、在模型前后做 PII 脱敏、在敏感操作前要求人类审批、在输出端做基于模型的安全复检。多层叠加就能构建纵深防御。更多中间件细节请参阅[内置中间件](/tutorials/LangChain/10.内置中间件)与[自定义中间件](/tutorials/LangChain/11.自定义中间件)。
+护栏是 Agent 安全的"安检口"：通过中间件在执行流程的关键节点拦截，你可以在输入端做确定性过滤、在模型前后做 PII 脱敏、在敏感操作前要求人类审批、在输出端做基于模型的安全复检。多层叠加就能构建纵深防御。更多中间件细节请参阅[内置中间件](/tutorials/LangChain/内置中间件)与[自定义中间件](/tutorials/LangChain/自定义中间件)。
 
 ---
 

@@ -860,7 +860,7 @@ const agent = createAgent({
 
 上下文工程是让 Agent 从"演示品"变成"生产级"的核心方法论。记住三类上下文（模型、工具、生命周期）和三个数据来源（State、Store、Runtime Context），你就掌握了调控 Agent 行为的全局视角。配合 LangChain 的中间件机制，几乎可以在 agent 循环的任意环节注入、过滤、转换上下文。
 
-接下来推荐阅读 [短期记忆](/tutorials/LangChain/16.短期记忆) 和 [长期记忆](/tutorials/LangChain/17.长期记忆)，深入理解 State 和 Store 的具体用法。如需回顾流式相关内容，可参考 [流式输出](/tutorials/LangChain/13.流式输出)。
+接下来推荐阅读 [短期记忆](/tutorials/LangChain/短期记忆) 和 [长期记忆](/tutorials/LangChain/长期记忆)，深入理解 State 和 Store 的具体用法。如需回顾流式相关内容，可参考 [流式输出](/tutorials/LangChain/流式输出)。
 
 ---
 

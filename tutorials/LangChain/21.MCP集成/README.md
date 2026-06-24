@@ -283,7 +283,7 @@ const tools = await client.getTools();
 const agent = createAgent({ model: "claude-sonnet-4-6", tools });
 ```
 
-当 MCP 工具执行失败时（`CallToolResult` 中 `isError: true`），`@langchain/mcp-adapters` 会抛出 `ToolException`。请用 try/catch 包裹工具调用来处理这些错误。与 Python 适配器不同，TypeScript 适配器不会把错误作为失败的 tool message 返回给模型。工具的基本用法可以参阅[工具](/tutorials/LangChain/7.工具)。
+当 MCP 工具执行失败时（`CallToolResult` 中 `isError: true`），`@langchain/mcp-adapters` 会抛出 `ToolException`。请用 try/catch 包裹工具调用来处理这些错误。与 Python 适配器不同，TypeScript 适配器不会把错误作为失败的 tool message 返回给模型。工具的基本用法可以参阅[工具](/tutorials/LangChain/工具)。
 
 ---
 
