@@ -5,6 +5,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { blogNav, blogSideBar } from "./configs/blog";
+import { tutorialNav, tutorialSideBar } from "./configs/tutorial";
 import { DocGroup, getSideBar, rewrites } from "./configs/rewrites";
 import { generateAssetsIndexPlugin } from "./plugins/generateAssetsIndex";
 import resolveConfigVitePlugin from "./plugins/resolveConfigVitePlugin";
@@ -40,6 +41,10 @@ export default withMermaid({
         ],
       },
       {
+        text: "教程",
+        items: tutorialNav,
+      },
+      {
         text: "展示柜",
         link: demoSidebars[0]?.link ?? demoSidebars[0]?.items?.[0].link ?? "/",
       },
@@ -47,6 +52,7 @@ export default withMermaid({
     ],
     sidebar: {
       ...blogSideBar,
+      ...tutorialSideBar,
       "/react-components": reactComponentsSidebars,
       "/react-hooks": reactHooksSidebars,
       "/utils": [
