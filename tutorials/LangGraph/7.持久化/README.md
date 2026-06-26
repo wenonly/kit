@@ -40,7 +40,7 @@ const result = await graph.invoke(
 ```
 
 ::: info Agent Server 自动处理持久化
-当你使用 [Agent Server](/langsmith/agent-server) 时，无需手动实现或配置检查点或存储。服务端会在后台自动处理持久化基础设施。
+当你使用 [Agent Server](https://docs.langchain.com/langsmith/agent-server) 时，无需手动实现或配置检查点或存储。服务端会在后台自动处理持久化基础设施。
 :::
 
 ## 检查点 vs. 存储

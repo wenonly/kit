@@ -12,7 +12,7 @@ tags:
 
 [Agent Chat UI](https://github.com/langchain-ai/agent-chat-ui) 是一个基于 Next.js 的应用，提供了与任意 LangChain Agent 对话交互的界面。它支持实时聊天、工具调用可视化，以及时间旅行调试（time-travel debugging）和状态分叉（state forking）等高级功能。
 
-无论你是本地运行还是部署到 [LangSmith](/langsmith/observability)，Agent Chat UI 都能与使用 `create_agent` 创建的 Agent 无缝配合，以极少的配置为你的 Agent 提供交互式体验。
+无论你是本地运行还是部署到 [LangSmith](https://docs.langchain.com/langsmith/observability)，Agent Chat UI 都能与使用 `create_agent` 创建的 Agent 无缝配合，以极少的配置为你的 Agent 提供交互式体验。
 
 Agent Chat UI 完全开源，可以根据你的应用需求进行定制开发。
 

@@ -148,7 +148,7 @@ flowchart TD
 
 ## 步骤三：设计你的状态
 
-状态是 Agent 中所有节点都能访问的共享[记忆](/oss/javascript/concepts/memory)。你可以把它想象成 Agent 在处理流程中用来记录所学和所做决定的一个笔记本。
+状态是 Agent 中所有节点都能访问的共享[记忆](https://docs.langchain.com/oss/javascript/concepts/memory)。你可以把它想象成 Agent 在处理流程中用来记录所学和所做决定的一个笔记本。
 
 ### 什么数据应该放进状态？
 
